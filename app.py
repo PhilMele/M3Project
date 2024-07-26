@@ -1,7 +1,29 @@
 from flask import Flask, render_template
-
+from wtforms.form import Form
+from flask_wtf import FlaskForm
+from wtforms import BooleanField, StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired
+from flask_wtf.csrf import CSRFProtect
+import os
 app = Flask(__name__)
 app.run(debug=True)
+
+#Messaging System 
+#This is used to create messages between grantee and granter
+#WTF Documentation to set up CSRF Token : https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
+#Additional Credits to set up CSRF Token : https://stackoverflow.com/questions/34902378/where-do-i-get-secret-key-for-flask
+app.config['SECRET_KEY'] = os.urandom(24).hex()
+csrf = CSRFProtect(app)
+
+
+class MessagingForm(FlaskForm):
+    #TODO: automatically add username without user input later on
+    username = StringField("Provide name", validators=[DataRequired()])
+    #TODO: if message is related to specific grant ID, add logic to pass ID field
+    message = StringField("Provide message", validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
 # Authentication logic
 @app.route("/")
 def index():
@@ -40,9 +62,20 @@ def account():
     return render_template('grantee/account.html')
 
 #Allows user to contact granter for any question
-@app.route('/contact_us')
+#PROBLEM : `'MessagingForm' object has no attribute 'validate_on_submit'` this is because I imported the wrong form. 
+#Official documentation created this error
+#SOlution credits: https://stackoverflow.com/questions/22873794/attributeerror-editform-object-has-no-attribute-validate-on-submit
+@app.route('/contact_us', methods=['GET', 'POST'])
 def contact_us():
-    return render_template('grantee/contact-us.html')
+    username = None
+    form = MessagingForm()
+    
+    if form.validate_on_submit():
+        username = form.username.data
+        form.username.data = ''
+    return render_template('grantee/contact-us.html',
+        username = username,
+        form = form)
 
 # Granter Interface Logic
 

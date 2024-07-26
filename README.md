@@ -14,3 +14,10 @@ https://getbootstrap.com/docs/4.0/components/navbar/
 
 Error page handling
 For errors: 404 and 500 only
+
+WTF Forms
+    https://wtforms.readthedocs.io/en/3.1.x/
+    https://flask.palletsprojects.com/en/3.0.x/patterns/wtforms/
+
+    Mention use of validators to display messages when form is not compeleted
+
