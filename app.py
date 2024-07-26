@@ -39,6 +39,11 @@ def manage_grant():
 def account():
     return render_template('grantee/account.html')
 
+#Allows user to contact granter for any question
+@app.route('/contact_us')
+def contact_us():
+    return render_template('grantee/contact-us.html')
+
 # Granter Interface Logic
 
 if __name__ == "__main__":

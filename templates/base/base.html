@@ -22,16 +22,16 @@
               <a class="nav-link" href="{{url_for('grant_available')}}">Grants</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="#">Manage Grants</a>
+              <a class="nav-link" href="{{url_for('manage_grant')}}">Manage Grants</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Account
               </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Account Details</a>
-                <a class="dropdown-item" href="#">Delete Account</a>
-                <a class="dropdown-item" href="#">Contact Us</a>
+              <div class="dropdown dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown dropdown-item" href="{{url_for('account')}}">Account Details</a>
+                <a class="dropdown dropdown-item" href="#">Delete Account</a>
+                <a class="dropdown dropdown-item" href="{{url_for('contact_us')}}">Contact Us</a>
               </div>
             </li>
 
