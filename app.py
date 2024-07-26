@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, flash
 from wtforms.form import Form
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField, PasswordField, SubmitField
@@ -18,7 +18,7 @@ csrf = CSRFProtect(app)
 
 class MessagingForm(FlaskForm):
     #TODO: automatically add username without user input later on
-    username = StringField("Provide name", validators=[DataRequired()])
+    username = StringField("Enter username", validators=[DataRequired()])
     #TODO: if message is related to specific grant ID, add logic to pass ID field
     message = StringField("Provide message", validators=[DataRequired()])
     submit = SubmitField('Submit')
@@ -68,13 +68,19 @@ def account():
 @app.route('/contact_us', methods=['GET', 'POST'])
 def contact_us():
     username = None
+    message = None
     form = MessagingForm()
     
     if form.validate_on_submit():
         username = form.username.data
+        message = form.message.data
         form.username.data = ''
+        form.message.data = ''
+        print('The form has been submited')
+        flash('Message is sent')
     return render_template('grantee/contact-us.html',
         username = username,
+        message = message,
         form = form)
 
 # Granter Interface Logic

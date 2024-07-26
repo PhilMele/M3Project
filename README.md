@@ -21,3 +21,8 @@ WTF Forms
 
     Mention use of validators to display messages when form is not compeleted
 
+    Use of CSRF Token
+    from flask_wtf.csrf import CSRFProtect
+    import os
+    from flask import flash (to display toast like messages)
+
