@@ -3,18 +3,45 @@ from wtforms.form import Form
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+from flask_migrate import Migrate
+
+#CSRF Token Generation
 from flask_wtf.csrf import CSRFProtect
 import os
+
+
 app = Flask(__name__)
-app.run(debug=True)
+
 
 #Messaging System 
 #This is used to create messages between grantee and granter
 #WTF Documentation to set up CSRF Token : https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
 #Additional Credits to set up CSRF Token : https://stackoverflow.com/questions/34902378/where-do-i-get-secret-key-for-flask
 app.config['SECRET_KEY'] = os.urandom(24).hex()
-csrf = CSRFProtect(app)
 
+#Database
+#had to use full path due to use of OneDrive. Will need to correct this later on for Heroku.
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/PhilDoopeeDoo/OneDrive - DPD/M3Project/M3Project/data/m3project.db'
+db = SQLAlchemy(app) 
+
+#Flask-Migrate documentation 
+migrate = Migrate(app, db)
+
+csrf = CSRFProtect(app) 
+
+#Models
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(200), unique=True,nullable=False)
+    email =db.Column(db.String(120),unique=True, nullable=False)
+    company_name = db.Column(db.String(200), unique=True,nullable=True)
+    create_at = db.Column(db.DateTime, default=datetime.utcnow) 
+    
+    def __repr__(self):
+        return '<username %r>' % self.username
 
 class MessagingForm(FlaskForm):
     #TODO: automatically add username without user input later on
