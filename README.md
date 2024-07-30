@@ -41,6 +41,9 @@ To apply migrations: `$ flask db upgrade`
 Problem encountered: 
 In `app.config['SQLALCHEMY_DATABASE_URI'] =`, I had to specify the full path as the project is hosted on OneDrive which causes problems. If the project was hosted directly on local machine, I should be able to have the relative path.
 
+Set up of PostGres on Local
+`pip install psycopg2`
+https://medium.com/@shahrukhshl0/building-a-flask-crud-application-with-psycopg2-58de201e3c14
 
 
 

@@ -38,10 +38,16 @@ class User(db.Model):
     username = db.Column(db.String(200), unique=True,nullable=False)
     email =db.Column(db.String(120),unique=True, nullable=False)
     company_name = db.Column(db.String(200), unique=True,nullable=True)
-    create_at = db.Column(db.DateTime, default=datetime.utcnow) 
+    created_on = db.Column(db.DateTime, default=datetime.utcnow) 
     
     def __repr__(self):
         return '<username %r>' % self.username
+
+#Forms
+class UserRegisterForm(FlaskForm):
+    username = StringField("Enter your username", validators=[DataRequired()])
+    email_address = StringField("Enter your email address", validators=[DataRequired()]
+    )     
 
 class MessagingForm(FlaskForm):
     #TODO: automatically add username without user input later on
