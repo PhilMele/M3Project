@@ -35,13 +35,47 @@ csrf = CSRFProtect(app)
 #Models
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(200), unique=True,nullable=False)
-    email =db.Column(db.String(120),unique=True, nullable=False)
-    company_name = db.Column(db.String(200), unique=True,nullable=True)
-    created_on = db.Column(db.DateTime, default=datetime.utcnow) 
-    
+    username = db.Column(db.String(200), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    company_name = db.Column(db.String(200), unique=True, nullable=True)
+    created_on = db.Column(db.DateTime, default=datetime.utcnow)
+    answers = db.relationship('GrantAnswer', backref='user', lazy=True)
+
     def __repr__(self):
-        return '<username %r>' % self.username
+        return '<User %r>' % self.username
+
+class Grant(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), unique=True, nullable=False)
+    fund = db.Column(db.String(200), unique=True, nullable=False)
+    description = db.Column(db.String(200), unique=True, nullable=False)
+    questions = db.relationship('GrantQuestion', backref='grant', lazy=True)
+
+    def __repr__(self):
+        return '<Grant %r>' % self.title
+
+class GrantQuestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'), nullable=False)
+    grant_question = db.Column(db.String(200), unique=True, nullable=False)
+    answers = db.relationship('GrantAnswer', backref='grant_question', lazy=True)
+
+    def __repr__(self):
+        return '<GrantQuestion %r>' % self.grant_question
+
+class GrantAnswer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'), nullable=False)
+    grant_question_id = db.Column(db.Integer, db.ForeignKey('grant_question.id'), nullable=False)
+    grant_answer = db.Column(db.String(300), unique=True, nullable=False)
+    user = db.relationship('User', backref='answers', lazy=True)
+    grant = db.relationship('Grant', backref='answers', lazy=True)
+    question = db.relationship('GrantQuestion', backref='answers')
+
+    def __repr__(self):
+        return '<GrantAnswer %r>' % self.grant_answer
+
 
 #Forms
 class UserRegisterForm(FlaskForm):
