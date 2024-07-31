@@ -3,19 +3,21 @@
 
 
 Features
-Login
+**Login**
+`pip install Flask-Login`
+https://pypi.org/project/Flask-Login/
 
-Extends template
+**Extends template**
 Documentation : https://flask.palletsprojects.com/en/1.1.x/patterns/templateinheritance/
 
-Navbar
+**Navbar**
 Documentation
 https://getbootstrap.com/docs/4.0/components/navbar/
 
-Error page handling
+**Error page handling**
 For errors: 404 and 500 only
 
-WTF Forms
+**WTF Forms**
     https://wtforms.readthedocs.io/en/3.1.x/
     https://flask.palletsprojects.com/en/3.0.x/patterns/wtforms/
 
@@ -26,7 +28,7 @@ WTF Forms
     import os
     from flask import flash (to display toast like messages)
 
-Data base
+**Data base**
 `pip install flask-sqlalchemy`
 https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/
 

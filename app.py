@@ -2,9 +2,12 @@ from flask import Flask, render_template, flash
 from wtforms.form import Form
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, InputRequired, Length, ValidationError
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+
+#Login imports
+from flask_login import UserMixin,login_user, login_manager, login_required, logout_user, current_user
 
 from flask_migrate import Migrate
 
@@ -33,9 +36,10 @@ migrate = Migrate(app, db)
 csrf = CSRFProtect(app) 
 
 #Models
-class User(db.Model):
+class User(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(200), unique=True, nullable=False)
+    password= db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     company_name = db.Column(db.String(200), unique=True, nullable=True)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
@@ -79,22 +83,42 @@ class GrantAnswer(db.Model):
 
 #Forms
 class UserRegisterForm(FlaskForm):
-    username = StringField("Enter your username", validators=[DataRequired()])
-    email_address = StringField("Enter your email address", validators=[DataRequired()]
-    )     
+    username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
+    email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
+    submit= SubmitField("Register")
+
+    #checks if username already exists: credit to Arpan Neupane's tutorial on Youtube
+    def validate_username(self,username):
+        existing_user_username = User.query.filter_by(username=username.data).first()
+
+        if existing_user_username:
+            raise ValidationError("This username is already used")
+
+class UserLoginForm(FlaskForm):
+    username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
+    email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
+    submit= SubmitField("Register")
+   
 
 class MessagingForm(FlaskForm):
     #TODO: automatically add username without user input later on
-    username = StringField("Enter username", validators=[DataRequired()])
+    username = StringField("Enter username", validators=[DataRequired(),])
     #TODO: if message is related to specific grant ID, add logic to pass ID field
     message = StringField("Provide message", validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 
 # Authentication logic
-@app.route("/")
+#Index page is login page
+@app.route("/", methods=["GET","POST"])
 def index():
+
     return render_template('index.html')
+
+#register page
+@app.route("/register", methods=["GET","POST"])
+def register():
+    return render_template('register.html')
 
 # Error Page Handling
 @app.errorhandler(404)
