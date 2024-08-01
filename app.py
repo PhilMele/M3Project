@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for
 from wtforms.form import Form
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, StringField, PasswordField, SubmitField
+from wtforms import BooleanField, StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, InputRequired, Length, ValidationError
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -15,6 +15,9 @@ from flask_migrate import Migrate
 #CSRF Token Generation
 from flask_wtf.csrf import CSRFProtect
 import os
+
+#enumaration (used to pre-define user types)
+import enum
 
 
 app = Flask(__name__)
@@ -48,13 +51,21 @@ def load_user(user_id):
 #CSRF Token
 csrf = CSRFProtect(app) 
 
+
+
 #Models
+
+class UserType(enum.Enum):
+    GRANTEE = "Grantee"
+    GRANTER = "Granter"
+
 class User(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(200), unique=True, nullable=False)
     password= db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(200), unique=True, nullable=False)
     company_name = db.Column(db.String(200), unique=True, nullable=True)
+    user_type = db.Column(db.Enum(UserType), nullable=False, default=UserType.GRANTEE)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -67,6 +78,7 @@ class UserRegisterForm(FlaskForm):
     email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
     password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
     company_name = StringField("Enter your company name", validators=[Length(max=200)], render_kw={"placeholder": "Company Name"})
+    user_type = SelectField("Select User Type", choices=[(UserType.GRANTEE.value, "Grantee"), (UserType.GRANTER.value, "Granter")], validators=[DataRequired()])
     submit = SubmitField("Register")
 
     #checks if username already exists: credit to Arpan Neupane's tutorial on Youtube
@@ -125,7 +137,8 @@ def register():
             username=form.username.data, 
             password=hashed_password,
             email=form.email_address.data, 
-            company_name=form.company_name.data
+            company_name=form.company_name.data,
+            user_type=UserType(form.user_type.data)
         )
         db.session.add(new_user)
         db.session.commit()
