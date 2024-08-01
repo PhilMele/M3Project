@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 #Login imports
-from flask_login import UserMixin,login_user, login_manager, login_required, logout_user, current_user
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt 
 
 from flask_migrate import Migrate
@@ -34,6 +34,16 @@ bcrypt = Bcrypt(app)
 
 #Flask-Migrate documentation 
 migrate = Migrate(app, db)
+
+#Flask-Login
+#documentation: https://flask-login.readthedocs.io/en/latest/
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "index"
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
 
 #CSRF Token
 csrf = CSRFProtect(app) 
@@ -104,7 +114,8 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         flash('Account created', 'success')
-        return redirect(url_for('index'))
+        login_user(new_user)
+        return redirect(url_for('dashboard'))
     else:
         flash('Account not created', 'danger')
         print("The form didnt get created")
@@ -124,7 +135,9 @@ def internal_server_error(e):
 # User Interface logic
 
 #dashboard
+
 @app.route("/dashboard")
+@login_required
 def dashboard():
     return render_template('grantee/grantee-dashboard.html')
 
