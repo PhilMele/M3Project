@@ -102,6 +102,14 @@ class MessagingForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+#Functions
+
+#Admin Panel
+@app.route("/admin", methods=["GET","POST"])
+@login_required
+def admin():
+    return render_template('admin/admin.html')
+
 # Authentication logic
 #Index page is login page
 @app.route("/", methods=["GET","POST"])

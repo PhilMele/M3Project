@@ -53,4 +53,6 @@ Set up of PostGres on Local
 https://medium.com/@shahrukhshl0/building-a-flask-crud-application-with-psycopg2-58de201e3c14
 
 
-
+**User types**
+`from enum import Enum`
+https://docs.python.org/3/library/enum.html
