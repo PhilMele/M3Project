@@ -8,7 +8,7 @@ from datetime import datetime
 
 #Login imports
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from flask_bcrypt import Bcrypt 
+from flask_bcrypt import Bcrypt, check_password_hash
 
 from flask_migrate import Migrate
 
@@ -58,7 +58,7 @@ class User(db.Model,UserMixin):
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return f'<User {self.username} {self.email} {self.company_name}>'
 
 
 #Forms
@@ -96,6 +96,22 @@ class MessagingForm(FlaskForm):
 def index():
     form = UserLoginForm()
     users = User.query.all()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username = form.username.data).first()
+        print("the user is")
+        #if user exist confirm password
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user)
+                return redirect(url_for('dashboard'))
+            else:
+                flash("The password does not exist")
+                print("The password does not exist")
+        else:
+            flash("The user does not exist")
+            print("The user does not exist")
+
 
     return render_template('index.html', form=form, users=users)
 
