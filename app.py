@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for
 from wtforms.form import Form
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, StringField, PasswordField, SubmitField, SelectField
+from wtforms import BooleanField, StringField, PasswordField, SubmitField, SelectField, IntegerField
 from wtforms.validators import DataRequired, InputRequired, Length, ValidationError
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -71,6 +71,15 @@ class User(db.Model,UserMixin):
     def __repr__(self):
         return f'<User {self.username} {self.email} {self.company_name}>'
 
+class Grant(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    grant_title = db.Column(db.String(200), unique=True, nullable=False)
+    grant_description = db.Column(db.String(200), unique=True, nullable=False)
+    grant_fund = db.Column(db.Integer, nullable=False, default=0)
+    created_on = created_on = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<User {self.grant_title} {self.grant_description} {self.grant_fund}>'
 
 #Forms
 class UserRegisterForm(FlaskForm):
@@ -101,6 +110,11 @@ class MessagingForm(FlaskForm):
     message = StringField("Provide message", validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class AddGrantForm(FlaskForm):
+    grant_title = StringField("Enter Grant Title", validators=[DataRequired(),])
+    grant_description = StringField("Enter Grant Description", validators=[DataRequired(),])
+    grant_fund = IntegerField("Enter Fund Value", validators=[DataRequired(),])
+    submit = SubmitField('Submit')
 
 #Functions
 
@@ -108,7 +122,25 @@ class MessagingForm(FlaskForm):
 @app.route("/admin", methods=["GET","POST"])
 @login_required
 def admin():
-    return render_template('admin/admin.html')
+    #list users
+    #list grants
+    grants = Grant.query.all()
+    print(grants)
+    #form to add grants
+    grantform = AddGrantForm()
+    if grantform.validate_on_submit():
+        newgrant = Grant(
+            grant_title = grantform.grant_title.data,
+            grant_description = grantform.grant_description.data,
+            grant_fund = grantform.grant_fund.data
+        )
+        db.session.add(newgrant)
+        db.session.commit()
+        flash('Grant has been added', 'success')
+        return redirect(url_for('admin'))
+    else:
+        print("the form is not valid")
+    return render_template('admin/admin.html', grants=grants, grantform=grantform)
 
 # Authentication logic
 #Index page is login page
@@ -131,6 +163,8 @@ def index():
         else:
             flash("The user does not exist")
             print("The user does not exist")
+
+    #form to add grants
 
 
     return render_template('index.html', form=form, users=users)
