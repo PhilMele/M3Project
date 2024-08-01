@@ -10,7 +10,17 @@
     <h1></h1>
     <p>Login Page</p>
     <a href="{{url_for('register')}}">Link to Register Page</a>
-    
+
+    <form methods="POST" action="">
+        {{ form.csrf_token }}
+        {{form.hidden_tag()}}
+        {{form.username}}
+        {{form.email_address}}
+        {{form.password}}
+        {{form.submit}}
+
+    </form>
+  {{users}}
     
 </body>
 </html>

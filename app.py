@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, redirect, url_for
 from wtforms.form import Form
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField, PasswordField, SubmitField
@@ -8,6 +8,7 @@ from datetime import datetime
 
 #Login imports
 from flask_login import UserMixin,login_user, login_manager, login_required, logout_user, current_user
+from flask_bcrypt import Bcrypt 
 
 from flask_migrate import Migrate
 
@@ -29,10 +30,12 @@ app.config['SECRET_KEY'] = os.urandom(24).hex()
 #had to use full path due to use of OneDrive. Will need to correct this later on for Heroku.
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/PhilDoopeeDoo/OneDrive - DPD/M3Project/M3Project/data/m3project.db'
 db = SQLAlchemy(app) 
+bcrypt = Bcrypt(app)
 
 #Flask-Migrate documentation 
 migrate = Migrate(app, db)
 
+#CSRF Token
 csrf = CSRFProtect(app) 
 
 #Models
@@ -40,52 +43,21 @@ class User(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(200), unique=True, nullable=False)
     password= db.Column(db.String(200), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    email = db.Column(db.String(200), unique=True, nullable=False)
     company_name = db.Column(db.String(200), unique=True, nullable=True)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
-    answers = db.relationship('GrantAnswer', backref='user', lazy=True)
 
     def __repr__(self):
         return '<User %r>' % self.username
-
-class Grant(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), unique=True, nullable=False)
-    fund = db.Column(db.String(200), unique=True, nullable=False)
-    description = db.Column(db.String(200), unique=True, nullable=False)
-    questions = db.relationship('GrantQuestion', backref='grant', lazy=True)
-
-    def __repr__(self):
-        return '<Grant %r>' % self.title
-
-class GrantQuestion(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'), nullable=False)
-    grant_question = db.Column(db.String(200), unique=True, nullable=False)
-    answers = db.relationship('GrantAnswer', backref='grant_question', lazy=True)
-
-    def __repr__(self):
-        return '<GrantQuestion %r>' % self.grant_question
-
-class GrantAnswer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'), nullable=False)
-    grant_question_id = db.Column(db.Integer, db.ForeignKey('grant_question.id'), nullable=False)
-    grant_answer = db.Column(db.String(300), unique=True, nullable=False)
-    user = db.relationship('User', backref='answers', lazy=True)
-    grant = db.relationship('Grant', backref='answers', lazy=True)
-    question = db.relationship('GrantQuestion', backref='answers')
-
-    def __repr__(self):
-        return '<GrantAnswer %r>' % self.grant_answer
 
 
 #Forms
 class UserRegisterForm(FlaskForm):
     username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
     email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
-    submit= SubmitField("Register")
+    password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
+    company_name = StringField("Enter your company name", validators=[Length(max=200)], render_kw={"placeholder": "Company Name"})
+    submit = SubmitField("Register")
 
     #checks if username already exists: credit to Arpan Neupane's tutorial on Youtube
     def validate_username(self,username):
@@ -95,11 +67,11 @@ class UserRegisterForm(FlaskForm):
             raise ValidationError("This username is already used")
 
 class UserLoginForm(FlaskForm):
-    username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
-    email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
-    submit= SubmitField("Register")
-   
-
+    username = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
+    email_address = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
+    password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
+    submit = SubmitField("Register")
+    
 class MessagingForm(FlaskForm):
     #TODO: automatically add username without user input later on
     username = StringField("Enter username", validators=[DataRequired(),])
@@ -112,18 +84,37 @@ class MessagingForm(FlaskForm):
 #Index page is login page
 @app.route("/", methods=["GET","POST"])
 def index():
+    form = UserLoginForm()
+    users = User.query.all()
 
-    return render_template('index.html')
+    return render_template('index.html', form=form, users=users)
 
 #register page
-@app.route("/register", methods=["GET","POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template('register.html')
+    form = UserRegisterForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        new_user = User(
+            username=form.username.data, 
+            password=hashed_password,
+            email=form.email_address.data, 
+            company_name=form.company_name.data
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        flash('Account created', 'success')
+        return redirect(url_for('index'))
+    else:
+        flash('Account not created', 'danger')
+        print("The form didnt get created")
+    return render_template('register.html', form=form)
+
 
 # Error Page Handling
 @app.errorhandler(404)
 def page_not_found_error(e):
-    print("page_not_found_error()")
+   
     return render_template('error-handling/404.html')
 
 @app.errorhandler(500)

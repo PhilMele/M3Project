@@ -6,6 +6,8 @@ Features
 **Login**
 `pip install Flask-Login`
 https://pypi.org/project/Flask-Login/
+`pip install bcrypt` - used to hash passwords
+https://pypi.org/project/bcrypt/
 
 **Extends template**
 Documentation : https://flask.palletsprojects.com/en/1.1.x/patterns/templateinheritance/
