@@ -129,7 +129,7 @@ class AddGrantForm(FlaskForm):
 
 class AddGrantQuestionForm(FlaskForm):
     question = StringField("Enter Question", validators=[DataRequired(),])
-
+    submit = SubmitField('Submit')
 #Functions
 
 #Admin Panel
@@ -274,11 +274,39 @@ def contact_us():
 # Granter Interface Logic
 
 #Show grant_id content
-@app.route('/show_grant/<int:grant_id>', methods=['GET'])
+@app.route('/show_grant/<int:grant_id>', methods=['GET', 'POST'])
 def show_grant(grant_id):
     grant = Grant.query.get_or_404(grant_id)
-    return render_template('granter/show_grant.html')
+    list_question = GrantQuestion.query.filter_by(grant_id=grant.id)
+   
+    for question in list_question:
+        print(question.question)
 
+    #add grant question
+    addquestionform = AddGrantQuestionForm()
+    if addquestionform.validate_on_submit():
+        print("the form works")
+        newquestion = GrantQuestion(
+            question = addquestionform.question.data,
+            grant_id = grant.id,
+           )
+        db.session.add(newquestion)
+        db.session.commit()
+        flash('Question has been added', 'success')
+        return redirect(url_for('show_grant', grant_id=grant_id))
+
+    #edit grant question 
+    #delete grant question
+
+    return render_template('granter/show_grant.html', 
+        grant=grant,
+        addquestionform= addquestionform,
+        list_question=list_question
+        )
+
+@app.route('/show_grant/<int:grant_id>/delete', methods=['GET', 'POST'])
+def delete_show_grant_question(grandquestion_id):
+    pass
 
 if __name__ == "__main__":
     app.run(debug=True)

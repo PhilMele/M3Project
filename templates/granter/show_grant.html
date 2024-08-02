@@ -9,22 +9,25 @@
 
 <table style="margin-left: 20px;"> 
 
-
     <!-- Table headers -->
         <th> 
             <tr>     
                 <td>Questions</td> 
                 <td>Edit</td> 
+                <td>Delete</td> 
             </tr> 
         </th> 
           
     <!-- For loop logic  -->
+       {%for question in list_question%}
+       
        
         <!-- table rows -->
         <tr> 
-            <td>Question1</td> 
+            <td>{{question.question}}</td> 
             <td>Edit button</td>       
         </tr> 
+        {%endfor%}
 
     </table> 
 
@@ -35,7 +38,10 @@
     <!-- Create form to add questions -->
     <h2>Add Question form button</h2>
     <form method="POST" action="">
-
+        {{ addquestionform.csrf_token }}
+        {{addquestionform.hidden_tag()}}
+        {{addquestionform.question}}
+        {{addquestionform.submit}}
     </form>
 
     
