@@ -127,6 +127,9 @@ class AddGrantForm(FlaskForm):
     grant_fund = IntegerField("Enter Fund Value", validators=[DataRequired(),])
     submit = SubmitField('Submit')
 
+class AddGrantQuestionForm(FlaskForm):
+    question = StringField("Enter Question", validators=[DataRequired(),])
+
 #Functions
 
 #Admin Panel
