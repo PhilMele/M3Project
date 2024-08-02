@@ -296,7 +296,9 @@ def show_grant(grant_id):
         return redirect(url_for('show_grant', grant_id=grant_id))
 
     #edit grant question 
+
     #delete grant question
+
 
     return render_template('granter/show_grant.html', 
         grant=grant,
@@ -304,9 +306,13 @@ def show_grant(grant_id):
         list_question=list_question
         )
 
-@app.route('/show_grant/<int:grant_id>/delete', methods=['GET', 'POST'])
-def delete_show_grant_question(grandquestion_id):
-    pass
+@app.route('/show_grant/<int:grant_id>/questions/<int:grantquestion_id>/delete', methods=['GET', 'POST'])
+def delete_show_grant_question(grant_id, grantquestion_id):
+    question = GrantQuestion.query.get_or_404(grantquestion_id)
+    db.session.delete(question)
+    db.session.commit()
+    flash('Question deleted', 'success')
+    return redirect(url_for('show_grant', grant_id=grant_id))
 
 if __name__ == "__main__":
     app.run(debug=True)
