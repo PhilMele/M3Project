@@ -259,5 +259,12 @@ def contact_us():
 
 # Granter Interface Logic
 
+#Show grant_id content
+@app.route('/show_grant/<int:grant_id>', methods=['GET'])
+def show_grant(grant_id):
+    grant = Grant.query.get_or_404(grant_id)
+    return render_template('granter/show_grant.html')
+
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -22,8 +22,8 @@
         {%for grant in grants%}
         <!-- table rows -->
         <tr> 
-            <td>{{ grant.grant_title }}</td> 
-            <td></td>       
+            <td>{{ grant.grant_title }}{{grant.id}}</td> 
+            <td><a href="{{ url_for('show_grant', grant_id=grant.id) }}">View Details</a></td>       
         </tr> 
         {%endfor%}
     </table> 
