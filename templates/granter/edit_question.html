@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{%block content%}
+<h1>Edit Question</h1>
+
+<h2>{{question.grant.grant_title}}</h2>
+
+<!-- List Grants -->
+<h2>{{question.question}}</h2>
+
+    <!-- Edit grant question form  -->
+   
+    <form method="POST" action="{{ url_for('edit_show_grant_question', grant_id=question.grant_id, grantquestion_id=question.id) }}">
+        {{ editquestionform.csrf_token }}
+        {{ editquestionform.hidden_tag() }}
+        <label for="question">Question:</label><br>
+        {{ editquestionform.question }}<br>
+        {{editquestionform.submit()}}
+    </form>
+
+
+{%endblock%}
