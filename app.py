@@ -120,12 +120,13 @@ class AddGrantForm(FlaskForm):
 
 #Admin Panel
 @app.route("/admin", methods=["GET","POST"])
-@login_required
+# @login_required
 def admin():
     #list users
     #list grants
     grants = Grant.query.all()
     print(grants)
+
     #form to add grants
     grantform = AddGrantForm()
     if grantform.validate_on_submit():
@@ -140,6 +141,13 @@ def admin():
         return redirect(url_for('admin'))
     else:
         print("the form is not valid")
+
+    #create for loop to list all grants available
+    for grant in grants:
+        print(grant)
+        
+
+
     return render_template('admin/admin.html', grants=grants, grantform=grantform)
 
 # Authentication logic

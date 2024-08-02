@@ -5,8 +5,32 @@
 <!-- List users -->
 
 <!-- List Grants -->
+<h2>Grants available</h2>
 
-{{grants}}
+<table style="margin-left: 20px;"> 
+
+
+    <!-- Table headers -->
+        <th> 
+            <tr>     
+                <td>Grant Name</td> 
+                <td>See Grant</td> 
+            </tr> 
+        </th> 
+          
+    <!-- For loop logic  -->
+        {%for grant in grants%}
+        <!-- table rows -->
+        <tr> 
+            <td>{{ grant.grant_title }}</td> 
+            <td></td>       
+        </tr> 
+        {%endfor%}
+    </table> 
+
+
+
+
 
     <!-- Create form to add grant -->
     <h2>Create Grant</h2>
