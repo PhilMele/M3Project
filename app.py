@@ -81,6 +81,17 @@ class Grant(db.Model):
     def __repr__(self):
         return f'<User {self.grant_title} {self.grant_description} {self.grant_fund}>'
 
+class GrantQuestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
+    grant = db.relationship('Grant', backref='questions')
+    question = db.Column(db.String(200), unique=True, nullable=False)
+    created_on = created_on = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<User {self.grant} {self.question}>'
+
+
 #Forms
 class UserRegisterForm(FlaskForm):
     username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
