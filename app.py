@@ -69,7 +69,7 @@ class User(db.Model,UserMixin):
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return f'<User {self.username} {self.email} {self.company_name}>'
+        return f'<{self.username} {self.email} {self.company_name}>'
 
 class Grant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -79,18 +79,27 @@ class Grant(db.Model):
     created_on = created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return f'<User {self.grant_title} {self.grant_description} {self.grant_fund}>'
+        return f'<{self.grant_title} {self.grant_description} {self.grant_fund}>'
 
 class GrantQuestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
     grant = db.relationship('Grant', backref='questions')
     question = db.Column(db.String(200), unique=True, nullable=False)
-    created_on = created_on = db.Column(db.DateTime, default=datetime.utcnow)
+    created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return f'<User {self.grant} {self.question}>'
+        return f'<Grant: {self.grant} {self.question}>'
 
+class GrantAnswer(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    grant_question_id = db.Column(db.Integer, db.ForeignKey('grant_question.id'))#the FK was automatically named `grant_question` in the migration.
+    grant_question = db.relationship('GrantQuestion', backref='answers')
+    answer = db.Column(db.String(300), unique=True, nullable=False)
+    created_on = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+         return f'<Grant: {self.grant_question} {self.answer}>'
 
 #Forms
 class UserRegisterForm(FlaskForm):
@@ -133,6 +142,10 @@ class AddGrantQuestionForm(FlaskForm):
 
 class EditGrantQuestionForm(FlaskForm):
     question = StringField("Enter Question", validators=[DataRequired(),])
+    submit = SubmitField('Submit')
+
+class AnswerGrantQuestionForm(FlaskForm):
+    answer = StringField("Enter Question", validators=[DataRequired(),])
     submit = SubmitField('Submit')
 #Functions
 
@@ -299,7 +312,11 @@ def show_grant(grant_id):
         flash('Question has been added', 'success')
         return redirect(url_for('show_grant', grant_id=grant_id))
 
-    #delete grant question
+    #answer grant question
+    # answerquestionform = AnswerGrantQuestionForm()
+    # if answerquestionform.validate_on_submit():
+    #     print("answerquestionform works")
+       
 
 
     return render_template('granter/show_grant.html', 

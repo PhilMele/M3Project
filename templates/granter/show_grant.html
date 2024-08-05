@@ -28,10 +28,19 @@
             <td><a href="{{ url_for('edit_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Edit</a></td>   
             <td><a href="{{ url_for('delete_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Delete</a></td>  
         </tr> 
+        <tr>
+            <td>
+                Answer field
+            </td> 
+        </tr>
         {%endfor%}
 
     </table> 
 
+    <h2>Add Answer form field</h2>
+    <form method="POST" action="">
+    
+    </form>
 
 
 
