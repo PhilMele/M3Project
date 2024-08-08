@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask, render_template, flash, redirect, url_for, request
 from wtforms.form import Form
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField, PasswordField, SubmitField, SelectField, IntegerField
@@ -245,16 +245,33 @@ def internal_server_error(e):
 # User Interface logic
 
 #dashboard
-
 @app.route("/dashboard")
-@login_required
+# @login_required
 def dashboard():
     return render_template('grantee/grantee-dashboard.html')
 
 #displays grants available
 @app.route("/grants-available")
 def grant_available():
-    return render_template('grantee/grants-available.html')
+    grants = Grant.query.all()
+    return render_template('grantee/grants-available.html',
+        grants=grants)
+
+
+#allows to apply and answer grant question
+@app.route("/apply-to-grant/<int:grant_id>", methods=['GET', 'POST'])
+def apply_to_grant(grant_id):
+    grant = Grant.query.get_or_404(grant_id)
+    grant_questions = GrantQuestion.query.filter_by(grant_id=grant_id)
+    for grantquestion in grant_questions:
+        print(grantquestion.question)
+    
+    
+    return render_template('grantee/apply-to-grant.html', 
+        grant_id=grant_id,
+        grant=grant,
+        grant_questions=grant_questions)
+
 
 #interface to manage grants allocated to user account
 @app.route("/manage-grants")
@@ -296,9 +313,16 @@ def show_grant(grant_id):
     grant = Grant.query.get_or_404(grant_id)
     list_question = GrantQuestion.query.filter_by(grant_id=grant.id)
    
-    for question in list_question:
-        print(question.question)
+    # for question in list_question:
+    #     print(question.question)
+    #     answers = GrantAnswer.query.filter_by(grant_question_id=question.id).all()
+    #     print(question.id)
 
+    #     #access answer objects through question model
+    #     if answers:
+    #         for answer in answers:
+    #             print(f'Answers are: {answer.answer}')
+       
     #add grant question
     addquestionform = AddGrantQuestionForm()
     if addquestionform.validate_on_submit():
@@ -313,17 +337,30 @@ def show_grant(grant_id):
         return redirect(url_for('show_grant', grant_id=grant_id))
 
     #answer grant question
-    # answerquestionform = AnswerGrantQuestionForm()
-    # if answerquestionform.validate_on_submit():
-    #     print("answerquestionform works")
-       
-
-
+    answerquestionform = AnswerGrantQuestionForm()
+    if answerquestionform.validate_on_submit():
+        
+        print(f'question_id = {question_id}')
+        print("answerquestionform works")
+        if question_id:
+            newanswer = GrantAnswer(
+                answer = answerquestionform.answer.data,
+                grant_question_id = question.id
+            )
+            db.session.add(newanswer)
+            db.session.commit()
+            flash('Answer has been added', 'success')
+            return redirect(url_for('show_grant', grant_id=grant_id))
+        
     return render_template('granter/show_grant.html', 
         grant=grant,
         addquestionform= addquestionform,
-        list_question=list_question
+        list_question=list_question,
+        answerquestionform=answerquestionform,
+        # answers=answers
         )
+
+
 
 @app.route('/show_grant/<int:grant_id>/questions/<int:grantquestion_id>/edit',methods=['GET', 'POST'])
 def edit_show_grant_question(grant_id, grantquestion_id):

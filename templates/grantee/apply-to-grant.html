@@ -1,0 +1,12 @@
+{% extends 'base/base.html' %}
+{%block content%}
+
+{{grant.grant_title}}
+<!-- Loop -->
+ {%for grantquestion in grant_questions%}
+<!-- Display Question -->
+ {{grantquestion.question}}
+<!-- Display form field for each question ID -->
+ {%endfor%}
+
+{%endblock%}

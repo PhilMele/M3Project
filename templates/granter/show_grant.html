@@ -22,6 +22,7 @@
        {%for question in list_question%}
        
        
+       
         <!-- table rows -->
         <tr> 
             <td>{{question.question}}</td> 
@@ -30,17 +31,25 @@
         </tr> 
         <tr>
             <td>
-                Answer field
-            </td> 
+                <h2>Add Answer form field</h2>
+                <form method="POST" action="">
+                    {{ addquestionform.csrf_token }}
+                    {{addquestionform.hidden_tag()}}
+                    {{answerquestionform.answer}}
+                    
+                    {{addquestionform.submit}}
+                
+                </form>
+            </td>
+            <td>
+                
+            </td>
         </tr>
         {%endfor%}
 
-    </table> 
+</table> 
 
-    <h2>Add Answer form field</h2>
-    <form method="POST" action="">
-    
-    </form>
+    {{answers}}
 
 
 

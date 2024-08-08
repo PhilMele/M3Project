@@ -2,4 +2,25 @@
 {%block content%}
 
 
+<table style="margin-left: 20px;"> 
+    <!-- Table headers -->
+        <th> 
+            <tr>     
+                <td>Grant</td> 
+                <td>Fund</td> 
+                <td>Apply</td> 
+            </tr> 
+        </th> 
+          
+    <!-- For loop logic  -->
+    {%for grant in grants%}
+        <!-- table rows -->
+        <tr> 
+            <td>{{grant.grant_title}}</td> 
+            <td>{{grant.grant_fund}}</td>   
+            <td><a href="{{ url_for('apply_to_grant', grant_id=grant.id) }}">Apply</a></td>  
+        </tr> 
+    {%endfor%}
+
+</table> 
 {%endblock%}
