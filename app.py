@@ -5,6 +5,7 @@ from wtforms import BooleanField, StringField, PasswordField, SubmitField, Selec
 from wtforms.validators import DataRequired, InputRequired, Length, ValidationError
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sqlalchemy.orm import relationship
 
 #Login imports
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
@@ -64,7 +65,7 @@ class User(db.Model,UserMixin):
     username = db.Column(db.String(200), unique=True, nullable=False)
     password= db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(200), unique=True, nullable=False)
-    company_name = db.Column(db.String(200), unique=True, nullable=True)
+    company_name = db.Column(db.String(200), nullable=True)
     user_type = db.Column(db.Enum(UserType), nullable=False, default=UserType.GRANTEE)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -73,8 +74,10 @@ class User(db.Model,UserMixin):
 
 class Grant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='usergrants')
     grant_title = db.Column(db.String(200), unique=True, nullable=False)
-    grant_description = db.Column(db.String(200), unique=True, nullable=False)
+    grant_description = db.Column(db.String(200), nullable=False)
     grant_fund = db.Column(db.Integer, nullable=False, default=0)
     created_on = created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -83,23 +86,30 @@ class Grant(db.Model):
 
 class GrantQuestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='usergrantquestions')
     grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
     grant = db.relationship('Grant', backref='questions')
-    question = db.Column(db.String(200), unique=True, nullable=False)
+    question = db.Column(db.String(200), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
+    answers = relationship('GrantAnswer', backref='question', lazy=True)
 
     def __repr__(self):
         return f'<Grant: {self.grant} {self.question}>'
 
 class GrantAnswer(db.Model):
     id = db.Column(db.Integer,primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='usergrantanswers')
     grant_question_id = db.Column(db.Integer, db.ForeignKey('grant_question.id'))#the FK was automatically named `grant_question` in the migration.
-    grant_question = db.relationship('GrantQuestion', backref='answers')
-    answer = db.Column(db.String(300), unique=True, nullable=False)
+    grant_question = relationship('GrantQuestion', back_populates='answers')
+    answer = db.Column(db.String(300), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
+   
+
     def __repr__(self):
-         return f'<Grant: {self.grant_question} {self.answer}>'
+         return f'<GrantAnswer: {self.grant_question} {self.answer}>'
 
 #Forms
 class UserRegisterForm(FlaskForm):
@@ -145,7 +155,7 @@ class EditGrantQuestionForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class AnswerGrantQuestionForm(FlaskForm):
-    answer = StringField("Enter Question", validators=[DataRequired(),])
+    answer = StringField("Enter Answer", validators=[DataRequired(),])
     submit = SubmitField('Submit')
 #Functions
 
@@ -263,14 +273,44 @@ def grant_available():
 def apply_to_grant(grant_id):
     grant = Grant.query.get_or_404(grant_id)
     grant_questions = GrantQuestion.query.filter_by(grant_id=grant_id)
+    answers = GrantAnswer.query.join(GrantQuestion).filter(GrantQuestion.grant_id == grant_id).all()
+    print(answers)
     for grantquestion in grant_questions:
         print(grantquestion.question)
-    
-    
+
+    #grant answer form
+    #for the form to be valide the following info is needed:
+    #id = db.Column(db.Integer,primary_key=True)
+    #grant_question_id = db.Column(db.Integer, db.ForeignKey('grant_question.id'))#the FK was automatically named `grant_question` in the migration.
+    #grant_question = db.relationship('GrantQuestion', backref='answers')
+    #answer = db.Column(db.String(300),nullable=False)
+    grantanswerform = AnswerGrantQuestionForm()
+    if request.method == 'POST':
+        grant_question_id = request.form.get('grant_question_id')
+        #answer_form = None
+        if grantanswerform.validate_on_submit():
+            newanswer = GrantAnswer(
+                user = current_user,
+                answer = grantanswerform.answer.data,
+                grant_question_id=grant_question_id,
+                )
+            print(f'newanswer is {newanswer.user}')
+            print(f'newanswer is {newanswer.answer}')
+            print(f'newanswer is {newanswer.grant_question_id}')
+            grantanswerform.answer.data = ''
+            db.session.add(newanswer)
+            db.session.commit()
+            flash('Answer has been added', 'success')
+            return redirect(url_for('apply_to_grant', grant_id=grant_id))
+        else:
+            print("the form is not valid")
+
     return render_template('grantee/apply-to-grant.html', 
         grant_id=grant_id,
         grant=grant,
-        grant_questions=grant_questions)
+        grant_questions=grant_questions,
+        grantanswerform=grantanswerform,
+        answers=answers)
 
 
 #interface to manage grants allocated to user account

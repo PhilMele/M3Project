@@ -6,7 +6,36 @@
  {%for grantquestion in grant_questions%}
 <!-- Display Question -->
  {{grantquestion.question}}
+ {{grantquestion.id}}
+
+ 
+
 <!-- Display form field for each question ID -->
+
+<form method="POST" action="{{ url_for('apply_to_grant', grant_id=grant.id) }}">
+
+   {{ grantanswerform.csrf_token }}
+   {{ grantanswerform.hidden_tag()}}
+ 
+   {{grantanswerform.answer.label}} 
+   {{grantanswerform.answer}}
+ 
+   <input type="hidden" name="grant_question_id" value="{{ grantquestion.id }}">
+ 
+   {{grantanswerform.submit}}
+ </form>
+ 
+   {% for answer in grantquestion.answers %}
+      {% if answer.user_id == current_user.id %}
+         <!-- Display the user's answer -->
+         <p>User Answer: {{ answer.answer }}</p>
+         <button>Edit Answer</button>
+      {% endif %}
+   {% endfor %}
+
+
+ <!-- If use has already answered question -->
+    <!-- Display answer + button to edit -->
  {%endfor%}
 
 {%endblock%}
