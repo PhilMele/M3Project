@@ -273,10 +273,19 @@ def grant_available():
 def apply_to_grant(grant_id):
     grant = Grant.query.get_or_404(grant_id)
     grant_questions = GrantQuestion.query.filter_by(grant_id=grant_id)
-    answers = GrantAnswer.query.join(GrantQuestion).filter(GrantQuestion.grant_id == grant_id).all()
-    print(answers)
+    answers = GrantAnswer.query.join(GrantQuestion).filter(
+        GrantQuestion.grant_id == grant_id,
+        GrantAnswer.user_id == current_user.id
+    ).all()
+
+    answers_from_user_id = {answer.grant_question_id: answer for answer in answers}
+    print(answers_from_user_id)
+
+    
     for grantquestion in grant_questions:
-        print(grantquestion.question)
+        pass
+    for grantanswer in answers:
+        print(f'grantanswer.answer: {grantanswer.answer} + grantanswer.grant_question_id:{grantanswer.grant_question_id} + grantanswer.user_id: {grantanswer.user_id} ')
 
     #grant answer form
     #for the form to be valide the following info is needed:
@@ -310,7 +319,8 @@ def apply_to_grant(grant_id):
         grant=grant,
         grant_questions=grant_questions,
         grantanswerform=grantanswerform,
-        answers=answers)
+        answers=answers,
+        answers_from_user_id=answers_from_user_id)
 
 
 #interface to manage grants allocated to user account

@@ -1,41 +1,24 @@
 {% extends 'base/base.html' %}
 {%block content%}
 
-{{grant.grant_title}}
-<!-- Loop -->
- {%for grantquestion in grant_questions%}
-<!-- Display Question -->
- {{grantquestion.question}}
- {{grantquestion.id}}
+Grant Title: {{grant.grant_title}}<br/>
 
- 
-
-<!-- Display form field for each question ID -->
-
-<form method="POST" action="{{ url_for('apply_to_grant', grant_id=grant.id) }}">
-
-   {{ grantanswerform.csrf_token }}
-   {{ grantanswerform.hidden_tag()}}
- 
-   {{grantanswerform.answer.label}} 
-   {{grantanswerform.answer}}
- 
-   <input type="hidden" name="grant_question_id" value="{{ grantquestion.id }}">
- 
-   {{grantanswerform.submit}}
- </form>
- 
-   {% for answer in grantquestion.answers %}
-      {% if answer.user_id == current_user.id %}
-         <!-- Display the user's answer -->
-         <p>User Answer: {{ answer.answer }}</p>
-         <button>Edit Answer</button>
-      {% endif %}
-   {% endfor %}
+{%for grantquestion in grant_questions%}
+ <!-- Display Question -->
+ Question: {{grantquestion.question}}<br/>
+ Question ID: {{grantquestion.id}}<br/>
+ Answer from user ID ID: {{answers_from_user_id}}<br/>
 
 
- <!-- If use has already answered question -->
-    <!-- Display answer + button to edit -->
- {%endfor%}
+   {% if grantquestion.id in answers_from_user_id %}
+        <!-- If the user has answered the question -->
+        <p>Your Answer: {{ answers_from_user_id[grantquestion.id].answer }}</p>
+    {% else %}
+        <!-- If the user has not answered the question -->
+        <p>You have not answered this question yet.</p>
+    {% endif %}
+
+{%endfor%}
 
 {%endblock%}
+
