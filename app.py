@@ -35,7 +35,13 @@ app.config['SECRET_KEY'] = os.urandom(24).hex()
 #Database
 #had to use full path due to use of OneDrive. Will need to correct this later on for Heroku.
 load_dotenv()  # take environment variables from .env.
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+
+database_url = os.environ.get('DATABASE_URL')
+if database_url and database_url.startswith('postgres://'):
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+
 db = SQLAlchemy(app) 
 bcrypt = Bcrypt(app)
 
