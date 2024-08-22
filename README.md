@@ -52,6 +52,30 @@ Set up of PostGres on Local
 `pip install psycopg2`
 https://medium.com/@shahrukhshl0/building-a-flask-crud-application-with-psycopg2-58de201e3c14
 
+**Create environement variables & Setup PostGres on local**
+To avoid password being leaked on github when the code is pushed, we use variables which are stored in files that are not pushed to git hub.
+
+documentation: https://pypi.org/project/python-dotenv/
+
+To do this: 
+`pip install python-dotenv`
+
+Add:
+`...
+from dotenv import load_dotenv
+...
+load_dotenv()
+...
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')`
+
+Create .env file in root directory and the following line:
+`DATABASE_URL=postgresql://[username]:[postgres-password]@localhost/[databasename]`
+
+
+
+
+
+
 
 **Heroku Setup**
 INstall heorku commandline (CLI): https://devcenter.heroku.com/articles/heroku-cli
@@ -61,6 +85,12 @@ Set up requirements.txt file: `pip freeze > requirements.txt`
 Create Procfile: `echo web: gunicorn app:app > Procfile`
 Login into Heroku: `heroku login`
 Create projet on heroku: `heroku create grant-management-mp3`
+
+Problem encountered: the Procfile generated with command line from documentation ``echo web: gunicorn app:app > Procfile` created an issue, which seems to be relating to encoding: which defaulted to UTF-16 instead of UTF-8.
+
+To solve my problem, I created a new Procfile through a Notepad, selected encoding UTF-8 and called it `Procfile.txt` in the same location as the actual Procfile. I then deleted the previous Procfile and renamed `Procfile.txt` to `Procfile`.
+
+Credits: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
 
 
 

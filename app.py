@@ -6,6 +6,8 @@ from wtforms.validators import DataRequired, InputRequired, Length, ValidationEr
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.orm import relationship
+#Allows for environment variables
+from dotenv import load_dotenv
 
 #Login imports
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
@@ -32,7 +34,8 @@ app.config['SECRET_KEY'] = os.urandom(24).hex()
 
 #Database
 #had to use full path due to use of OneDrive. Will need to correct this later on for Heroku.
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/PhilDoopeeDoo/OneDrive - DPD/M3Project/M3Project/data/m3project.db'
+load_dotenv()  # take environment variables from .env.
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 db = SQLAlchemy(app) 
 bcrypt = Bcrypt(app)
 
