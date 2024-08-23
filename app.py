@@ -293,6 +293,8 @@ def apply_to_grant(grant_id):
     print(answers_from_user_id)
 
     
+
+    
     for grantquestion in grant_questions:
         pass
     for grantanswer in answers:
