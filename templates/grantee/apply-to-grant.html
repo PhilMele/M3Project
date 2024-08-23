@@ -6,16 +6,31 @@ Grant Title: {{grant.grant_title}}<br/>
 {%for grantquestion in grant_questions%}
  <!-- Display Question -->
  Question: {{grantquestion.question}}<br/>
- Question ID: {{grantquestion.id}}<br/>
- Answer from user ID ID: {{answers_from_user_id}}<br/>
+ <!-- Question ID: {{grantquestion.id}}<br/> -->
+ <!-- Answer from user ID ID: {{answers_from_user_id}}<br/> -->
 
 
    {% if grantquestion.id in answers_from_user_id %}
         <!-- If the user has answered the question -->
+         <!-- Display answer -->
+          
         <p>Your Answer: {{ answers_from_user_id[grantquestion.id].answer }}</p>
+
     {% else %}
         <!-- If the user has not answered the question -->
         <p>You have not answered this question yet.</p>
+         <!-- Add answer form -->
+         <h2>Add Answer form field</h2>
+         <form method="POST" action="">
+            <input type="hidden" name="grant_question_id" value="{{ grantquestion.id }}">
+             {{ grantanswerform.csrf_token }}
+             {{grantanswerform.hidden_tag()}}
+             {{grantanswerform.answer}}
+            
+             {{grantanswerform.submit}}
+         
+         </form>
+        
     {% endif %}
 
 {%endfor%}

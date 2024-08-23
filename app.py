@@ -36,6 +36,8 @@ app.config['SECRET_KEY'] = os.urandom(24).hex()
 #had to use full path due to use of OneDrive. Will need to correct this later on for Heroku.
 load_dotenv()  # take environment variables from .env.
 
+#Fix for heroku database noted as postgres intsead of postgresql
+#Credit: https://stackoverflow.com/questions/66690321/flask-and-heroku-sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy
 database_url = os.environ.get('DATABASE_URL')
 if database_url and database_url.startswith('postgres://'):
     database_url = database_url.replace('postgres://', 'postgresql://', 1)

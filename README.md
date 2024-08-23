@@ -66,14 +66,25 @@ from dotenv import load_dotenv
 ...
 load_dotenv()
 ...
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')`
+database_url = os.environ.get('DATABASE_URL')
+if database_url and database_url.startswith('postgres://'):
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 
 Create .env file in root directory and the following line:
 `DATABASE_URL=postgresql://[username]:[postgres-password]@localhost/[databasename]`
 
+Note the change for `database_url`. This is due to a problem faced during the deployment on Heroku returning the following message:
+`sqlalchemy.exc.NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:postgres`
 
+This error is due to a change in Sqlalchemy library which has not been reflected with Heroku. The library now requires a reference to `postgresql` which Heroku still refers as `postgres`.
 
+As a result, in order for the library to work on heroku an if statement has been added to the code, which handles this situation.
 
+Another solution could have been to roll the library back to a version prior to <1.4.0 (1.3.23 is the last 1.3.x release).
+
+Credit for solution: https://stackoverflow.com/questions/66690321/flask-and-heroku-sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy
 
 
 
@@ -119,7 +130,9 @@ The questions are displayed based on the Grant_id of the URL. Based on this gran
 
 (show code)
 
-NExt steps proved to be trickier. I wanted to display either the user answer to the specific grant, if they had answered already, or display a answer field.
+NExt steps proved to be trickier. I wanted to display either the user's answer to the specific grant, if they had answered already, or display a answer field.
 
-To do this, I needed to 
+To do this, I needed to create a second loop, which would loop through all the answers with a common foreign key id with the GrantQuestion_id it is looping through and filter the `current_user` answers and return them.
+
+(add more explanation later)
 
