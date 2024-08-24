@@ -16,6 +16,15 @@ Grant Title: {{grant.grant_title}}<br/>
           
         <p>Your Answer: {{ answers_from_user_id[grantquestion.id].answer }}</p>
 
+        <!-- Edit answer button  -->
+        <button>Edit</button>
+        <!-- Delete answer button -->
+        <form action="{{url_for('delete_grant_answer', grant_id=grant_id, grantanswer_id=answers_from_user_id[grantquestion.id].id)}}" method="POST" class="">
+            {{ grantanswerform.csrf_token }}
+             {{grantanswerform.hidden_tag()}}
+            <input type=submit value="Delete"/>
+        </form>
+        
     {% else %}
         <!-- If the user has not answered the question -->
         <p>You have not answered this question yet.</p>

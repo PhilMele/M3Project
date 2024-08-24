@@ -292,11 +292,6 @@ def apply_to_grant(grant_id):
     answers_from_user_id = {answer.grant_question_id: answer for answer in answers}
     print(answers_from_user_id)
 
-    
-
-    
-    for grantquestion in grant_questions:
-        pass
     for grantanswer in answers:
         print(f'grantanswer.answer: {grantanswer.answer} + grantanswer.grant_question_id:{grantanswer.grant_question_id} + grantanswer.user_id: {grantanswer.user_id} ')
 
@@ -334,6 +329,19 @@ def apply_to_grant(grant_id):
         grantanswerform=grantanswerform,
         answers=answers,
         answers_from_user_id=answers_from_user_id)
+
+#edit grant answer
+
+#delete grant answer
+@app.route("/delete-grant-answer/<int:grant_id>/<int:grantanswer_id>",methods=['POST'])
+def delete_grant_answer(grant_id, grantanswer_id):
+    grantanswer = GrantAnswer.query.get_or_404(grantanswer_id)
+    db.session.delete(grantanswer)
+    db.session.commit()
+    flash('Answer deleted')
+    return redirect(url_for('apply_to_grant', grant_id=grant_id))
+
+
 
 
 #interface to manage grants allocated to user account
