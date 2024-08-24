@@ -295,12 +295,8 @@ def apply_to_grant(grant_id):
     for grantanswer in answers:
         print(f'grantanswer.answer: {grantanswer.answer} + grantanswer.grant_question_id:{grantanswer.grant_question_id} + grantanswer.user_id: {grantanswer.user_id} ')
 
-    #grant answer form
-    #for the form to be valide the following info is needed:
-    #id = db.Column(db.Integer,primary_key=True)
-    #grant_question_id = db.Column(db.Integer, db.ForeignKey('grant_question.id'))#the FK was automatically named `grant_question` in the migration.
-    #grant_question = db.relationship('GrantQuestion', backref='answers')
-    #answer = db.Column(db.String(300),nullable=False)
+
+    editanswerform = AnswerGrantQuestionForm() # defines editanswerform in main template
     grantanswerform = AnswerGrantQuestionForm()
     if request.method == 'POST':
         grant_question_id = request.form.get('grant_question_id')
@@ -328,9 +324,33 @@ def apply_to_grant(grant_id):
         grant_questions=grant_questions,
         grantanswerform=grantanswerform,
         answers=answers,
-        answers_from_user_id=answers_from_user_id)
+        answers_from_user_id=answers_from_user_id,
+        editanswerform =editanswerform )
 
 #edit grant answer
+@app.route("/edit-grant-answer/<int:grant_id>/<int:grantanswer_id>", methods=['GET', 'POST'])
+def edit_grant_answer(grant_id, grantanswer_id):
+
+    answer_to_edit = GrantAnswer.query.get_or_404(grantanswer_id)
+
+    editanswerform = AnswerGrantQuestionForm(obj=answer_to_edit)
+    grantanswerform = AnswerGrantQuestionForm()
+    if request.method == 'POST':
+        if editanswerform.validate_on_submit():
+            editanswerform.populate_obj(answer_to_edit)
+            editanswerform.answer.data = ''
+            db.session.add(answer_to_edit) 
+            db.session.commit()
+            flash('Answer has been edited', 'success')
+            return redirect(url_for('apply_to_grant', grant_id=grant_id))
+        else:
+            print("the form is not valid")
+
+    return render_template('grantee/apply-to-grant.html', 
+        editanswerform=editanswerform,
+        grantanswerform=grantanswerform
+        )
+
 
 #delete grant answer
 @app.route("/delete-grant-answer/<int:grant_id>/<int:grantanswer_id>",methods=['POST'])
