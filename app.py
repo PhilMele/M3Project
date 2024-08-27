@@ -108,10 +108,24 @@ class GrantQuestion(db.Model):
     def __repr__(self):
         return f'<Grant: {self.grant} {self.question}>'
 
+class GrantApplication(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='usergrantapplications')
+    grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
+    grant = db.relationship('Grant', backref='applications')
+
+    def __repr__(self):
+        return f'<GrantApplication: {self.user_id} {self.grant_id}>'
+
+
+
 class GrantAnswer(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref='usergrantanswers')
+    application_id = db.Column(db.Integer, db.ForeignKey('grant_application.id'))
+    application = db.relationship('GrantApplication', backref='userapplications')
     grant_question_id = db.Column(db.Integer, db.ForeignKey('grant_question.id'))#the FK was automatically named `grant_question` in the migration.
     grant_question = relationship('GrantQuestion', back_populates='answers')
     answer = db.Column(db.String(300), nullable=False)
@@ -280,7 +294,7 @@ def grant_available():
 
 
 #allows to apply and answer grant question
-@app.route("/apply-to-grant/<int:grant_id>", methods=['GET', 'POST'])
+@app.route("/apply-to-grant/<int:grant_id>/<int:grant_application_id>", methods=['GET', 'POST'])
 def apply_to_grant(grant_id):
     grant = Grant.query.get_or_404(grant_id)
     grant_questions = GrantQuestion.query.filter_by(grant_id=grant_id)

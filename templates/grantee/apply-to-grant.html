@@ -20,7 +20,7 @@ Grant Title: {{grant.grant_title}}<br/>
         <form action="{{url_for('edit_grant_answer', grant_id=grant_id, grantanswer_id=answers_from_user_id[grantquestion.id].id)}}" method="POST" class="">
             {{ editanswerform.csrf_token }}
              {{editanswerform.hidden_tag()}}
-             {{editanswerform.answer}}
+             {{ editanswerform.answer() }}
             <input type=submit value="Edit"/>
         </form>
         <!-- Delete answer button -->
