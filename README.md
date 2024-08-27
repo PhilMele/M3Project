@@ -299,3 +299,12 @@ If this answer does not exists, it template returns a form.
 **Update**
 
 **Delete**
+
+For `delete_application()`, I didnt created a form and couldnt call the hidden_tag from WTF forms.
+
+In order to hide the CSRF token, I added it to a hidden input:
+`<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">`
+
+I am not sure if this could create security issues. Looking at a few posts on stackover flow, it does not seem to compromise security:
+https://stackoverflow.com/questions/68289406/flask-hidden-input-field-with-csrf-token-is-visible-in-elements-pane
+https://stackoverflow.com/questions/32620613/if-a-csrf-token-is-placed-inside-a-hidden-input-isnt-it-possible-for-a-malicio
