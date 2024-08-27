@@ -343,6 +343,7 @@ def delete_application(grant_id,grant_application_id):
 @app.route("/apply-to-grant/<int:grant_id>/<int:grant_application_id>", methods=['GET', 'POST'])
 def apply_to_grant(grant_id,grant_application_id):
     grant = Grant.query.get_or_404(grant_id)
+    grant_application_id = grant_application_id
     grant_questions = GrantQuestion.query.filter_by(grant_id=grant_id)
     answers = GrantAnswer.query.join(GrantQuestion).filter(
         GrantQuestion.grant_id == grant_id,
@@ -360,12 +361,14 @@ def apply_to_grant(grant_id,grant_application_id):
     grantanswerform = AnswerGrantQuestionForm()
     if request.method == 'POST':
         grant_question_id = request.form.get('grant_question_id')
+        grant_application_id = request.form.get('grant_application_id')
         #answer_form = None
         if grantanswerform.validate_on_submit():
             newanswer = GrantAnswer(
                 user = current_user,
                 answer = grantanswerform.answer.data,
                 grant_question_id=grant_question_id,
+                application_id = grant_application_id
                 )
             print(f'newanswer is {newanswer.user}')
             print(f'newanswer is {newanswer.answer}')
@@ -374,7 +377,7 @@ def apply_to_grant(grant_id,grant_application_id):
             db.session.add(newanswer)
             db.session.commit()
             flash('Answer has been added', 'success')
-            return redirect(url_for('apply_to_grant', grant_id=grant_id))
+            return redirect(url_for('apply_to_grant', grant_id=grant_id, grant_application_id=grant_application_id))
         else:
             print("the form is not valid")
 
@@ -385,7 +388,8 @@ def apply_to_grant(grant_id,grant_application_id):
         grantanswerform=grantanswerform,
         answers=answers,
         answers_from_user_id=answers_from_user_id,
-        editanswerform =editanswerform )
+        editanswerform =editanswerform,
+        grant_application_id=grant_application_id )
 
 #edit grant answer
 @app.route("/edit-grant-answer/<int:grant_id>/<int:grantanswer_id>", methods=['GET', 'POST'])
@@ -416,10 +420,14 @@ def edit_grant_answer(grant_id, grantanswer_id):
 @app.route("/delete-grant-answer/<int:grant_id>/<int:grantanswer_id>",methods=['POST'])
 def delete_grant_answer(grant_id, grantanswer_id):
     grantanswer = GrantAnswer.query.get_or_404(grantanswer_id)
+    grant_application_id = request.form.get('delete_answer_grant_application_id')
     db.session.delete(grantanswer)
     db.session.commit()
     flash('Answer deleted')
-    return redirect(url_for('apply_to_grant', grant_id=grant_id))
+    return redirect(url_for(
+        'apply_to_grant', 
+        grant_id=grant_id,
+        grant_application_id=grant_application_id))
 
 
 

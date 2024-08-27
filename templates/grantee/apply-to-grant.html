@@ -12,6 +12,7 @@ Grant Title: {{grant.grant_title}}<br/>
 
    {% if grantquestion.id in answers_from_user_id %}
         <!-- If the user has answered the question -->
+        grant_application_id =  {{grant_application_id}}</br>
          <!-- Display answer -->
           
         <p>Your Answer: {{ answers_from_user_id[grantquestion.id].answer }}</p>
@@ -25,6 +26,7 @@ Grant Title: {{grant.grant_title}}<br/>
         </form>
         <!-- Delete answer button -->
         <form action="{{url_for('delete_grant_answer', grant_id=grant_id, grantanswer_id=answers_from_user_id[grantquestion.id].id)}}" method="POST" class="">
+        <input type="hidden" name="delete_answer_grant_application_id" value="{{ grant_application_id }}">
             {{ grantanswerform.csrf_token }}
              {{grantanswerform.hidden_tag()}}
             <input type=submit value="Delete"/>
@@ -37,6 +39,7 @@ Grant Title: {{grant.grant_title}}<br/>
          <h2>Add Answer form field</h2>
          <form method="POST" action="">
             <input type="hidden" name="grant_question_id" value="{{ grantquestion.id }}">
+            <input type="hidden" name="grant_application_id" value="{{ grant_application_id }}">
              {{ grantanswerform.csrf_token }}
              {{grantanswerform.hidden_tag()}}
              {{grantanswerform.answer}}
