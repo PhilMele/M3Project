@@ -299,8 +299,14 @@ If this answer does not exists, it template returns a form.
 **Update**
 
 **Delete**
+Deletion of a grant answer is handle in `delete_grant_answer()` which takes the parameters of `grant_id`, `grantanswer_id`.
 
-For `delete_application()`, I didnt created a form and couldnt call the hidden_tag from WTF forms.
+Considering `grantanswer_id` already has a specific id having `grant_id` in the path is not fully necessary except for ease of access for the `return redirect()`.
+
+`return redirect()` returns the user to the grant_id template the answer was originally deleted from. To achieve this, values of `grant_id` and `grant_application_id` are used. `grant_id` is extracted from the function's parameter, and `grant_application_id` is taken from the the template (`<input type="hidden" name="delete_answer_grant_application_id" value="{{ grant_application_id }}">`) and returned in the function through variable `grant_application_id = request.form.get('delete_answer_grant_application_id')`.
+
+
+**Note** - For `delete_application()`, I didnt created a form and couldnt call the hidden_tag from WTF forms.
 
 In order to hide the CSRF token, I added it to a hidden input:
 `<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">`

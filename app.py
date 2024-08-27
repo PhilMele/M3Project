@@ -429,9 +429,6 @@ def delete_grant_answer(grant_id, grantanswer_id):
         grant_id=grant_id,
         grant_application_id=grant_application_id))
 
-
-
-
 #interface to manage grants allocated to user account
 @app.route("/manage-grants")
 def manage_grant():
@@ -441,6 +438,15 @@ def manage_grant():
 @app.route("/account")
 def account():
     return render_template('grantee/account.html')
+
+
+#delete user account
+@app.route("/delete_account")
+def delete_user_account():
+    user = User.query.get_or_404(current_user.id)
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for('index'))
 
 #Allows user to contact granter for any question
 #PROBLEM : `'MessagingForm' object has no attribute 'validate_on_submit'` this is because I imported the wrong form. 

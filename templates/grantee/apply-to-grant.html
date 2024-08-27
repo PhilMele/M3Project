@@ -6,8 +6,6 @@ Grant Title: {{grant.grant_title}}<br/>
 {%for grantquestion in grant_questions%}
  <!-- Display Question -->
  Question: {{grantquestion.question}}<br/>
- <!-- Question ID: {{grantquestion.id}}<br/> -->
- <!-- Answer from user ID ID: {{answers_from_user_id}}<br/> -->
 
 
    {% if grantquestion.id in answers_from_user_id %}
@@ -49,6 +47,8 @@ Grant Title: {{grant.grant_title}}<br/>
          </form>
         
     {% endif %}
+
+    <!-- Add Submit button that ticks application as submitted if all questions are answered -->
 
 {%endfor%}
 
