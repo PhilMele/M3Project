@@ -157,6 +157,7 @@ class UserLoginForm(FlaskForm):
     email_address = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
     password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
     submit = SubmitField("Register")
+
     
 class MessagingForm(FlaskForm):
     #TODO: automatically add username without user input later on
@@ -286,16 +287,61 @@ def dashboard():
     return render_template('grantee/grantee-dashboard.html')
 
 #displays grants available
+
 @app.route("/grants-available")
+@login_required
 def grant_available():
     grants = Grant.query.all()
-    return render_template('grantee/grants-available.html',
-        grants=grants)
+    existing_applications = GrantApplication.query.filter_by(user_id=current_user.id).all()
 
+    # search if user has already created an application (look up for existing id)
+    #same process as apply_to_grant()
+    existing_application_id = {app.grant_id: app for app in existing_applications}
+
+    return render_template('grantee/grants-available.html',
+        grants=grants,
+        existing_application_id=existing_application_id)
+
+#activate application
+@app.route("/activate-application/<int:grant_id>", methods=['GET', 'POST'])
+def activate_application(grant_id):
+
+    #check if there is already an application
+    existing_application = GrantApplication.query.filter_by(
+        user_id=current_user.id,
+        grant_id=grant_id
+    ).first()
+    print("existing_application is {existing_application}")
+
+    if existing_application:
+        print("user already has application. redirect to url")
+        return redirect(url_for('apply_to_grant', grant_id=grant_id, grant_application_id=existing_application.id))
+
+    #add application object
+    new_application = GrantApplication(
+        user_id = current_user.id,
+        grant_id = grant_id
+    )
+
+    db.session.add(new_application)
+    db.session.commit()
+
+    print(f"application is created with: {new_application.id}")
+
+    return redirect(url_for('apply_to_grant', grant_id=grant_id,grant_application_id=new_application.id))
+
+#delete application
+@app.route("/delete-application/<int:grant_id>/<int:grant_application_id>",methods=['POST'])
+def delete_application(grant_id,grant_application_id):
+    grantapplication = GrantApplication.query.get_or_404(grant_application_id)
+    db.session.delete(grantapplication)
+    db.session.commit()
+    flash('Application deleted')
+    return redirect(url_for('grant_available'))
 
 #allows to apply and answer grant question
 @app.route("/apply-to-grant/<int:grant_id>/<int:grant_application_id>", methods=['GET', 'POST'])
-def apply_to_grant(grant_id):
+def apply_to_grant(grant_id,grant_application_id):
     grant = Grant.query.get_or_404(grant_id)
     grant_questions = GrantQuestion.query.filter_by(grant_id=grant_id)
     answers = GrantAnswer.query.join(GrantQuestion).filter(

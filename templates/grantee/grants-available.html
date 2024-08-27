@@ -13,14 +13,30 @@
         </th> 
           
     <!-- For loop logic  -->
-    {%for grant in grants%}
-        <!-- table rows -->
-        <tr> 
-            <td>{{grant.grant_title}}</td> 
-            <td>{{grant.grant_fund}}</td>   
-            <td><a href="{{ url_for('apply_to_grant', grant_id=grant.id) }}">Apply</a></td>  
-        </tr> 
-    {%endfor%}
+    {% for grant in grants %}
+    <!-- Table rows -->
+    <tr>
+        <td>{{ grant.grant_title }}</td>
+        <td>{{ grant.grant_fund }}</td>
+
+        {% if grant.id in existing_application_id %}
+            <!-- If application exists -->
+            <td><a href="{{ url_for('apply_to_grant', grant_id=grant.id, grant_application_id=existing_application_id[grant.id].id) }}">Continue Application</a></td>
+            <td>
+                <form action="{{ url_for('delete_application', grant_id=grant.id, grant_application_id=existing_application_id[grant.id].id) }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <button type="submit" class="btn">Delete Application</button>
+                </form>
+            </td>
+        {% else %}
+            <!-- If application does not exist -->
+            <td><a href="{{ url_for('activate_application', grant_id=grant.id) }}">Create Application</a></td>
+        {% endif %}
+
+        
+    </tr>
+{% endfor %}
 
 </table> 
 {%endblock%}
