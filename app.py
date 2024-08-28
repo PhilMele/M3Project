@@ -108,15 +108,21 @@ class GrantQuestion(db.Model):
     def __repr__(self):
         return f'<Grant: {self.grant} {self.question}>'
 
+class ApplicationStatus(enum.Enum):
+    APPROVED = "Approved"
+    REJECTED = "Rejected"
+    SUBMITTED = "Submitted"
+
 class GrantApplication(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref='usergrantapplications')
     grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
     grant = db.relationship('Grant', backref='applications')
+    application_status = db.Column(db.Enum(ApplicationStatus), nullable=False,default="PENDING")
 
     def __repr__(self):
-        return f'<GrantApplication: {self.user_id} {self.grant_id}>'
+        return f'<GrantApplication: {self.user_id} {self.grant_id} {self.application_status}>'
 
 
 
@@ -131,7 +137,7 @@ class GrantAnswer(db.Model):
     answer = db.Column(db.String(300), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
-   
+
 
     def __repr__(self):
          return f'<GrantAnswer: {self.grant_question} {self.answer}>'
@@ -550,6 +556,12 @@ def delete_show_grant_question(grant_id, grantquestion_id):
     db.session.commit()
     flash('Question deleted', 'success')
     return redirect(url_for('show_grant', grant_id=grant_id))
+
+
+#Add logic to set GrantApplication as Submitted by user when
+#all question have been answered
+
+#Add logic to set GrantApplication as approved or rejected by Granter
 
 if __name__ == "__main__":
     app.run(debug=True)
