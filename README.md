@@ -314,3 +314,30 @@ In order to hide the CSRF token, I added it to a hidden input:
 I am not sure if this could create security issues. Looking at a few posts on stackover flow, it does not seem to compromise security:
 https://stackoverflow.com/questions/68289406/flask-hidden-input-field-with-csrf-token-is-visible-in-elements-pane
 https://stackoverflow.com/questions/32620613/if-a-csrf-token-is-placed-inside-a-hidden-input-isnt-it-possible-for-a-malicio
+
+
+**Application Status**
+When a user creates an application, the application is given an `ID` and is default value of `False` against `is_submitted field.
+
+    class GrantApplication(db.Model):
+        id = db.Column(db.Integer,primary_key=True)
+        user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+        user = db.relationship('User', backref='usergrantapplications')
+        grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
+        grant = db.relationship('Grant', backref='applications')
+        is_submitted = db.Column(db.Boolean, default=False)
+
+This status is updated to `True` when all question listed a the `grant_id` Foreign Key the application is assigned against, which is achieved through `submit_application()`.
+
+In order to avoid a users submitting someone else application by using the path in the URL, the function also checks if `the user_id` registered agianst the `application_id` is `current_user`, before marking an application as submitted.
+
+    if submitted_application_user_id == current_user.id:
+            submission = GrantApplication(
+            user_id = current_user.id,
+            grant_id = grant_id,
+            is_submitted = True
+        )
+
+Depending on the status of the application, template: `grants-available.html` displays different options.
+
+Once the application has been submitted, the user can either delete or read the application with `read_submitted_application()`

@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {%block content%}
-
+Grant Application: {{grant_application.is_submitted}}<br/>
 Grant Title: {{grant.grant_title}}<br/>
 
 {%for grantquestion in grant_questions%}
@@ -48,9 +48,17 @@ Grant Title: {{grant.grant_title}}<br/>
         
     {% endif %}
 
-    <!-- Add Submit button that ticks application as submitted if all questions are answered -->
+    
 
 {%endfor%}
+
+<!-- Add Submit button that ticks application as submitted if all questions are answered -->
+
+{%if submit_button == True %}
+ <a href="{{ url_for('submit_application', grant_id=grant.id, grant_application_id=grant_application_id) }}">Submit Button Enabled</a>
+{%else%}
+<a href="">Submit Button Disabled</a>
+{%endif%}
 
 {%endblock%}
 

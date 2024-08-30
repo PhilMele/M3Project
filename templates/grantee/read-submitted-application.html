@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{%block content%}
+Grant Application: {{grant_application.is_submitted}}<br/>
+Grant Title: {{grant.grant_title}}<br/>
+
+<!-- Loop of question + answers provided -->
+
+<!-- Add Submit button that ticks application as submitted if all questions are answered -->
+
+{%if submit_button == True %}
+ <a href="">Return</a>
+{%else%}
+<a href="">Delete</a>
+{%endif%}
+
+{%endblock%}
+

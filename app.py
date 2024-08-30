@@ -108,21 +108,16 @@ class GrantQuestion(db.Model):
     def __repr__(self):
         return f'<Grant: {self.grant} {self.question}>'
 
-class ApplicationStatus(enum.Enum):
-    APPROVED = "Approved"
-    REJECTED = "Rejected"
-    SUBMITTED = "Submitted"
-
 class GrantApplication(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref='usergrantapplications')
     grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
     grant = db.relationship('Grant', backref='applications')
-    application_status = db.Column(db.Enum(ApplicationStatus), nullable=False,default="PENDING")
+    is_submitted = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return f'<GrantApplication: {self.user_id} {self.grant_id} {self.application_status}>'
+        return f'<GrantApplication: {self.user_id} {self.grant_id}>'
 
 
 
@@ -336,6 +331,31 @@ def activate_application(grant_id):
 
     return redirect(url_for('apply_to_grant', grant_id=grant_id,grant_application_id=new_application.id))
 
+#submit application
+@app.route("/submit-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
+def submit_application(grant_application_id, grant_id):
+    submitted_application_id = grant_application_id
+    grant_id=grant_id
+    print(f"submitted_application_id {submitted_application_id}")
+    application = GrantApplication.query.get_or_404(grant_application_id)
+    submitted_application_user_id = application.user_id
+    print(f"submitted_application_user_id {submitted_application_user_id}")
+
+    #call form
+
+    #check to make sure no other user submits someone else's application
+    if submitted_application_user_id == current_user.id:
+        submission = GrantApplication(
+        user_id = current_user.id,
+        grant_id = grant_id,
+        is_submitted = True
+    )
+    db.session.add(submission)
+    db.session.commit()
+    flash('Application submitted', 'success')
+
+    return redirect(url_for('apply_to_grant', grant_id=grant_id,grant_application_id=grant_application_id))
+
 #delete application
 @app.route("/delete-application/<int:grant_id>/<int:grant_application_id>",methods=['POST'])
 def delete_application(grant_id,grant_application_id):
@@ -345,12 +365,21 @@ def delete_application(grant_id,grant_application_id):
     flash('Application deleted')
     return redirect(url_for('grant_available'))
 
+#display application after submission
+@app.route("/read-submitted-application/<int:grant_application_id>")
+def read_submitted_application(grant_application_id):
+    user_submitted_application = GrantApplication.query.get_or_404(grant_application_id)
+
+    return redirect(url_for('read_submitted_application', grant_application_id=grant_application_id))
+
+
 #allows to apply and answer grant question
 @app.route("/apply-to-grant/<int:grant_id>/<int:grant_application_id>", methods=['GET', 'POST'])
 def apply_to_grant(grant_id,grant_application_id):
     grant = Grant.query.get_or_404(grant_id)
     grant_application_id = grant_application_id
-    grant_questions = GrantQuestion.query.filter_by(grant_id=grant_id)
+    grant_application = GrantApplication.query.get_or_404(grant_application_id)
+    grant_questions = GrantQuestion.query.filter_by(grant_id=grant_id).all()
     answers = GrantAnswer.query.join(GrantQuestion).filter(
         GrantQuestion.grant_id == grant_id,
         GrantAnswer.user_id == current_user.id
@@ -387,6 +416,25 @@ def apply_to_grant(grant_id,grant_application_id):
         else:
             print("the form is not valid")
 
+    #logic to enable "submit" button
+    submit_button = False
+    #counts number of questions to answer
+    application_question_total_count = len(grant_questions)
+    print(f"application_question_total_count: {application_question_total_count}")
+    #counts number of questions answered
+    application_answer_total_count = len(answers)
+    print(f"application_answer_total_count: {application_answer_total_count}")
+    #compare both counts
+    if application_answer_total_count == application_question_total_count:
+        submit_button = True
+    
+    #if count is lower : submit button disabled
+    elif application_answer_total_count < application_question_total_count:
+        pass
+    #if count is equal : submit button is enabled
+    else:
+        print("Something is wrong with count")
+
     return render_template('grantee/apply-to-grant.html', 
         grant_id=grant_id,
         grant=grant,
@@ -395,7 +443,9 @@ def apply_to_grant(grant_id,grant_application_id):
         answers=answers,
         answers_from_user_id=answers_from_user_id,
         editanswerform =editanswerform,
-        grant_application_id=grant_application_id )
+        grant_application_id=grant_application_id,
+        submit_button=submit_button,
+        grant_application=grant_application )
 
 #edit grant answer
 @app.route("/edit-grant-answer/<int:grant_id>/<int:grantanswer_id>", methods=['GET', 'POST'])
@@ -483,16 +533,6 @@ def contact_us():
 def show_grant(grant_id):
     grant = Grant.query.get_or_404(grant_id)
     list_question = GrantQuestion.query.filter_by(grant_id=grant.id)
-   
-    # for question in list_question:
-    #     print(question.question)
-    #     answers = GrantAnswer.query.filter_by(grant_question_id=question.id).all()
-    #     print(question.id)
-
-    #     #access answer objects through question model
-    #     if answers:
-    #         for answer in answers:
-    #             print(f'Answers are: {answer.answer}')
        
     #add grant question
     addquestionform = AddGrantQuestionForm()
@@ -560,6 +600,9 @@ def delete_show_grant_question(grant_id, grantquestion_id):
 
 #Add logic to set GrantApplication as Submitted by user when
 #all question have been answered
+#count all questions within Application ID
+#If all questions are answered then show "Submitted button"
+#if user clicks submits button, application ID moves from Pending to Submitted
 
 #Add logic to set GrantApplication as approved or rejected by Granter
 
