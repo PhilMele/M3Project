@@ -79,12 +79,7 @@ class User(db.Model,UserMixin):
     company_name = db.Column(db.String(200), nullable=True)
     user_type = db.Column(db.Enum(UserType), nullable=False, default=UserType.GRANTEE)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
- 
-
-    grants = relationship('Grant', back_populates='creator', overlaps='questions')
-    grant_questions = relationship('GrantQuestion', back_populates='question_creator', overlaps='grant_questions')
-    grant_applications = db.relationship('GrantApplication', back_populates='applicant', cascade="all, delete-orphan", lazy=True)
-    grant_answers = db.relationship('GrantAnswer', back_populates='answerer', cascade="all, delete-orphan", lazy=True)
+    
 
     def __repr__(self):
         return f'<{self.username} {self.email} {self.company_name}>'
@@ -98,10 +93,6 @@ class Grant(db.Model):
     grant_fund = db.Column(db.Integer, nullable=False, default=0)
     created_on = created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
-    creator = relationship('User', back_populates='grants')
-    questions = relationship('GrantQuestion', back_populates='associated_grant')
-    applications = relationship('GrantApplication', back_populates='associated_grant')
-
     def __repr__(self):
         return f'<{self.grant_title} {self.grant_description} {self.grant_fund}>'
 
@@ -113,10 +104,8 @@ class GrantQuestion(db.Model):
     grant = db.relationship('Grant', backref='questions')
     question = db.Column(db.String(200), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
+    answers = db.relationship('GrantAnswer', back_populates='grant_question', lazy=True)
 
-    question_creator = relationship('User', back_populates='grant_questions')
-    associated_grant = relationship('Grant', back_populates='questions')
-    answers = relationship('GrantAnswer', back_populates='related_question')
     def __repr__(self):
         return f'<Grant: {self.grant} {self.question}>'
 
@@ -128,11 +117,7 @@ class GrantApplication(db.Model):
     grant = db.relationship('Grant', backref='applications')
     is_submitted = db.Column(db.Boolean, default=False)
 
-    associated_grant = relationship('Grant', back_populates='applications')
-    applicant = relationship('User', back_populates='applications')
-    answers = db.relationship('GrantAnswer', back_populates='related_application', cascade="all, delete-orphan", lazy=True)
-
-
+    answers = db.relationship('GrantAnswer', backref='grant_application', cascade='all, delete-orphan')
     def __repr__(self):
         return f'<GrantApplication: {self.user_id} {self.grant_id}>'
 
@@ -149,9 +134,6 @@ class GrantAnswer(db.Model):
     answer = db.Column(db.String(300), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
-    answerer = db.relationship('User', back_populates='grant_answers')
-    related_application = db.relationship('GrantApplication', back_populates='answers')
-    related_question = relationship('GrantQuestion', back_populates='answers')
 
 
     def __repr__(self):
