@@ -345,16 +345,12 @@ def submit_application(grant_application_id, grant_id):
 
     #check to make sure no other user submits someone else's application
     if submitted_application_user_id == current_user.id:
-        submission = GrantApplication(
-        user_id = current_user.id,
-        grant_id = grant_id,
-        is_submitted = True
-    )
-    db.session.add(submission)
+        application.is_submitted = True
+
     db.session.commit()
     flash('Application submitted', 'success')
 
-    return redirect(url_for('apply_to_grant', grant_id=grant_id,grant_application_id=grant_application_id))
+    return redirect(url_for('read_submitted_application', grant_id=grant_id,grant_application_id=grant_application_id))
 
 #delete application
 @app.route("/delete-application/<int:grant_id>/<int:grant_application_id>",methods=['POST'])
