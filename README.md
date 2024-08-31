@@ -339,7 +339,7 @@ In the sample below `cascade='all, delete-orphan'` will delete all child objects
         application = db.relationship('GrantApplication', backref='userapplications')
 
 
-
+NOTE: Say I wanted to apply the method to all models, but resulted in a number of errors. Didnt have time to do it. Only this relationship needed `cascade` implemented for the project to work.
 
 **Application Status**
 When a user creates an application, the application is given an `ID` and is default value of `False` against `is_submitted field.
