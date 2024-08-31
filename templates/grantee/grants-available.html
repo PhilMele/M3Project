@@ -22,7 +22,7 @@
         {% if grant.id in existing_application_id and existing_application_id[grant.id].is_submitted %}
             <!-- If application exists -->
             <td>
-                <a href="{{ url_for('read_submitted_application', grant_application_id=existing_application_id[grant.id].id) }}">See Application</a>
+                <a href="{{ url_for('read_submitted_application', grant_id=grant.id, grant_application_id=existing_application_id[grant.id].id) }}">See Application</a>
             </td>
             <td>
                 <form action="{{ url_for('delete_application', grant_id=grant.id, grant_application_id=existing_application_id[grant.id].id) }}" method="POST">

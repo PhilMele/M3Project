@@ -103,7 +103,7 @@ class GrantQuestion(db.Model):
     grant = db.relationship('Grant', backref='questions')
     question = db.Column(db.String(200), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
-    answers = relationship('GrantAnswer', backref='question', lazy=True)
+    answers = db.relationship('GrantAnswer', back_populates='grant_question', lazy=True)
 
     def __repr__(self):
         return f'<Grant: {self.grant} {self.question}>'
@@ -128,7 +128,7 @@ class GrantAnswer(db.Model):
     application_id = db.Column(db.Integer, db.ForeignKey('grant_application.id'))
     application = db.relationship('GrantApplication', backref='userapplications')
     grant_question_id = db.Column(db.Integer, db.ForeignKey('grant_question.id'))#the FK was automatically named `grant_question` in the migration.
-    grant_question = relationship('GrantQuestion', back_populates='answers')
+    grant_question = db.relationship('GrantQuestion', back_populates='answers')
     answer = db.Column(db.String(300), nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -366,16 +366,35 @@ def delete_application(grant_id,grant_application_id):
     return redirect(url_for('grant_available'))
 
 #display application after submission
-@app.route("/read-submitted-application/<int:grant_application_id>")
-def read_submitted_application(grant_application_id):
+@app.route("/read-submitted-application//<int:grant_id>/<int:grant_application_id>")
+def read_submitted_application(grant_id, grant_application_id):
     user_submitted_application = GrantApplication.query.get_or_404(grant_application_id)
+    grant_question = GrantQuestion.query.filter(GrantQuestion.grant_id == grant_id).all()
 
-    return redirect(url_for('read_submitted_application', grant_application_id=grant_application_id))
+    #create list to match questions and answers
+    grant_question_user_answer = []
+
+    for grantquestion in grant_question:
+        user_answer = GrantAnswer.query.filter_by(grant_question_id=grantquestion.id, user_id=current_user.id).all()
+        grant_question_user_answer.append({
+            'question':grantquestion.question,
+            'answer':[answer.answer for answer in user_answer]
+        })
+  
+    return render_template('grantee/read-submitted-application.html',
+    user_submitted_application=user_submitted_application,
+    grant_question_user_answer=grant_question_user_answer,
+    grant_id=grant_id,
+    grant_application_id=grant_application_id
+    )
 
 
 #allows to apply and answer grant question
 @app.route("/apply-to-grant/<int:grant_id>/<int:grant_application_id>", methods=['GET', 'POST'])
 def apply_to_grant(grant_id,grant_application_id):
+    #TO DO: add logic to prvent user getting back to this page if grant is submitted
+    #if appliction is submitted = redirect user to grants available page.
+
     grant = Grant.query.get_or_404(grant_id)
     grant_application_id = grant_application_id
     grant_application = GrantApplication.query.get_or_404(grant_application_id)

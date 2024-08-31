@@ -1,17 +1,28 @@
 {% extends 'base/base.html' %}
 {%block content%}
-Grant Application: {{grant_application.is_submitted}}<br/>
-Grant Title: {{grant.grant_title}}<br/>
+Grant Title: {{user_submitted_application.grant.grant_title}}<br/>
+Grant ID: {{user_submitted_application.grant.id}}<br/>
 
-<!-- Loop of question + answers provided -->
+{% for questionanswer in grant_question_user_answer %}
 
-<!-- Add Submit button that ticks application as submitted if all questions are answered -->
+SOME TEXT
+    <!-- Loop of question + answers provided -->
+    <li>
+        <strong>Question:</strong> {{ questionanswer.question }}<br/>
+        {% for answer in questionanswer.answer %}
+            <strong>Answer:</strong> {{ answer }}<br/>
+        {% endfor %}
+    </li>
+{% endfor %}
+<!-- Add  to return or delete(and return to previous page) -->
 
-{%if submit_button == True %}
  <a href="">Return</a>
-{%else%}
-<a href="">Delete</a>
-{%endif%}
+
+ <form action="{{ url_for('delete_application', grant_id=grant_id, grant_application_id=grant_application_id) }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="btn">Delete Application</button>
+</form>
+
 
 {%endblock%}
 
