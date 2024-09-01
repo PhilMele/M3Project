@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+{%block content%}
+<h1>This is the dashboard for Granter</h1>
+
+<h2><a href="">Create A New Grant</a></h2>
+
+<h2>See Grants</h2>
+<!-- Loop of grants applied + status -->
+<table style="margin-left: 20px;"> 
+    <!-- Table headers -->
+        <th> 
+            <tr>     
+                <td>Grant</td> 
+                <td>Fund</td> 
+                <td>Status</td>
+                <td>See Grant</td>
+                <td>See Applications</td>
+                <td>Delete</td> 
+            </tr> 
+        </th> 
+          
+    <!-- For loop logic  -->
+    {%for grant in grants%}
+    <!-- Table rows -->
+    <tr>
+        <td>{{grant.grant_title}} + {{grant.id}}</td>
+        <td>{{grant.grant_fund}}</td>
+        <td>Active</td>
+        <td><a href="{{ url_for('show_grant', grant_id=grant.id) }}">Show Grant Button</a></td>
+        <td>Link to applications list</td>  
+        <td>Delete button</td>        
+    </tr>
+    {%endfor%}
+
+
+</table> 
+
+<h2>Grant Management</h2>
+
+{%endblock%}

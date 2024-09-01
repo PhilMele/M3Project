@@ -544,12 +544,46 @@ def contact_us():
         form = form)
 
 # Granter Interface Logic
+#dashboard
+@app.route("/granter-dashboard")
+@login_required
+def granter_dashboard():
+    grants = Grant.query.all()
+    return render_template('granter/granter-dashboard.html',
+    grants=grants)
+
+
+#Create a new grant
+@app.route("/create-new-grant", methods=["GET","POST"])
+@login_required
+def create_new_grant():
+    #form to add grants
+    grantform = AddGrantForm()
+    if grantform.validate_on_submit():
+        newgrant = Grant(
+            grant_title = grantform.grant_title.data,
+            grant_description = grantform.grant_description.data,
+            grant_fund = grantform.grant_fund.data
+        )
+        db.session.add(newgrant)
+        db.session.commit()
+        flash('Grant has been added', 'success')
+        return redirect(url_for('admin'))
+    else:
+        print("the form is not valid")
+
+    #create for loop to list all grants available
+    for grant in grants:
+        print(grant)
+
+    return render_template('granter/show-grant.html', grants=grants, grantform=grantform)
+
 
 #Show grant_id content
 @app.route('/show_grant/<int:grant_id>', methods=['GET', 'POST'])
 def show_grant(grant_id):
     grant = Grant.query.get_or_404(grant_id)
-    list_question = GrantQuestion.query.filter_by(grant_id=grant.id)
+    list_question = GrantQuestion.query.filter_by(grant_id=grant.id).order_by(GrantQuestion.id).all()
        
     #add grant question
     addquestionform = AddGrantQuestionForm()
@@ -580,7 +614,7 @@ def show_grant(grant_id):
             flash('Answer has been added', 'success')
             return redirect(url_for('show_grant', grant_id=grant_id))
         
-    return render_template('granter/show_grant.html', 
+    return render_template('granter/show-grant.html', 
         grant=grant,
         addquestionform= addquestionform,
         list_question=list_question,

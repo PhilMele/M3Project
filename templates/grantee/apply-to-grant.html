@@ -1,5 +1,7 @@
 {% extends 'base/base.html' %}
 {%block content%}
+<!-- Return to grants available page -->
+ <a href="{{ url_for('grant_available') }}">Back to Grants Page Button</a>
 Grant Application: {{grant_application.is_submitted}}<br/>
 Grant Title: {{grant.grant_title}}<br/>
 
