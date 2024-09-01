@@ -366,3 +366,6 @@ In order to avoid a users submitting someone else application by using the path 
 Depending on the status of the application, template: `grants-available.html` displays different options.
 
 Once the application has been submitted, the user can either delete or read the application with `read_submitted_application()`
+
+**To improve**
+MIgrations : I made a few mistakes with the foreign keys, in particular when trying to establish relationships. I had to delete the migrations and restrat from strach on a few occasions, as I didnt know how to fix my problems from the migration files.

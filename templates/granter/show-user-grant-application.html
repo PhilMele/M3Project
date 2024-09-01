@@ -16,7 +16,7 @@ Grant Title: Title<br/>
 <!-- Add  to return or delete(and return to previous page) -->
 
  <a href="{{ url_for('show_all_grant_application', grant_id=grant_id) }}">Return</a>
- <a href="">Reject Application</a>
+ <a href="{{ url_for('reject_user_grant_application_id', grant_id=grant_id, grant_application_id=grant_application_id) }}">Reject Application</a>
  <a href="">Approve Application</a>
 
 {%endblock%}

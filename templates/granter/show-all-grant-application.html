@@ -28,7 +28,18 @@
         <tr> 
             <td>{{grantapplication.id}}</td> 
             <td>{{grantapplication.user.username}}</td>   
-            <td>Rejected</td>  
+            <td>
+                {%if grantapplication.is_rejected %}
+                <!-- if application is rejected is True:show rejected -->
+                <p>Rejected</p>
+                {%elif grantapplication.is_approved %}
+                <!-- if application is approved is True:show approved -->
+                <p>Approved</p>
+                {%else%}
+                <!-- else: show pending -->
+                <p>Pending</p>
+                {%endif%}
+            </td>  
             <td><a href="{{ url_for('show_user_grant_application_id', grant_id=grant_id, grant_application_id=grantapplication.id) }}">Link to application</a></td>  
         </tr> 
         {%endfor%}

@@ -398,7 +398,7 @@ def apply_to_grant(grant_id,grant_application_id):
     grant = Grant.query.get_or_404(grant_id)
     grant_application_id = grant_application_id
     grant_application = GrantApplication.query.get_or_404(grant_application_id)
-    grant_questions = GrantQuestion.query.filter_by(grant_id=grant_id).all()
+    grant_questions = GrantQuestion.query.filter_by(grant_id=grant_id).order_by(GrantQuestion.id).all()
     answers = GrantAnswer.query.join(GrantQuestion).filter(
         GrantQuestion.grant_id == grant_id,
         GrantAnswer.user_id == current_user.id
@@ -677,8 +677,19 @@ def show_user_grant_application_id(grant_id, grant_application_id):
     return render_template('granter/show-user-grant-application.html',
     grant_question_user_answer=grant_question_user_answer,
     grant_question=grant_question,
-    grant_id=grant_id)
+    grant_id=grant_id,
+    grant_application_id=grant_application_id)
 
+@app.route("/reject-user-grant-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
+def reject_user_grant_application_id(grant_id, grant_application_id):
+    #TO DO: ADD CHECK TO MAKE SURE ONLY 
+    #THE GRANTER CAN PERFORM THIS ACTION AS CURRENT USER
+    application = GrantApplication.query.get_or_404(grant_application_id)
+    application.is_rejected = True
+    db.session.commit()
+    return redirect(url_for('show_all_grant_application',
+    grant_id=grant_id,
+    grant_application_id=grant_application_id))
 
 
 #Add logic to set GrantApplication as Submitted by user when
