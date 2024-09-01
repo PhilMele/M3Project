@@ -470,7 +470,10 @@ def apply_to_grant(grant_id,grant_application_id):
 @app.route("/edit-grant-answer/<int:grant_id>/<int:grantanswer_id>", methods=['GET', 'POST'])
 def edit_grant_answer(grant_id, grantanswer_id):
 
+    
+
     answer_to_edit = GrantAnswer.query.get_or_404(grantanswer_id)
+    application_id = answer_to_edit.application_id
 
     editanswerform = AnswerGrantQuestionForm(obj=answer_to_edit)
     grantanswerform = AnswerGrantQuestionForm()
@@ -481,7 +484,7 @@ def edit_grant_answer(grant_id, grantanswer_id):
             db.session.add(answer_to_edit) 
             db.session.commit()
             flash('Answer has been edited', 'success')
-            return redirect(url_for('apply_to_grant', grant_id=grant_id))
+            return redirect(url_for('apply_to_grant', grant_id=grant_id, grant_application_id=application_id))
         else:
             print("the form is not valid")
 
@@ -690,6 +693,18 @@ def reject_user_grant_application_id(grant_id, grant_application_id):
     return redirect(url_for('show_all_grant_application',
     grant_id=grant_id,
     grant_application_id=grant_application_id))
+
+@app.route("/approve-user-grant-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
+def approve_user_grant_application_id(grant_id, grant_application_id):
+    #TO DO: ADD CHECK TO MAKE SURE ONLY 
+    #THE GRANTER CAN PERFORM THIS ACTION AS CURRENT USER
+    application = GrantApplication.query.get_or_404(grant_application_id)
+    application.is_approved = True
+    db.session.commit()
+    return redirect(url_for('show_all_grant_application',
+    grant_id=grant_id,
+    grant_application_id=grant_application_id))
+
 
 
 #Add logic to set GrantApplication as Submitted by user when

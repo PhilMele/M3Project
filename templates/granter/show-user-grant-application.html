@@ -17,7 +17,7 @@ Grant Title: Title<br/>
 
  <a href="{{ url_for('show_all_grant_application', grant_id=grant_id) }}">Return</a>
  <a href="{{ url_for('reject_user_grant_application_id', grant_id=grant_id, grant_application_id=grant_application_id) }}">Reject Application</a>
- <a href="">Approve Application</a>
+ <a href="{{ url_for('approve_user_grant_application_id', grant_id=grant_id, grant_application_id=grant_application_id) }}">Approve Application</a>
 
 {%endblock%}
 
