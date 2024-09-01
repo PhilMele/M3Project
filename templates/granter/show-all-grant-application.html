@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+{%block content%}
+<h1>This is show_grant.id page</h1>
+
+<!-- List users -->
+
+<!-- List Grants -->
+<h2>Grant Name</h2>
+
+
+<h3>List of applications</h3>
+
+<table style="margin-left: 20px;"> 
+
+    <!-- Table headers -->
+        <th> 
+            <tr>     
+                <td>Application ID</td> 
+                <td>User</td> 
+                <td>Status</td> 
+                <td>See Application</td> 
+            </tr> 
+        </th> 
+          
+    <!-- For loop logic  -->
+       {%for grantapplication in applications%}
+        <!-- table rows -->
+        <tr> 
+            <td>{{grantapplication.id}}</td> 
+            <td>{{grantapplication.user.username}}</td>   
+            <td>Rejected</td>  
+            <td><a href="">Link to application</a></td>  
+        </tr> 
+        {%endfor%}
+
+</table> 
+
+
+{%endblock%}

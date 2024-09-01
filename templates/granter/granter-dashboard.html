@@ -27,7 +27,7 @@
         <td>{{grant.grant_fund}}</td>
         <td>Active</td>
         <td><a href="{{ url_for('show_grant', grant_id=grant.id) }}">Show Grant Button</a></td>
-        <td>Link to applications list</td>  
+        <td><a href="{{ url_for('show_all_grant_application', grant_id=grant.id) }}">Link to applications list</a></td>  
         <td>Delete button</td>        
     </tr>
     {%endfor%}

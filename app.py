@@ -580,7 +580,7 @@ def create_new_grant():
 
 
 #Show grant_id content
-@app.route('/show_grant/<int:grant_id>', methods=['GET', 'POST'])
+@app.route('/show-grant/<int:grant_id>', methods=['GET', 'POST'])
 def show_grant(grant_id):
     grant = Grant.query.get_or_404(grant_id)
     list_question = GrantQuestion.query.filter_by(grant_id=grant.id).order_by(GrantQuestion.id).all()
@@ -619,9 +619,8 @@ def show_grant(grant_id):
         addquestionform= addquestionform,
         list_question=list_question,
         answerquestionform=answerquestionform,
-        # answers=answers
+       
         )
-
 
 
 @app.route('/show_grant/<int:grant_id>/questions/<int:grantquestion_id>/edit',methods=['GET', 'POST'])
@@ -647,6 +646,16 @@ def delete_show_grant_question(grant_id, grantquestion_id):
     db.session.commit()
     flash('Question deleted', 'success')
     return redirect(url_for('show_grant', grant_id=grant_id))
+
+#allows granter to see all applictaions against grant id
+@app.route("/show-all-grant-application/<int:grant_id>")
+def show_all_grant_application(grant_id):
+    applications = GrantApplication.query.filter_by(grant_id=grant_id, is_submitted = True)
+    for grantapplication in applications:
+        print(f"grant id  = {grantapplication.grant_id} +applications = {grantapplication.id} + user_id = {grantapplication.user_id} ")
+
+    return render_template('granter/show-all-grant-application.html',
+    applications=applications)
 
 
 #Add logic to set GrantApplication as Submitted by user when
