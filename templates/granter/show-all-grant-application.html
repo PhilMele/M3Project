@@ -29,7 +29,7 @@
             <td>{{grantapplication.id}}</td> 
             <td>{{grantapplication.user.username}}</td>   
             <td>Rejected</td>  
-            <td><a href="">Link to application</a></td>  
+            <td><a href="{{ url_for('show_user_grant_application_id', grant_id=grant_id, grant_application_id=grantapplication.id) }}">Link to application</a></td>  
         </tr> 
         {%endfor%}
 

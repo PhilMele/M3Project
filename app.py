@@ -655,7 +655,28 @@ def show_all_grant_application(grant_id):
         print(f"grant id  = {grantapplication.grant_id} +applications = {grantapplication.id} + user_id = {grantapplication.user_id} ")
 
     return render_template('granter/show-all-grant-application.html',
+    grant_id=grant_id,
     applications=applications)
+
+
+@app.route("/show-user-grant-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
+def show_user_grant_application_id(grant_id, grant_application_id):
+    #re-use same logic that in `read_submitted_application()`
+    grant_question = GrantQuestion.query.filter(GrantQuestion.grant_id == grant_id).order_by(GrantQuestion.id).all()
+    grant_question_user_answer = []
+    for grantquestion in grant_question:
+        user_answer = GrantAnswer.query.filter_by(grant_question_id = grantquestion.id, user_id=current_user.id).all()
+        grant_question_user_answer.append({
+            'question':grantquestion.question,
+            'answer':[answer.answer for answer in user_answer]
+        })
+
+
+    return render_template('granter/show-user-grant-application.html',
+    grant_question_user_answer=grant_question_user_answer,
+    grant_question=grant_question,
+    grant_id=grant_id)
+
 
 
 #Add logic to set GrantApplication as Submitted by user when

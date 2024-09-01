@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{%block content%}
+Grant Title: Title<br/>
+    <!-- Loop of question + answers provided -->
+    {% for questionanswer in grant_question_user_answer %}
+
+        <!-- Loop of question + answers provided -->
+        <li>
+            <strong>Question:</strong> {{ questionanswer.question }}<br/>
+            {% for answer in questionanswer.answer %}
+                <strong>Answer:</strong> {{ answer }}<br/>
+            {% endfor %}
+        </li>
+    {% endfor %}
+
+<!-- Add  to return or delete(and return to previous page) -->
+
+ <a href="{{ url_for('show_all_grant_application', grant_id=grant_id) }}">Return</a>
+ <a href="">Reject Application</a>
+ <a href="">Approve Application</a>
+
+{%endblock%}
+
