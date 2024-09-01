@@ -116,6 +116,8 @@ class GrantApplication(db.Model):
     grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
     grant = db.relationship('Grant', backref='applications')
     is_submitted = db.Column(db.Boolean, default=False)
+    is_approved = db.Column(db.Boolean, default=False)
+    is_rejected = db.Column(db.Boolean, default=False)
 
     answers = db.relationship('GrantAnswer', backref='grant_application', cascade='all, delete-orphan')
     def __repr__(self):
