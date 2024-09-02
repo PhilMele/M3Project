@@ -3,7 +3,6 @@
 TODO:
 Set debug to false when in production
 add email system when application is rejected or approved or submitted
-Add validators to register logic
 add checks if user is grantee or granter
 If user is logged in redirect to their dashbaord
 Add @login_required to functions
@@ -25,7 +24,45 @@ Use of javascripts for validators.
 
 errors encountered: Some special characters were not included at the first iteration of validators. Making any password like `mypassword!1` invalide.
 
-Checks if user name or email address is already used, to avoid 500 error
+    class UserRegisterForm(FlaskForm):
+        username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
+        email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
+        
+        password = PasswordField(
+            "Enter your password",
+            validators=[
+                DataRequired(),
+                Length(min=8, message="Password must be at least 8 characters long."),
+                Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=-]{8,}$', message="Password must contain at least one letter, one number. You can also include special characters.")
+            ],
+            render_kw={"placeholder": "Password"}
+        )
+        
+        confirm_password = PasswordField(
+            "Confirm your password",
+            validators=[
+                DataRequired(),
+                Length(min=8),
+                Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=-]{8,}$')
+            ],
+            render_kw={"placeholder": "Confirm Password"}
+        )
+        
+        company_name = StringField("Enter your company name", validators=[Length(max=200)], render_kw={"placeholder": "Company Name"})
+        user_type = SelectField("Select User Type", choices=[(UserType.GRANTEE.value, "Grantee"), (UserType.GRANTER.value, "Granter")], validators=[DataRequired()])
+        submit = SubmitField("Register")
+
+        def validate_username(self, username):
+            existing_user_username = User.query.filter_by(username=username.data).first()
+            if existing_user_username:
+                raise ValidationError("This username is already used")
+
+
+Also added checks in function to username or email address is already used, to avoid 500 error.
+
+    if existing_user:
+            flash('Username already exists.', 'danger')
+            return render_template('register.html', form=form)
 
 @login_required decorator
 

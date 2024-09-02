@@ -337,6 +337,7 @@ def internal_server_error(e):
 @app.route("/dashboard")
 @login_required
 def dashboard():
+    
     applications = GrantApplication.query.filter_by(user_id = current_user.id)
     print(f'applications = {applications}')
     return render_template('grantee/grantee-dashboard.html',
@@ -613,6 +614,9 @@ def contact_us():
 @app.route("/granter-dashboard")
 @login_required
 def granter_dashboard():
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
+
     grants = Grant.query.all()
     return render_template('granter/granter-dashboard.html',
     grants=grants)
@@ -622,6 +626,8 @@ def granter_dashboard():
 @app.route("/create-new-grant", methods=["GET","POST"])
 @login_required
 def create_new_grant():
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
     #form to add grants
     grantform = AddGrantForm()
     if grantform.validate_on_submit():
@@ -648,6 +654,8 @@ def create_new_grant():
 @app.route('/show-grant/<int:grant_id>', methods=['GET', 'POST'])
 @login_required
 def show_grant(grant_id):
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
     grant = Grant.query.get_or_404(grant_id)
     list_question = GrantQuestion.query.filter_by(grant_id=grant.id).order_by(GrantQuestion.id).all()
        
@@ -691,6 +699,8 @@ def show_grant(grant_id):
 @app.route("/create-new-grant/", methods=["GET","POST"])
 @login_required
 def create_new_grant_question():
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
     #form to add grants
     grantform = AddGrantForm()
     if grantform.validate_on_submit():
@@ -711,6 +721,8 @@ def create_new_grant_question():
 @app.route('/show_grant/<int:grant_id>/questions/<int:grantquestion_id>/edit',methods=['GET', 'POST'])
 @login_required
 def edit_show_grant_question(grant_id, grantquestion_id):
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
     question = GrantQuestion.query.get_or_404(grantquestion_id)
     editquestionform = EditGrantQuestionForm(obj=question)
     if editquestionform.validate_on_submit():
@@ -728,6 +740,8 @@ def edit_show_grant_question(grant_id, grantquestion_id):
 @app.route('/show_grant/<int:grant_id>/questions/<int:grantquestion_id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_show_grant_question(grant_id, grantquestion_id):
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
     question = GrantQuestion.query.get_or_404(grantquestion_id)
     db.session.delete(question)
     db.session.commit()
@@ -738,6 +752,8 @@ def delete_show_grant_question(grant_id, grantquestion_id):
 @app.route("/show-all-grant-application/<int:grant_id>")
 @login_required
 def show_all_grant_application(grant_id):
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
     applications = GrantApplication.query.filter_by(grant_id=grant_id, is_submitted = True)
     for grantapplication in applications:
         print(f"grant id  = {grantapplication.grant_id} +applications = {grantapplication.id} + user_id = {grantapplication.user_id} ")
@@ -749,6 +765,8 @@ def show_all_grant_application(grant_id):
 @app.route("/show-user-grant-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
 @login_required
 def show_user_grant_application_id(grant_id, grant_application_id):
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
     #re-use same logic that in `read_submitted_application()`
     grant_question = GrantQuestion.query.filter(GrantQuestion.grant_id == grant_id).order_by(GrantQuestion.id).all()
     grant_question_user_answer = []
@@ -769,8 +787,9 @@ def show_user_grant_application_id(grant_id, grant_application_id):
 @app.route("/reject-user-grant-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
 @login_required
 def reject_user_grant_application_id(grant_id, grant_application_id):
-    #TO DO: ADD CHECK TO MAKE SURE ONLY 
-    #THE GRANTER CAN PERFORM THIS ACTION AS CURRENT USER
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
+
     application = GrantApplication.query.get_or_404(grant_application_id)
     application.is_rejected = True
     db.session.commit()
@@ -781,6 +800,8 @@ def reject_user_grant_application_id(grant_id, grant_application_id):
 @app.route("/approve-user-grant-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
 @login_required
 def approve_user_grant_application_id(grant_id, grant_application_id):
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
     #TO DO: ADD CHECK TO MAKE SURE ONLY 
     #THE GRANTER CAN PERFORM THIS ACTION AS CURRENT USER
     application = GrantApplication.query.get_or_404(grant_application_id)
