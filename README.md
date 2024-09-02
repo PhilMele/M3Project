@@ -4,11 +4,30 @@ TODO:
 Set debug to false when in production
 add email system when application is rejected or approved or submitted
 add extra panel for granter to see as grantee
-If user is logged in redirect to their dashbaord
-Add @login_required to functions
 add admin section to change user type from grantee to granter
 
+
+COLOUR PALETTE
+#264653
+#2A9D8F
+#E9C46A
+#F4A261
+#E76F51
+
 Features
+**Navbar**
+The Navbar displays 2 different version based on the UserType.
+
+Passing a logic like `  {% if current_user.user_type == UserType.GRANTEE %}` wasnt sufficent to make `UserType` available in if statements.
+
+In order to make UserType available, a `context processor` had to be injected.
+
+Documentation: https://flask.palletsprojects.com/en/2.3.x/templating/
+
+    @app.context_processor
+    def inject_user_type():
+        return dict(UserType=UserType)
+
 **Login**
 `pip install Flask-Login`
 https://pypi.org/project/Flask-Login/

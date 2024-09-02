@@ -1,3 +1,92 @@
-h1{
-    color:red
+/* General */
+body {
+    background-color: #2A9D8F;
+    font-weight: 300;
+    font-size: 17px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%; 
+    margin: 0; 
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+.center-text{
+    text-align: center;
+}
+
+.left-text{
+    text-align: left;
+}
+
+.grant-title-col{
+    text-align: left;
+    font-weight: bold
+}
+
+/* Custom Navbar Styling */
+.custom-navbar {
+    background-color: #264653;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+/* Navbar Brand Styling */
+.navbar-brand {
+    color: white;
+}
+
+/* Table Styling */
+table {
+    margin: 20px; 
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 2px solid #000;
+    padding: 8px;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+.container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* Handle the table to prevent overflow */
+.table-responsive {
+    width: 100%;
+}
+
+/* Ensure buttons and content fit within columns */
+.btn-sm {
+    font-size: 0.875rem; 
+    padding: 0.25rem 0.5rem; 
+}
+
+
+/* Media Query */
+@media (max-width: 320px) {
+    .row {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+    .col-3 {
+        flex: 1;
+        min-width: 0;
+    }
 }

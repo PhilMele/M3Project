@@ -223,6 +223,10 @@ class AnswerGrantQuestionForm(FlaskForm):
     submit = SubmitField('Submit')
 #Functions
 
+@app.context_processor
+def inject_user_type():
+    return dict(UserType=UserType)
+
 #Admin Panel
 @app.route("/admin", methods=["GET","POST"])
 @login_required

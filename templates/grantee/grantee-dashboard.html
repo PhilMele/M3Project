@@ -1,59 +1,52 @@
 {% extends 'base/base.html' %}
 {%block content%}
-<h1>This is the dashboard</h1>
+<h1>Your dashboard</h1>
 
-<h2><a href="{{ url_for('grant_available') }}">Apply for Grant</a></h2>
+<h2><a href="{{ url_for('grant_available') }}"></a></h2>
+<div class="row center-text border-bottom border-dark py-2">
+    <div class="col-8">Apply for Grant</div>
+    <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+    </div>
+</div>
 
 
-{{current_user.user_type}}
 <h2>Your Applications</h2>
 <!-- Loop of grants applied + status -->
-<table style="margin-left: 20px;"> 
-    <!-- Table headers -->
-        <th> 
-            <tr>     
-                <td>Grant</td> 
-                <td>Fund</td> 
-                <td>Status</td>
-                <td>Delete</td> 
-            </tr> 
-        </th> 
-          
-    <!-- For loop logic  -->
+<div class="container mt-4">
+    <!-- Header Row -->
+    <div class="row center-text border-bottom border-dark pb-2">
+        <div class="col-12 left-text font-weight-bold">Grant</div>
+        <div class="col-4 font-weight-bold">Fund</div>
+        <div class="col-4 font-weight-bold">Status</div>
+        <div class="col-4 font-weight-bold">Actions</div>
+    </div>
 
-    <!-- Table rows -->
-    {%for grantapplication in applications%}
-    <tr>
-        <td>{{grantapplication.grant.grant_title}}</td>
-        <td>{{grantapplication.grant.grant_fund}}</td>
-        <td>
-           
-            <!-- If grant is approved -->
-            {%if grantapplication.is_approved %}
+    <!-- For loop to generate rows -->
+    {% for grantapplication in applications %}
+    <div class="row center-text border-bottom border-dark py-2">
+        <div class="grant-title-col col-12">{{ grantapplication.grant.grant_title }}</div>
+        <div class="col-4">£ {{ grantapplication.grant.grant_fund }}</div>
+        <div class="col-4">
+            {% if grantapplication.is_approved %}
                 <p>Approved</p>
-                <!-- If grant is rejected -->
-                {%elif grantapplication.is_rejected %}
+            {% elif grantapplication.is_rejected %}
                 <p>Rejected</p>
-                <!-- If grant is submitted -->
-                {%elif grantapplication.is_submitted %}
+            {% elif grantapplication.is_submitted %}
                 <p>Submitted</p>
-                <!-- If grant is not submitted -->
-                {% else %}
+            {% else %}
                 <p>Not submitted</p>
-            {%endif%}
-        </td>
-        <td>
-            <form action="{{ url_for('delete_application', grant_id=grantapplication.grant_id, grant_application_id=grantapplication.id) }}" method="POST">
+            {% endif %}
+        </div>
+        <div class="col-4">
+            <form action="{{ url_for('delete_application', grant_id=grantapplication.grant_id, grant_application_id=grantapplication.id) }}" method="POST" class="text-center">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="btn">Delete Application</button>
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
             </form>
-        </td>       
-    </tr>
-    {%endfor%}
-
-
-</table> 
-
+        </div>
+    </div>
+    {% endfor %}
+</div>
 <h2>Grant Management</h2>
 
 {%endblock%}
