@@ -308,6 +308,12 @@ Considering `grantanswer_id` already has a specific id having `grant_id` in the 
 
 `return redirect()` returns the user to the grant_id template the answer was originally deleted from. To achieve this, values of `grant_id` and `grant_application_id` are used. `grant_id` is extracted from the function's parameter, and `grant_application_id` is taken from the the template (`<input type="hidden" name="delete_answer_grant_application_id" value="{{ grant_application_id }}">`) and returned in the function through variable `grant_application_id = request.form.get('delete_answer_grant_application_id')`.
 
+Finally given the function is used on multiple pages, the function contains a `referrer` to allow the user to stay on they were on before refresh.
+
+    return redirect(request.referrer or url_for('grant_available'))
+
+If the referrer is empty, it will redirect the user to `grant_available()` template.
+
 
 **Note** - For `delete_application()`, I didnt created a form and couldnt call the hidden_tag from WTF forms.
 

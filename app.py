@@ -362,11 +362,12 @@ def submit_application(grant_application_id, grant_id):
 #delete application
 @app.route("/delete-application/<int:grant_id>/<int:grant_application_id>",methods=['POST'])
 def delete_application(grant_id,grant_application_id):
+
     grantapplication = GrantApplication.query.get_or_404(grant_application_id)
     db.session.delete(grantapplication)
     db.session.commit()
     flash('Application deleted')
-    return redirect(url_for('grant_available'))
+    return redirect(request.referrer or url_for('grant_available'))
 
 #display application after submission
 @app.route("/read-submitted-application//<int:grant_id>/<int:grant_application_id>")

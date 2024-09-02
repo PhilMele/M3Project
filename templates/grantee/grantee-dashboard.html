@@ -40,7 +40,12 @@
                 <p>Not submitted</p>
             {%endif%}
         </td>
-        <td>Delete button</td>        
+        <td>
+            <form action="{{ url_for('delete_application', grant_id=grantapplication.grant_id, grant_application_id=grantapplication.id) }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn">Delete Application</button>
+            </form>
+        </td>       
     </tr>
     {%endfor%}
 
