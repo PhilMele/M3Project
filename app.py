@@ -2,7 +2,7 @@ from flask import Flask, render_template, flash, redirect, url_for, request
 from wtforms.form import Form
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField, PasswordField, SubmitField, SelectField, IntegerField
-from wtforms.validators import DataRequired, InputRequired, Length, ValidationError
+from wtforms.validators import DataRequired, InputRequired, Length, ValidationError,Regexp
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.orm import relationship
@@ -142,18 +142,51 @@ class GrantAnswer(db.Model):
          return f'<GrantAnswer: {self.grant_question} {self.answer}>'
 
 #Forms
+# class UserRegisterForm(FlaskForm):
+#     username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
+#     email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
+#     password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
+#     company_name = StringField("Enter your company name", validators=[Length(max=200)], render_kw={"placeholder": "Company Name"})
+#     user_type = SelectField("Select User Type", choices=[(UserType.GRANTEE.value, "Grantee"), (UserType.GRANTER.value, "Granter")], validators=[DataRequired()])
+#     submit = SubmitField("Register")
+
+#     #checks if username already exists: credit to Arpan Neupane's tutorial on Youtube
+#     def validate_username(self,username):
+#         existing_user_username = User.query.filter_by(username=username.data).first()
+
+#         if existing_user_username:
+#             raise ValidationError("This username is already used")
+
 class UserRegisterForm(FlaskForm):
     username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
     email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
-    password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
+    
+    password = PasswordField(
+        "Enter your password",
+        validators=[
+            DataRequired(),
+            Length(min=8, message="Password must be at least 8 characters long."),
+            Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=-]{8,}$', message="Password must contain at least one letter, one number. You can also include special characters.")
+        ],
+        render_kw={"placeholder": "Password"}
+    )
+    
+    confirm_password = PasswordField(
+        "Confirm your password",
+        validators=[
+            DataRequired(),
+            Length(min=8),
+            Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=-]{8,}$')
+        ],
+        render_kw={"placeholder": "Confirm Password"}
+    )
+    
     company_name = StringField("Enter your company name", validators=[Length(max=200)], render_kw={"placeholder": "Company Name"})
     user_type = SelectField("Select User Type", choices=[(UserType.GRANTEE.value, "Grantee"), (UserType.GRANTER.value, "Granter")], validators=[DataRequired()])
     submit = SubmitField("Register")
 
-    #checks if username already exists: credit to Arpan Neupane's tutorial on Youtube
-    def validate_username(self,username):
+    def validate_username(self, username):
         existing_user_username = User.query.filter_by(username=username.data).first()
-
         if existing_user_username:
             raise ValidationError("This username is already used")
 
@@ -254,7 +287,22 @@ def index():
 def register():
     form = UserRegisterForm()
     if form.validate_on_submit():
+
+        existing_user = User.query.filter_by(username=form.username.data).first()
+        existing_email = User.query.filter_by(email=form.email_address.data).first()
+
+        if existing_user:
+            flash('Username already exists.', 'danger')
+            return render_template('register.html', form=form)
+
+        if existing_email:
+            flash('Email address already in use.', 'danger')
+            return render_template('register.html', form=form)
+
+        # Print the plaintext password to console (only for development, not for production)
+        print(f'Plaintext password = {form.password.data}')
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        print(f'Hashed password = {hashed_password}')
         new_user = User(
             username=form.username.data, 
             password=hashed_password,
@@ -262,14 +310,14 @@ def register():
             company_name=form.company_name.data,
             user_type=UserType(form.user_type.data)
         )
+      
         db.session.add(new_user)
         db.session.commit()
         flash('Account created', 'success')
         login_user(new_user)
         return redirect(url_for('dashboard'))
     else:
-        flash('Account not created', 'danger')
-        print("The form didnt get created")
+        print(f"Form validation errors: {form.errors}")  # Print form validation errors
     return render_template('register.html', form=form)
 
 

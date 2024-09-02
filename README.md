@@ -4,6 +4,9 @@ TODO:
 Set debug to false when in production
 add email system when application is rejected or approved or submitted
 Add validators to register logic
+add checks if user is grantee or granter
+If user is logged in redirect to their dashbaord
+Add @login_required to functions
 Do front end of each page
 
 Features
@@ -13,6 +16,16 @@ https://pypi.org/project/Flask-Login/
 `pip install bcrypt` - used to hash passwords
 https://pypi.org/project/bcrypt/
 
+
+**Register**
+Implement `UserRegistrationForm`.
+
+
+Use of javascripts for validators.
+
+errors encountered: Some special characters were not included at the first iteration of validators. Making any password like `mypassword!1` invalide.
+
+Checks if user name or email address is already used, to avoid 500 error
 
 @login_required decorator
 
