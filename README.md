@@ -3,10 +3,10 @@
 TODO:
 Set debug to false when in production
 add email system when application is rejected or approved or submitted
-add checks if user is grantee or granter
+add extra panel for granter to see as grantee
 If user is logged in redirect to their dashbaord
 Add @login_required to functions
-Do front end of each page
+add admin section to change user type from grantee to granter
 
 Features
 **Login**
