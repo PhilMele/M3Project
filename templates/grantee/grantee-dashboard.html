@@ -4,7 +4,7 @@
 
 <h2><a href="{{ url_for('grant_available') }}">Apply for Grant</a></h2>
 
-<h2>Finish application</h2>
+<h2>Your Applications</h2>
 <!-- Loop of grants applied + status -->
 <table style="margin-left: 20px;"> 
     <!-- Table headers -->
@@ -20,12 +20,29 @@
     <!-- For loop logic  -->
 
     <!-- Table rows -->
+    {%for grantapplication in applications%}
     <tr>
-        <td>Grant Title</td>
-        <td>Fund Applied For</td>
-        <td>Submitted</td>
+        <td>{{grantapplication.grant.grant_title}}</td>
+        <td>{{grantapplication.grant.grant_fund}}</td>
+        <td>
+           
+            <!-- If grant is approved -->
+            {%if grantapplication.is_approved %}
+                <p>Approved</p>
+                <!-- If grant is rejected -->
+                {%elif grantapplication.is_rejected %}
+                <p>Rejected</p>
+                <!-- If grant is submitted -->
+                {%elif grantapplication.is_submitted %}
+                <p>Submitted</p>
+                <!-- If grant is not submitted -->
+                {% else %}
+                <p>Not submitted</p>
+            {%endif%}
+        </td>
         <td>Delete button</td>        
     </tr>
+    {%endfor%}
 
 
 </table> 

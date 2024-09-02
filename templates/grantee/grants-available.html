@@ -7,8 +7,9 @@
         <th> 
             <tr>     
                 <td>Grant</td> 
-                <td>Fund</td> 
-                <td>Apply</td> 
+                <td>Fund</td>
+
+                <td>Status</td> 
             </tr> 
         </th> 
           
@@ -18,6 +19,19 @@
     <tr>
         <td>{{ grant.grant_title }}</td>
         <td>{{ grant.grant_fund }}</td>
+        <!-- If grant is approved -->
+        {% if grant.id in existing_application_id and existing_application_id[grant.id].is_approved %}
+                <td>Approved</td>
+            <!-- If grant is rejected -->
+            {% elif grant.id in existing_application_id and existing_application_id[grant.id].is_rejected %}
+                <td>Rejected</td>
+            <!-- If grant is submitted -->
+            {% elif grant.id in existing_application_id and existing_application_id[grant.id].is_submitted %}
+                <td>Submitted</td>
+            <!-- If grant is not submitted -->
+            {%else%}
+                <td>Not submitted</td>
+        {%endif%}
 
         {% if grant.id in existing_application_id and existing_application_id[grant.id].is_submitted %}
             <!-- If application exists -->
@@ -32,15 +46,15 @@
             </td>
 
         {% elif grant.id in existing_application_id and not existing_application_id[grant.id].is_submitted %}
-        <td>
-            <a href="{{ url_for('apply_to_grant', grant_id=grant.id, grant_application_id=existing_application_id[grant.id].id) }}">Continue Application</a>
-        </td>
-        <td>
-            <form action="{{ url_for('delete_application', grant_id=grant.id, grant_application_id=existing_application_id[grant.id].id) }}" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="btn">Delete Application</button>
-            </form>
-        </td>
+            <td>
+                <a href="{{ url_for('apply_to_grant', grant_id=grant.id, grant_application_id=existing_application_id[grant.id].id) }}">Continue Application</a>
+            </td>
+            <td>
+                <form action="{{ url_for('delete_application', grant_id=grant.id, grant_application_id=existing_application_id[grant.id].id) }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn">Delete Application</button>
+                </form>
+            </td>
         {% else %}
             <!-- If application does not exist -->
             <td><a href="{{ url_for('activate_application', grant_id=grant.id) }}">Create Application</a></td>

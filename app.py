@@ -289,7 +289,10 @@ def internal_server_error(e):
 @app.route("/dashboard")
 # @login_required
 def dashboard():
-    return render_template('grantee/grantee-dashboard.html')
+    applications = GrantApplication.query.filter_by(user_id = current_user.id)
+    print(f'applications = {applications}')
+    return render_template('grantee/grantee-dashboard.html',
+    applications=applications)
 
 #displays grants available
 
@@ -663,7 +666,6 @@ def show_all_grant_application(grant_id):
     grant_id=grant_id,
     applications=applications)
 
-
 @app.route("/show-user-grant-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
 def show_user_grant_application_id(grant_id, grant_application_id):
     #re-use same logic that in `read_submitted_application()`
@@ -704,8 +706,6 @@ def approve_user_grant_application_id(grant_id, grant_application_id):
     return redirect(url_for('show_all_grant_application',
     grant_id=grant_id,
     grant_application_id=grant_application_id))
-
-
 
 #Add logic to set GrantApplication as Submitted by user when
 #all question have been answered
