@@ -192,7 +192,7 @@ class AnswerGrantQuestionForm(FlaskForm):
 
 #Admin Panel
 @app.route("/admin", methods=["GET","POST"])
-# @login_required
+@login_required
 def admin():
     #list users
     #list grants
@@ -287,7 +287,7 @@ def internal_server_error(e):
 
 #dashboard
 @app.route("/dashboard")
-# @login_required
+@login_required
 def dashboard():
     applications = GrantApplication.query.filter_by(user_id = current_user.id)
     print(f'applications = {applications}')
@@ -312,6 +312,7 @@ def grant_available():
 
 #activate application
 @app.route("/activate-application/<int:grant_id>", methods=['GET', 'POST'])
+@login_required
 def activate_application(grant_id):
 
     #check if there is already an application
@@ -340,6 +341,7 @@ def activate_application(grant_id):
 
 #submit application
 @app.route("/submit-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
+@login_required
 def submit_application(grant_application_id, grant_id):
     submitted_application_id = grant_application_id
     grant_id=grant_id
@@ -361,6 +363,7 @@ def submit_application(grant_application_id, grant_id):
 
 #delete application
 @app.route("/delete-application/<int:grant_id>/<int:grant_application_id>",methods=['POST'])
+@login_required
 def delete_application(grant_id,grant_application_id):
 
     grantapplication = GrantApplication.query.get_or_404(grant_application_id)
@@ -371,6 +374,7 @@ def delete_application(grant_id,grant_application_id):
 
 #display application after submission
 @app.route("/read-submitted-application//<int:grant_id>/<int:grant_application_id>")
+@login_required
 def read_submitted_application(grant_id, grant_application_id):
     user_submitted_application = GrantApplication.query.get_or_404(grant_application_id)
     grant_question = GrantQuestion.query.filter(GrantQuestion.grant_id == grant_id).all()
@@ -395,6 +399,7 @@ def read_submitted_application(grant_id, grant_application_id):
 
 #allows to apply and answer grant question
 @app.route("/apply-to-grant/<int:grant_id>/<int:grant_application_id>", methods=['GET', 'POST'])
+@login_required
 def apply_to_grant(grant_id,grant_application_id):
     #TO DO: add logic to prvent user getting back to this page if grant is submitted
     #if appliction is submitted = redirect user to grants available page.
@@ -472,10 +477,8 @@ def apply_to_grant(grant_id,grant_application_id):
 
 #edit grant answer
 @app.route("/edit-grant-answer/<int:grant_id>/<int:grantanswer_id>", methods=['GET', 'POST'])
+@login_required
 def edit_grant_answer(grant_id, grantanswer_id):
-
-    
-
     answer_to_edit = GrantAnswer.query.get_or_404(grantanswer_id)
     application_id = answer_to_edit.application_id
 
@@ -500,6 +503,7 @@ def edit_grant_answer(grant_id, grantanswer_id):
 
 #delete grant answer
 @app.route("/delete-grant-answer/<int:grant_id>/<int:grantanswer_id>",methods=['POST'])
+@login_required
 def delete_grant_answer(grant_id, grantanswer_id):
     grantanswer = GrantAnswer.query.get_or_404(grantanswer_id)
     grant_application_id = request.form.get('delete_answer_grant_application_id')
@@ -513,17 +517,20 @@ def delete_grant_answer(grant_id, grantanswer_id):
 
 #interface to manage grants allocated to user account
 @app.route("/manage-grants")
+@login_required
 def manage_grant():
     return render_template('grantee/manage-grants.html')
 
 #interface to edit or delete to user account
 @app.route("/account")
+@login_required
 def account():
     return render_template('grantee/account.html')
 
 
 #delete user account
 @app.route("/delete_account")
+@login_required
 def delete_user_account():
     user = User.query.get_or_404(current_user.id)
     db.session.delete(user)
@@ -535,6 +542,7 @@ def delete_user_account():
 #Official documentation created this error
 #SOlution credits: https://stackoverflow.com/questions/22873794/attributeerror-editform-object-has-no-attribute-validate-on-submit
 @app.route('/contact_us', methods=['GET', 'POST'])
+@login_required
 def contact_us():
     username = None
     message = None
@@ -590,6 +598,7 @@ def create_new_grant():
 
 #Show grant_id content
 @app.route('/show-grant/<int:grant_id>', methods=['GET', 'POST'])
+@login_required
 def show_grant(grant_id):
     grant = Grant.query.get_or_404(grant_id)
     list_question = GrantQuestion.query.filter_by(grant_id=grant.id).order_by(GrantQuestion.id).all()
@@ -633,6 +642,7 @@ def show_grant(grant_id):
 
 
 @app.route('/show_grant/<int:grant_id>/questions/<int:grantquestion_id>/edit',methods=['GET', 'POST'])
+@login_required
 def edit_show_grant_question(grant_id, grantquestion_id):
     question = GrantQuestion.query.get_or_404(grantquestion_id)
     editquestionform = EditGrantQuestionForm(obj=question)
@@ -649,6 +659,7 @@ def edit_show_grant_question(grant_id, grantquestion_id):
             )
 
 @app.route('/show_grant/<int:grant_id>/questions/<int:grantquestion_id>/delete', methods=['GET', 'POST'])
+@login_required
 def delete_show_grant_question(grant_id, grantquestion_id):
     question = GrantQuestion.query.get_or_404(grantquestion_id)
     db.session.delete(question)
@@ -658,6 +669,7 @@ def delete_show_grant_question(grant_id, grantquestion_id):
 
 #allows granter to see all applictaions against grant id
 @app.route("/show-all-grant-application/<int:grant_id>")
+@login_required
 def show_all_grant_application(grant_id):
     applications = GrantApplication.query.filter_by(grant_id=grant_id, is_submitted = True)
     for grantapplication in applications:
@@ -668,6 +680,7 @@ def show_all_grant_application(grant_id):
     applications=applications)
 
 @app.route("/show-user-grant-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
+@login_required
 def show_user_grant_application_id(grant_id, grant_application_id):
     #re-use same logic that in `read_submitted_application()`
     grant_question = GrantQuestion.query.filter(GrantQuestion.grant_id == grant_id).order_by(GrantQuestion.id).all()
@@ -687,6 +700,7 @@ def show_user_grant_application_id(grant_id, grant_application_id):
     grant_application_id=grant_application_id)
 
 @app.route("/reject-user-grant-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
+@login_required
 def reject_user_grant_application_id(grant_id, grant_application_id):
     #TO DO: ADD CHECK TO MAKE SURE ONLY 
     #THE GRANTER CAN PERFORM THIS ACTION AS CURRENT USER
@@ -698,6 +712,7 @@ def reject_user_grant_application_id(grant_id, grant_application_id):
     grant_application_id=grant_application_id))
 
 @app.route("/approve-user-grant-application/<int:grant_id>/<int:grant_application_id>",methods=['GET', 'POST'])
+@login_required
 def approve_user_grant_application_id(grant_id, grant_application_id):
     #TO DO: ADD CHECK TO MAKE SURE ONLY 
     #THE GRANTER CAN PERFORM THIS ACTION AS CURRENT USER
