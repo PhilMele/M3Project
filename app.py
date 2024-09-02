@@ -640,6 +640,25 @@ def show_grant(grant_id):
        
         )
 
+@app.route("/create-new-grant/", methods=["GET","POST"])
+@login_required
+def create_new_grant_question():
+    #form to add grants
+    grantform = AddGrantForm()
+    if grantform.validate_on_submit():
+        newgrant = Grant(
+            grant_title = grantform.grant_title.data,
+            grant_description = grantform.grant_description.data,
+            grant_fund = grantform.grant_fund.data
+        )
+        db.session.add(newgrant)
+        db.session.commit()
+        flash('Grant has been added', 'success')
+        return redirect(url_for('show_grant', grant_id=newgrant.id))
+    else:
+        print("the form is not valid")
+    return render_template('granter/create-new-grant.html', grantform=grantform)
+
 
 @app.route('/show_grant/<int:grant_id>/questions/<int:grantquestion_id>/edit',methods=['GET', 'POST'])
 @login_required
