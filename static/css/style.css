@@ -41,6 +41,8 @@ a {
     font-weight: bold
 }
 
+/* Navbar Styling*/
+
 /* Custom Navbar Styling */
 .custom-navbar {
     background-color: #264653;
@@ -55,7 +57,16 @@ a {
 
 .nav-link{
     color:white; 
+}
 
+.dropdown-menu {
+    background-color: transparent;
+    border: none;
+    color:white;
+}
+
+.dropdown-item {
+    color:white;
 }
 
 /* Table Styling */
