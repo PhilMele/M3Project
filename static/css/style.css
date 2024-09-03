@@ -1,6 +1,8 @@
 /* General */
 body {
-    background-color: #2A9D8F;
+    /* background-color: #2A9D8F; */
+    background-color:#264653;
+    
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-size: 17px;
@@ -38,7 +40,12 @@ a {
 }
 
 .top-header{
-    margin:12px;
+    margin: 12px;
+    background-color: #264653;
+    padding: 5px;
+    border-radius: 5px;
+    color: #E9C46A;
+    width: fit-content
 }
 
 .center-text{
@@ -132,6 +139,11 @@ thead {
     font-size: 30px;
     color:#F4A261;
 
+}
+
+/* Question */
+.question{
+    font-style: italic;
 }
 
 

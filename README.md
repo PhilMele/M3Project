@@ -8,6 +8,8 @@ add admin section to change user type from grantee to granter
 IN Login form CSRF token message in browser console : ask Gareth.
 change .navbar-toggler-icon to white
 remove password check from login page
+remove uncommented stuff (grants-available)
+Set referrer to all return buttons
 
 COLOUR PALETTE
 #264653

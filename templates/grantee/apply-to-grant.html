@@ -1,66 +1,106 @@
 {% extends 'base/base.html' %}
 {%block content%}
+
+<div class="top-header">
+    <h1 class="left-text">{{grant.grant_title}}</h1>
+</div>
 <!-- Return to grants available page -->
- <a href="{{ url_for('grant_available') }}">Back to Grants Page Button</a>
-Grant Application: {{grant_application.is_submitted}}<br/>
-Grant Title: {{grant.grant_title}}<br/>
+<a href="{{ url_for('grant_available') }}">Return to Previous Page</a>
+
+<hr>
 
 {%for grantquestion in grant_questions%}
  <!-- Display Question -->
- Question: {{grantquestion.question}}<br/>
-
-
+ <div>
+    <strong>Q:</strong> <span class="question">{{grantquestion.question}}</span><br/>
+</div>
    {% if grantquestion.id in answers_from_user_id %}
         <!-- If the user has answered the question -->
-        grant_application_id =  {{grant_application_id}}</br>
          <!-- Display answer -->
           
-        <p>Your Answer: {{ answers_from_user_id[grantquestion.id].answer }}</p>
+         <strong>Y:</strong> {{ answers_from_user_id[grantquestion.id].answer }}</p>
 
-        <!-- Edit answer button  -->
-        <form action="{{url_for('edit_grant_answer', grant_id=grant_id, grantanswer_id=answers_from_user_id[grantquestion.id].id)}}" method="POST" class="">
-            {{ editanswerform.csrf_token }}
-             {{editanswerform.hidden_tag()}}
-             {{ editanswerform.answer() }}
-            <input type=submit value="Edit"/>
-        </form>
-        <!-- Delete answer button -->
-        <form action="{{url_for('delete_grant_answer', grant_id=grant_id, grantanswer_id=answers_from_user_id[grantquestion.id].id)}}" method="POST" class="">
-        <input type="hidden" name="delete_answer_grant_application_id" value="{{ grant_application_id }}">
-            {{ grantanswerform.csrf_token }}
-             {{grantanswerform.hidden_tag()}}
-            <input type=submit value="Delete"/>
-        </form>
+        <div class="row mb-2">
+            <div class="col-6">
+                <!-- Edit answer button -->
+                <button class="btn btn-primary btn-sm w-100" onclick="toggleEditForm('{{ grantquestion.id }}')">Edit</button>
+            </div>
+            <!-- Delete answer button -->
+            <div class="col-6">
+                <form action="{{ url_for('delete_grant_answer', grant_id=grant_id, grantanswer_id=answers_from_user_id[grantquestion.id].id) }}" method="POST">
+                    <input type="hidden" name="delete_answer_grant_application_id" value="{{ grant_application_id }}">
+                    {{ grantanswerform.csrf_token }}
+                    {{ grantanswerform.hidden_tag() }}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </div>
+        </div>
+    
+        <!-- Edit answer form (hidden by default) -->
+        <div id="edit-form-{{ grantquestion.id }}" class="mb-2" style="display:none;">
+            <form action="{{ url_for('edit_grant_answer', grant_id=grant_id, grantanswer_id=answers_from_user_id[grantquestion.id].id) }}" method="POST">
+                {{ editanswerform.csrf_token }}
+                {{ editanswerform.hidden_tag() }}
+                <div class="container">
+                    <div class="row py-2">
+                        {{ editanswerform.answer() }}
+                    </div>
+                    <div class="row py-2">
+                        <button type="submit" class="btn btn-primary btn-sm w-100">Submit Edit</button>
+                    </div>
+                </div>     
+            </form>
+        </div>
         
     {% else %}
         <!-- If the user has not answered the question -->
-        <p>You have not answered this question yet.</p>
          <!-- Add answer form -->
-         <h2>Add Answer form field</h2>
+         <p>Enter your answer below</p>
          <form method="POST" action="">
             <input type="hidden" name="grant_question_id" value="{{ grantquestion.id }}">
             <input type="hidden" name="grant_application_id" value="{{ grant_application_id }}">
              {{ grantanswerform.csrf_token }}
              {{grantanswerform.hidden_tag()}}
-             {{grantanswerform.answer}}
-            
-             {{grantanswerform.submit}}
-         
+             <div class="container">
+                <div class="row py-2">
+                    {{grantanswerform.answer}}
+                </div>
+                <div class="row py-2">
+                    <button type="submit" class="btn btn-success btn-sm w-100">Submit Answer</button>
+                </div>
+            </div>
          </form>
         
     {% endif %}
 
-    
+    <hr>
 
 {%endfor%}
 
 <!-- Add Submit button that ticks application as submitted if all questions are answered -->
 
 {%if submit_button == True %}
- <a href="{{ url_for('submit_application', grant_id=grant.id, grant_application_id=grant_application_id) }}">Submit Button Enabled</a>
-{%else%}
-<a href="">Submit Button Disabled</a>
+    <a href="{{ url_for('submit_application', grant_id=grant.id, grant_application_id=grant_application_id) }}" class="btn btn-success btn-sm">Submit</a>
+    {%else%}
+    <a href="" class="btn btn-secondary btn-sm">Application Incomplete</a>
 {%endif%}
+
+<hr>
+
+<a href="{{ url_for('grant_available') }}">Return to Previous Page</a>
+
+
+<!-- Javascript - Manages drop down of edit input filed -->
+<script>
+    function toggleEditForm(questionId) {
+        var form = document.getElementById('edit-form-' + questionId);
+        if (form.style.display === 'none' || form.style.display === '') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    }
+</script>
 
 {%endblock%}
 

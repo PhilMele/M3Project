@@ -280,7 +280,10 @@ def index():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
-                return redirect(url_for('dashboard'))
+                if current_user.user_type != UserType.GRANTER:
+                    return redirect(url_for('dashboard'))
+                else:
+                    return redirect(url_for('granter_dashboard'))
             else:
                 flash("The password does not exist")
                 print("The password does not exist")
@@ -326,7 +329,11 @@ def register():
         db.session.commit()
         flash('Account created', 'success')
         login_user(new_user)
-        return redirect(url_for('dashboard'))
+        if current_user.user_type != UserType.GRANTER:
+            return redirect(url_for('dashboard'))
+        else:
+            return redirect(url_for('granter_dashboard'))
+
     else:
         print(f"Form validation errors: {form.errors}")  # Print form validation errors
     return render_template('register.html', form=form)
@@ -354,7 +361,7 @@ def internal_server_error(e):
 @login_required
 def dashboard():
     
-    applications = GrantApplication.query.filter_by(user_id = current_user.id)
+    applications = GrantApplication.query.filter_by(user_id = current_user.id).order_by(GrantApplication.id).all()
     print(f'applications = {applications}')
     
     return render_template('grantee/grantee-dashboard.html',
@@ -443,7 +450,7 @@ def delete_application(grant_id,grant_application_id):
 @login_required
 def read_submitted_application(grant_id, grant_application_id):
     user_submitted_application = GrantApplication.query.get_or_404(grant_application_id)
-    grant_question = GrantQuestion.query.filter(GrantQuestion.grant_id == grant_id).all()
+    grant_question = GrantQuestion.query.filter(GrantQuestion.grant_id == grant_id).order_by(GrantQuestion.id).all()
 
     #create list to match questions and answers
     grant_question_user_answer = []

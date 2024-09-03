@@ -1,6 +1,14 @@
 {% extends 'base/base.html' %}
 {%block content%}
 
+<div class="top-header">
+    <h1 class="left-text">List of grants available</h1>
+</div>
+
+<a href="{{ url_for('grant_available') }}">Return</a>
+
+<hr>
+
 
 <div class="container mt-4">
     <!-- Header Row -->
@@ -27,7 +35,7 @@
                 <td>Submitted</td>
             <!-- If grant is not submitted -->
             {%else%}
-                <td>Not submitted</td>
+                <td>Incomplete</td>
         {%endif%}
         </div>
         <div class="col-4 d-flex justify-content-center">
