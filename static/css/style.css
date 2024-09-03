@@ -110,6 +110,7 @@ thead {
     font-size: 12px;
 }
 
+
 /* Handle the table to prevent overflow */
 .table-responsive {
     width: 100%;
@@ -118,7 +119,7 @@ thead {
 /* Ensure buttons and content fit within columns */
 .btn-sm {
     font-size: 0.875rem; 
-    padding: 0.25rem 0.5rem; 
+    padding-bottom: 5px;
     width: 100%;
     border-radius: 10px;
 }
