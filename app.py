@@ -227,6 +227,14 @@ class AnswerGrantQuestionForm(FlaskForm):
 def inject_user_type():
     return dict(UserType=UserType)
 
+#allows to display intergers in models as currency
+@app.template_filter('currency')
+def currency_filter(value):
+    try:
+        return f"£ {value:,.2f}"
+    except (ValueError, TypeError):
+        return value
+
 #Admin Panel
 @app.route("/admin", methods=["GET","POST"])
 @login_required
@@ -348,6 +356,7 @@ def dashboard():
     
     applications = GrantApplication.query.filter_by(user_id = current_user.id)
     print(f'applications = {applications}')
+    
     return render_template('grantee/grantee-dashboard.html',
     applications=applications)
 

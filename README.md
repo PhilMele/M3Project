@@ -6,6 +6,7 @@ add email system when application is rejected or approved or submitted
 add extra panel for granter to see as grantee
 add admin section to change user type from grantee to granter
 IN Login form CSRF token message in browser console : ask Gareth.
+change .navbar-toggler-icon to white
 
 COLOUR PALETTE
 #264653
@@ -27,6 +28,23 @@ Documentation: https://flask.palletsprojects.com/en/2.3.x/templating/
     @app.context_processor
     def inject_user_type():
         return dict(UserType=UserType)
+
+**Currency Display**
+Doucmentation: https://flask.palletsprojects.com/en/1.1.x/templating/
+
+Additional help: https://stackoverflow.com/questions/12078571/jinja-templates-format-a-float-as-comma-separated-currency
+
+App.py:
+    @app.template_filter('currency')
+    def currency_filter(value):
+        try:
+            return f"£ {value:,.2f}"
+        except (ValueError, TypeError):
+            return value
+
+Add filter in template: `| currency`
+
+    {{ grantapplication.grant.grant_fund | currency }}
 
 **Login**
 `pip install Flask-Login`

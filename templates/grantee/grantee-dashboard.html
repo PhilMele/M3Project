@@ -1,10 +1,10 @@
 {% extends 'base/base.html' %}
 {%block content%}
-<h1>Your dashboard</h1>
+<h1 class="center-text">Your dashboard</h1>
 
 <h2><a href="{{ url_for('grant_available') }}"></a></h2>
 <div class="row center-text border-bottom border-dark py-2">
-    <div class="col-8">Apply for Grant</div>
+    <div class="col-8 ">Apply for Grant</div>
     <div class="col-4">
             <button type="submit" class="btn btn-primary btn-sm">Apply</button>
     </div>
@@ -16,7 +16,7 @@
 <div class="container mt-4">
     <!-- Header Row -->
     <div class="row center-text border-bottom border-dark pb-2">
-        <div class="col-12 left-text font-weight-bold">Grant</div>
+
         <div class="col-4 font-weight-bold">Fund</div>
         <div class="col-4 font-weight-bold">Status</div>
         <div class="col-4 font-weight-bold">Actions</div>
@@ -26,7 +26,7 @@
     {% for grantapplication in applications %}
     <div class="row center-text border-bottom border-dark py-2">
         <div class="grant-title-col col-12">{{ grantapplication.grant.grant_title }}</div>
-        <div class="col-4">£ {{ grantapplication.grant.grant_fund }}</div>
+        <div class="col-4">{{ grantapplication.grant.grant_fund | currency }}</div>
         <div class="col-4">
             {% if grantapplication.is_approved %}
                 <p>Approved</p>
