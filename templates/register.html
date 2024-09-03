@@ -1,83 +1,102 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funding Application Project</title>
-    <script>
-        function validatePassword() {
-            const password = document.getElementById("password").value;
-            const confirm_password = document.getElementById("confirm_password").value;
-            const message = document.getElementById("message");
-            const confirmMessage = document.getElementById("confirm_message");
+{% extends 'base/base.html' %}
+{% block content %}
 
-            let strengthMessage = "";
-
-            if (password.length < 8) {
-                strengthMessage = "Password must be at least 8 characters long.";
-            } else if (!/[A-Z]/.test(password)) {
-                strengthMessage = "Password must contain at least one uppercase letter.";
-            } else if (!/[a-z]/.test(password)) {
-                strengthMessage = "Password must contain at least one lowercase letter.";
-            } else if (!/\d/.test(password)) {
-                strengthMessage = "Password must contain at least one number.";
-            } else {
-                strengthMessage = "Password is strong.";
-            }
-
-            message.textContent = strengthMessage;
-            message.style.color = strengthMessage === "Password is strong." ? "green" : "red";
-
-            if (password !== confirm_password) {
-                confirmMessage.textContent = "Passwords do not match.";
-                confirmMessage.style.color = "red";
-            } else {
-                confirmMessage.textContent = "Passwords match.";
-                confirmMessage.style.color = "green";
-            }
-        }
-    </script>
-</head>
-<body>
-
-    <h1>Register Page</h1>
-    <a href="{{ url_for('index') }}">Link to Login Page</a>
+<div class="container mt-5">
+    <h1 class="center-text">Register Page</h1>
     
-    <!-- Flash messages section -->
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-        <div class="alert alert-success fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
 
-    <!-- form -->
-
+    <!-- Form section -->
     <form method="POST" action="{{ url_for('register') }}">
         {{ form.csrf_token() }}
         {{ form.hidden_tag() }}
-        
-        {{ form.username.label }} {{ form.username() }}
-        {{ form.email_address.label }} {{ form.email_address() }}
-        
-        {{ form.password.label }}
-        {{ form.password(id='password', onkeyup='validatePassword()') }}
-        <small id="message"></small>
-        
-        {{ form.confirm_password.label }}
-        {{ form.confirm_password(id='confirm_password', onkeyup='validatePassword()') }}
-        <small id="confirm_message"></small>
-        
-        {{ form.company_name.label }} {{ form.company_name() }}
-        {{ form.user_type.label }} {{ form.user_type() }}
-        
-        {{ form.submit() }}
+
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.email_address.label(class="form-label") }}
+                {{ form.email_address(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", id="password", onkeyup="validatePassword()") }}
+                <small id="message" class="form-text"></small>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.confirm_password.label(class="form-label") }}
+                {{ form.confirm_password(class="form-control", id="confirm_password", onkeyup="validatePassword()") }}
+                <small id="confirm_message" class="form-text"></small>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.company_name.label(class="form-label") }}
+                {{ form.company_name(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.user_type.label(class="form-label") }}
+                {{ form.user_type(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </div>
     </form>
-    
-</body>
-</html>
+    <div class="center-text">
+        <p>Already have an account? Click <a href="{{ url_for('index') }}">here</a></p>
+    </div>
+</div>
+
+<script>
+    function validatePassword() {
+        const password = document.getElementById("password").value;
+        const confirm_password = document.getElementById("confirm_password").value;
+        const message = document.getElementById("message");
+        const confirmMessage = document.getElementById("confirm_message");
+
+        let strengthMessage = "";
+
+        if (password.length < 8) {
+            strengthMessage = "Password must be at least 8 characters long.";
+        } else if (!/[A-Z]/.test(password)) {
+            strengthMessage = "Password must contain at least one uppercase letter.";
+        } else if (!/[a-z]/.test(password)) {
+            strengthMessage = "Password must contain at least one lowercase letter.";
+        } else if (!/\d/.test(password)) {
+            strengthMessage = "Password must contain at least one number.";
+        } else {
+            strengthMessage = "Password is strong.";
+        }
+
+        message.textContent = strengthMessage;
+        message.style.color = strengthMessage === "Password is strong." ? "green" : "red";
+
+        if (password !== confirm_password) {
+            confirmMessage.textContent = "Passwords do not match.";
+            confirmMessage.style.color = "red";
+        } else {
+            confirmMessage.textContent = "Passwords match.";
+            confirmMessage.style.color = "green";
+        }
+    }
+</script>
+
+{% endblock %}

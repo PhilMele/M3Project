@@ -53,6 +53,11 @@ a {
     color: white;
 }
 
+.nav-link{
+    color:white; 
+
+}
+
 /* Table Styling */
 table {
     margin: 20px; 
