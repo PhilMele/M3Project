@@ -48,7 +48,7 @@
                 <a href="{{ url_for('read_submitted_application', grant_id=grantapplication.grant_id, grant_application_id=grantapplication.id) }}" class="btn btn-primary btn-sm">Open</a>
             {%else%}
             <!-- If not submitted -->
-                <a href="{{ url_for('apply_to_grant', grant_id=grantapplication.grant_id, grant_application_id=grantapplication.id) }}" class="btn btn-warning btn-sm">See & Edit</a>
+                <a href="{{ url_for('apply_to_grant', grant_id=grantapplication.grant_id, grant_application_id=grantapplication.id) }}" class="btn btn-primary btn-sm">Open</a>
             {%endif%}    
         </div>
     </div>

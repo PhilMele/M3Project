@@ -11,6 +11,7 @@ remove password check from login page
 remove uncommented stuff (grants-available)
 Set referrer to all return buttons
 make grants `active` for them to be displayed to users
+add possibility to make user granter or grantee in admin panel
 
 COLOUR PALETTE
 #264653

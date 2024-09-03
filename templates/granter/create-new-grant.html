@@ -1,18 +1,37 @@
 {% extends 'base/base.html' %}
 {%block content%}
-<h1>This is the admin panel</h1>
 
+<div class="top-header">
+    <h1 class="left-text">Create a new grant</h1>
+</div>
+<!-- Return to grants available page -->
+<a href="{{ url_for('granter_dashboard') }}">Return to Previous Page</a>
+<hr>
+
+<div class="row mb-2">
     <!-- Create form to add grant -->
-    <h2>Create Grant</h2>
-    <form method="POST" action="">
+    <div class="col-12">
+        <form method="POST" action="">
 
-        {{ grantform.csrf_token }}
-        {{grantform.hidden_tag()}}
-        {{grantform.grant_title.label}} {{grantform.grant_title}}
-        {{grantform.grant_description.label}} {{grantform.grant_description}}
-        {{grantform.grant_fund.label}} {{grantform.grant_fund}}
-        {{grantform.submit}}
-    </form>
+            {{ grantform.csrf_token }}
+            {{grantform.hidden_tag()}}
+            <div class="container">
+                <div class="row py-2">
+                    {{grantform.grant_title}}
+                </div>
+                <div class="row py-2">
+                    {{grantform.grant_description}}
+                </div>
+                
+                <div class="row py-2">
+                    {{grantform.grant_fund}}
+                </div>
+                
+                <button type="submit" class="btn btn-success btn-sm">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
 
     <!-- Create form to add questions -->
 

@@ -205,9 +205,9 @@ class MessagingForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class AddGrantForm(FlaskForm):
-    grant_title = StringField("Enter Grant Title", validators=[DataRequired(),])
-    grant_description = StringField("Enter Grant Description", validators=[DataRequired(),])
-    grant_fund = IntegerField("Enter Fund Value", validators=[DataRequired(),])
+    grant_title = StringField("Enter Grant Title", validators=[DataRequired()],render_kw={"placeholder": "Enter Grant Title"})
+    grant_description = StringField("Enter Grant Description", validators=[DataRequired()], render_kw={"placeholder": "Enter Description"})
+    grant_fund = IntegerField("Enter Fund Value", validators=[DataRequired(),], render_kw={"placeholder": "Enter Grant Value"})
     submit = SubmitField('Submit')
 
 class AddGrantQuestionForm(FlaskForm):
