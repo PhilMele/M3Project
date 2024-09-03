@@ -9,14 +9,19 @@ body {
     flex-direction: column;
     min-height: 100vh;
     width: 100%; 
-    margin: 0; 
-    padding: 0;
+    margin: 0;
+    padding: 0 10px;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 html, body {
     height: 100%;
+    width: 100%;
+    overflow-x: hidden;
 }
+
+
 
 h1{
     font-family: "Poppins", sans-serif;
@@ -24,8 +29,16 @@ h1{
 
 }
 
+h2{
+    padding-top:15px;
+}
+
 a {
     color: white;
+}
+
+.top-header{
+    margin:12px;
 }
 
 .center-text{
@@ -45,14 +58,16 @@ a {
 
 /* Custom Navbar Styling */
 .custom-navbar {
-    background-color: #264653;
+
     padding-left: 30px;
     padding-right: 30px;
 }
 
 /* Navbar Brand Styling */
 .navbar-brand {
-    color: white;
+    color:#264653;
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
 }
 
 .nav-link{
@@ -85,9 +100,14 @@ thead {
     background-color: #f2f2f2;
 }
 
+/* Bootstrap columns */
 .container {
     max-width: 100%;
     overflow-x: auto;
+}
+
+.table-content{
+    font-size: 12px;
 }
 
 /* Handle the table to prevent overflow */
@@ -99,7 +119,20 @@ thead {
 .btn-sm {
     font-size: 0.875rem; 
     padding: 0.25rem 0.5rem; 
+    width: 100%;
+    border-radius: 10px;
 }
+
+/* Dashboard */
+
+.username{
+    font-family: "Nerko One", cursive;
+    font-weight: 400;
+    font-size: 30px;
+    color:#F4A261;
+
+}
+
 
 
 /* Media Query */

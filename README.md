@@ -7,6 +7,7 @@ add extra panel for granter to see as grantee
 add admin section to change user type from grantee to granter
 IN Login form CSRF token message in browser console : ask Gareth.
 change .navbar-toggler-icon to white
+remove password check from login page
 
 COLOUR PALETTE
 #264653
@@ -45,6 +46,7 @@ App.py:
 Add filter in template: `| currency`
 
     {{ grantapplication.grant.grant_fund | currency }}
+
 
 **Login**
 `pip install Flask-Login`
