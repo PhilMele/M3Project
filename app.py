@@ -194,7 +194,7 @@ class UserLoginForm(FlaskForm):
     username = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
     email_address = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
     password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
-    submit = SubmitField("Register")
+    submit = SubmitField("Login")
 
     
 class MessagingForm(FlaskForm):
@@ -268,7 +268,6 @@ def index():
 
     if form.validate_on_submit():
         user = User.query.filter_by(username = form.username.data).first()
-        print("the user is")
         #if user exist confirm password
         if user:
             if check_password_hash(user.password, form.password.data):

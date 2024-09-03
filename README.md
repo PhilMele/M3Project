@@ -5,7 +5,7 @@ Set debug to false when in production
 add email system when application is rejected or approved or submitted
 add extra panel for granter to see as grantee
 add admin section to change user type from grantee to granter
-
+IN Login form CSRF token message in browser console : ask Gareth.
 
 COLOUR PALETTE
 #264653

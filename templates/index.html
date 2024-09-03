@@ -1,41 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funding Application Project</title>
-</head>
-<body>
+{% extends 'base/base.html' %}
+{% block content %}
 
-    <h1></h1>
-    <p>Login Page</p>
-    <a href="{{url_for('register')}}">Link to Register Page</a>
-
-        <!-- Flash messages section -->
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          <ul class=flashes>
-          {% for message in messages %}
-          <div class="alert alert-success fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-          {% endfor %}
-          </ul>
-        {% endif %}
-    {% endwith %}
-
+<div class="container mt-5">
+    <h1 class="center-text">Login Page</h1>
+    
     <form method="POST" action="">
         {{ form.csrf_token }}
-        {{form.hidden_tag()}}
-        {{form.username}}
-        {{form.email_address}}
-        {{form.password}}
-        {{form.submit}}
+        {{ form.hidden_tag() }}
 
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.email_address.label(class="form-label") }}
+                {{ form.email_address(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col center-text">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </div>
     </form>
-  {{users}}
-  {{users.email}}
-    
-</body>
-</html>
+
+    <div class="center-text">
+      <p>Don't have an account? Click <a href="{{ url_for('register') }}">here</a></p>
+    </div>
+
+    <!-- Display users (if needed) -->
+    <div class="mt-4">
+        {{ users }}
+        <p>{{ users.email }}</p>
+    </div>
+</div>
+
+{% endblock %}

@@ -13,10 +13,47 @@
 
     <!-- JavaScript -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-    {% if current_user.user_type == UserType.GRANTEE %}
-    <nav class="navbar custom-navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{url_for('dashboard')}}">Dashboard</a>
+    <!-- Check if current user is authenticated to display navbar -->
+    {% if current_user.is_authenticated %}
+      <!-- Navbar for current user as GRANTEE UserType -->
+      {% if current_user.user_type == UserType.GRANTEE %}
+      <nav class="navbar custom-navbar navbar-expand-lg navbar-light">
+          <a class="navbar-brand" href="{{url_for('dashboard')}}">Dashboard</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="{{url_for('grant_available')}}">Grants</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{url_for('manage_grant')}}">Manage Grants</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Account
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="">Account Details</a>
+                  <a class="dropdown-item" href="{{url_for('delete_user_account')}}">Delete Account</a>
+                  <a class="dropdown-item" href="">Contact Us</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+      </nav>
+      <!-- Navbar for current user as GRANTER UserType -->
+      {% else %}
+      <nav class="navbar custom-navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="{{url_for('granter_dashboard')}}">Granter Dashboard</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -24,10 +61,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="{{url_for('grant_available')}}">Grants</a>
+              <a class="nav-link" href="{{url_for('grant_available')}}">Create A New Grant</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="{{url_for('manage_grant')}}">Manage Grants</a>
+              <a class="nav-link" href="{{url_for('granter_dashboard')}}">Manage Grants</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,42 +78,15 @@
             </li>
           </ul>
         </div>
-    </nav>
-
-    {% else %}
-    <nav class="navbar custom-navbar navbar-expand-lg navbar-light">
-      <a class="navbar-brand" href="{{url_for('granter_dashboard')}}">Granter Dashboard</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="{{url_for('grant_available')}}">Create A New Grant</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{{url_for('granter_dashboard')}}">Manage Grants</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Account
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="">Account Details</a>
-              <a class="dropdown-item" href="{{url_for('delete_user_account')}}">Delete Account</a>
-              <a class="dropdown-item" href="">Contact Us</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    {% endif %}
+      </nav>
+      {% endif %}
+    {%endif%}
  
    <!-- Navbar ends -->
 
   </head>
   <body>
+    <!-- Displays flask messages -->
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul class="flashes">
@@ -89,8 +99,11 @@
         </ul>
       {% endif %}
     {% endwith %}
+    <!-- Page content -->
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
+
+    <!-- Footer content -->
       {% block footer %}
       &copy; Copyright 2024 by <a href="">you</a>.
       {% endblock %}
