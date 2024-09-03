@@ -1,39 +1,54 @@
 {% extends 'base/base.html' %}
 {%block content%}
-<h1>This is the dashboard for Granter</h1>
 
-<h2><a href="{{ url_for('create_new_grant_question') }}">Create A New Grant</a></h2>
+<hr>
+<div class="top-header">
+    <h1 class="left-text">Your Dashboard</h1>
+</div>
+<h2 class="center-text">The Grant Factory</h2>
+<div class="row left-text py-2">
+    <div class="col-8 ">Create A New Grant</div>
+    <div class="col-4">
+        <a href="{{ url_for('create_new_grant') }}" class="btn btn-primary btn-sm">Apply</a>
+    </div>
+</div>
 
-<h2>See Grants</h2>
+<hr>
+
+
+<h2 class="center-text">Grants Available</h2>
 <!-- Loop of grants applied + status -->
-<table style="margin-left: 20px;"> 
-    <!-- Table headers -->
-        <th> 
-            <tr>     
-                <td>Grant</td> 
-                <td>Fund</td> 
-                <td>Status</td>
-                <td>See Grant</td>
-                <td>See Applications</td>
-                <td>Delete</td> 
-            </tr> 
-        </th> 
-          
-    <!-- For loop logic  -->
+<div class="container mt-6">
+    <!-- Header Row -->
+    <div class="row center-text border-bottom pb-2">
+
+        <div class="col-6 font-weight-bold">Fund</div>
+        <div class="col-6 font-weight-bold">Status</div>
+    </div>
+
+    <!-- For loop to generate rows -->
     {%for grant in grants%}
-    <!-- Table rows -->
-    <tr>
-        <td>{{grant.grant_title}} + {{grant.id}}</td>
-        <td>{{grant.grant_fund}}</td>
-        <td>Active</td>
-        <td><a href="{{ url_for('show_grant', grant_id=grant.id) }}">Show Grant Button</a></td>
-        <td><a href="{{ url_for('show_all_grant_application', grant_id=grant.id) }}">Link to applications list</a></td>  
-        <td>Delete button</td>        
-    </tr>
-    {%endfor%}
+    <div class="row table-content center-text border-bottom py-2">
+        <div class="row">
+            <div class="grant-title-col col-12 d-flex">{{grant.grant_title}}</div>
+            <div class="col-6 d-flex justify-content-center">{{ grant.grant_fund | currency }}</div>
+            <div class="col-6 d-flex justify-content-center">
+            ACTIVE
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                <a href="{{ url_for('show_grant', grant_id=grant.id) }}" class="btn btn-warning btn-sm">See & Edit</a>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                <a href="{{ url_for('show_all_grant_application', grant_id=grant.id) }}" class="btn bg-dark text-white btn-sm">Applications</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 
-
-</table> 
+<hr>
 
 <h2>Grant Management</h2>
 

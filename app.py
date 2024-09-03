@@ -647,6 +647,33 @@ def granter_dashboard():
 
 
 #Create a new grant
+# @app.route("/create-new-grant", methods=["GET","POST"])
+# @login_required
+# def create_new_grant():
+#     if current_user.user_type != UserType.GRANTER:
+#         return redirect(url_for('dashboard'))
+#     #form to add grants
+#     grantform = AddGrantForm()
+#     if grantform.validate_on_submit():
+#         newgrant = Grant(
+#             grant_title = grantform.grant_title.data,
+#             grant_description = grantform.grant_description.data,
+#             grant_fund = grantform.grant_fund.data
+#         )
+#         db.session.add(newgrant)
+#         db.session.commit()
+#         flash('Grant has been added', 'success')
+#         return redirect(url_for('admin'))
+#     else:
+#         print("the form is not valid")
+
+#     #create for loop to list all grants available
+#     for grant in grants:
+#         print(grant)
+
+#     return render_template('granter/show-grant.html', grants=grants, grantform=grantform)
+
+#Create a new grant
 @app.route("/create-new-grant", methods=["GET","POST"])
 @login_required
 def create_new_grant():
@@ -663,16 +690,10 @@ def create_new_grant():
         db.session.add(newgrant)
         db.session.commit()
         flash('Grant has been added', 'success')
-        return redirect(url_for('admin'))
+        return redirect(url_for('show_grant', grant_id=newgrant.id))
     else:
         print("the form is not valid")
-
-    #create for loop to list all grants available
-    for grant in grants:
-        print(grant)
-
-    return render_template('granter/show-grant.html', grants=grants, grantform=grantform)
-
+    return render_template('granter/create-new-grant.html', grantform=grantform)
 
 #Show grant_id content
 @app.route('/show-grant/<int:grant_id>', methods=['GET', 'POST'])

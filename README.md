@@ -10,6 +10,7 @@ change .navbar-toggler-icon to white
 remove password check from login page
 remove uncommented stuff (grants-available)
 Set referrer to all return buttons
+make grants `active` for them to be displayed to users
 
 COLOUR PALETTE
 #264653
