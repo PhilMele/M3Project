@@ -1,52 +1,97 @@
 {% extends 'base/base.html' %}
 {%block content%}
-<h1>This is show_grant.id page</h1>
 
-<!-- List users -->
+<!-- Grant Title -->
+<div class="top-header">
+    <h1 class="left-text">{{grant.grant_title}}</h1>
+</div>
+<!-- Return to grants available page -->
+<a href="{{ url_for('granter_dashboard') }}">Back to dashboard</a>
 
-<!-- List Grants -->
-<h2>Grant Name</h2>
-
-<table style="margin-left: 20px;"> 
-
-    <!-- Table headers -->
-        <th> 
-            <tr>     
-                <td>Questions</td> 
-                <td>Edit</td> 
-                <td>Delete</td> 
-            </tr> 
-        </th> 
-          
-    <!-- For loop logic  -->
-       {%for question in list_question%}
-       
-       
-       
-        <!-- table rows -->
-        <tr> 
-            <td>{{question.question}}</td> 
-            <td><a href="{{ url_for('edit_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Edit</a></td>   
-            <td><a href="{{ url_for('delete_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Delete</a></td>  
-        </tr> 
-        {%endfor%}
-
-</table> 
-
-    {{answers}}
+<hr>
 
 
+<!-- Show grant details -->
 
+<div class="row mb-2 center-text">
+    <div class="col-6 font-weight-bold">
+         Fund 
+    </div>
+    <div class="col-6 font-weight-bold">
+        Status
+    </div>
+</div>
+<div class="row mb-2 center-text">
+    <div class="col-6">
+        <!-- Fund Value -->
+        <p>{{grant.grant_fund | currency}}</p>
+    </div>
+    
+    <div class="col-6">
+        <!-- Status Value -->
+        <p>Active</p>
+    </div>
+</div>
+<div class="row mb-2 center-text">
+    <div class="col-12 font-weight-bold">
+    <!-- Description -->
+        Description
+    </div>
+    
+</div>
+<div class="row mb-2 center-text">
+    <div class="col-12">
+    <!-- Description Text-->
+        <p>{{grant.grant_description}}</p>
+    </div>
+</div>
+<hr>
 
-    <!-- Create form to add questions -->
-    <h2>Add Question form button</h2>
+<!-- Create form to add questions -->
+    <h2>Add Question</h2>
     <form method="POST" action="">
         {{ addquestionform.csrf_token }}
         {{addquestionform.hidden_tag()}}
-        {{addquestionform.question}}
-        {{addquestionform.submit}}
+        <div class="container">
+            <div class="row py-2">
+                {{addquestionform.question}}
+            </div>
+            <div class="row py-2">
+                <button type="submit" class="btn btn-success btn-sm w-100">Submit</button>
+            </div>
+        </div>
     </form>
 
+<!-- List of questions -->
+
+<hr>
+<div class="row mb-2">
+    <div class="col-12">
+         <h2>List of Questions</h2>
+    </div>
+</div>
+{%for question in list_question%}
+<div class="row mb-2">
+    <div class="col-12">
+        <p>Question: {{question.question}}</p>
+    </div>
+</div>
+<div class="row mb-2 center-text">
+    <div class="col-6">
+        <a class="btn btn-primary btn-sm" href="{{ url_for('edit_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Edit</a>
+    </div>
     
+    <div class="col-6">
+        <a class="btn btn-danger btn-sm" href="{{ url_for('delete_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Delete</a>
+    </div>
+</div>
+{%endfor%}
+
+
+    <hr> 
+  <!-- Return to grants available page -->
+<a href="{{ url_for('granter_dashboard') }}">Back to dashboard</a>
+
+ 
 
 {%endblock%}
