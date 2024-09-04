@@ -92,6 +92,7 @@ class Grant(db.Model):
     grant_description = db.Column(db.String(200), nullable=False)
     grant_fund = db.Column(db.Integer, nullable=False, default=0)
     created_on = created_on = db.Column(db.DateTime, default=datetime.utcnow)
+    is_active = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f'<{self.grant_title} {self.grant_description} {self.grant_fund}>'
@@ -215,7 +216,7 @@ class AddGrantQuestionForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class EditGrantQuestionForm(FlaskForm):
-    question = StringField("Enter Question", validators=[DataRequired(),])
+    question = TextAreaField("Enter Question", validators=[DataRequired(),Length(max=200)], render_kw={"maxlength": 200, "class": "form-control", "placeholder": "Enter Grant Title", "rows": 3})
     submit = SubmitField('Submit')
 
 class AnswerGrantQuestionForm(FlaskForm):

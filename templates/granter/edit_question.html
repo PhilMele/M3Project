@@ -1,20 +1,28 @@
 {% extends 'base/base.html' %}
 {%block content%}
-<h1>Edit Question</h1>
 
-<h2>{{question.grant.grant_title}}</h2>
+<div class="top-header">
+    <h1 class="left-text">Edit Question</h1>
+</div>
+<!-- Return to grants available page -->
+<a href="{{ url_for('show_grant', grant_id=question.grant_id) }}">Return to Previous Page</a>
+<hr>
 
-<!-- List Grants -->
-<h2>{{question.question}}</h2>
-
+<!-- Current Question to Edit -->
     <!-- Edit grant question form  -->
    
     <form method="POST" action="{{ url_for('edit_show_grant_question', grant_id=question.grant_id, grantquestion_id=question.id) }}">
         {{ editquestionform.csrf_token }}
         {{ editquestionform.hidden_tag() }}
-        <label for="question">Question:</label><br>
-        {{ editquestionform.question }}<br>
-        {{editquestionform.submit()}}
+        <div class="container">
+            <div class="row py-2">
+                {{ editquestionform.question }}
+            </div>
+            <div class="row py-2">
+                <button type="submit" class="btn btn-success btn-sm w-100">Edit</button>
+            </div>
+        </div>
+        <br>
     </form>
 
 
