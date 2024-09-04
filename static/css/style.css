@@ -61,6 +61,13 @@ a {
     font-weight: bold
 }
 
+.error-message{
+    display: none; 
+    color: red;
+}
+
+
+
 /* Navbar Styling*/
 
 /* Custom Navbar Styling */

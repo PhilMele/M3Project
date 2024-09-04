@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
 from wtforms.form import Form
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, StringField, PasswordField, SubmitField, SelectField, IntegerField
+from wtforms import BooleanField, StringField, PasswordField, SubmitField, SelectField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, InputRequired, Length, ValidationError,Regexp
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -205,9 +205,9 @@ class MessagingForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class AddGrantForm(FlaskForm):
-    grant_title = StringField("Enter Grant Title", validators=[DataRequired()],render_kw={"placeholder": "Enter Grant Title"})
-    grant_description = StringField("Enter Grant Description", validators=[DataRequired()], render_kw={"placeholder": "Enter Description"})
-    grant_fund = IntegerField("Enter Fund Value", validators=[DataRequired(),], render_kw={"placeholder": "Enter Grant Value"})
+    grant_title = TextAreaField("Enter Grant Title", validators=[DataRequired(), Length(max=200)], render_kw={"maxlength": 200, "class": "form-control", "placeholder": "Enter Grant Title", "rows": 1})
+    grant_description = TextAreaField("Enter Grant Description", validators=[DataRequired(), Length(max=200)], render_kw={"maxlength": 200, "class": "form-control", "placeholder": "Enter Description", "rows": 3})
+    grant_fund = IntegerField("Enter Fund Value", validators=[DataRequired()], render_kw={"class": "form-control", "placeholder": "Enter Grant Value"})
     submit = SubmitField('Submit')
 
 class AddGrantQuestionForm(FlaskForm):

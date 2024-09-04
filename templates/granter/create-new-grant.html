@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %}
-{%block content%}
+{% block content %}
 
 <div class="top-header">
     <h1 class="left-text">Create a new grant</h1>
@@ -11,28 +11,50 @@
 <div class="row mb-2">
     <!-- Create form to add grant -->
     <div class="col-12">
-        <form method="POST" action="">
+        <form method="POST" action="" id="grantForm">
 
             {{ grantform.csrf_token }}
-            {{grantform.hidden_tag()}}
+            {{ grantform.hidden_tag() }}
             <div class="container">
                 <div class="row py-2">
-                    {{grantform.grant_title}}
+                    {{ grantform.grant_title }}
                 </div>
                 <div class="row py-2">
-                    {{grantform.grant_description}}
+                    {{ grantform.grant_description }}
                 </div>
                 
                 <div class="row py-2">
-                    {{grantform.grant_fund}}
+                    {{ grantform.grant_fund }}
+                    <!-- error message hidden -->
+                    <span id="error-message" class="error-message">Please enter a value between -2,147,483,648 and 2,147,483,647.</span>
                 </div>
                 
-                <button type="submit" class="btn btn-success btn-sm">Create</button>
+                <button type="submit" class="btn btn-success btn-sm" id="submitBtn">Create</button>
             </div>
         </form>
     </div>
 </div>
 
-    <!-- Create form to add questions -->
+<!-- Javascript that validates if grant fund is within integer range -->
+<script>
+    const grantFundInput = document.getElementById('{{ grantform.grant_fund.id }}');
+    const errorMessage = document.getElementById('error-message');
+    const submitBtn = document.getElementById('submitBtn');
 
-{%endblock%}
+    const minInt = -2147483648;
+    const maxInt = 2147483647;
+
+    grantFundInput.addEventListener('input', function() {
+        const value = parseInt(grantFundInput.value, 10);
+
+        if (isNaN(value) || value < minInt || value > maxInt) {
+            errorMessage.style.display = 'inline';
+            submitBtn.disabled = true; 
+        } else {
+            errorMessage.style.display = 'none'; 
+            submitBtn.disabled = false;
+        }
+    });
+</script>
+
+{% endblock %}
