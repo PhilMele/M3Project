@@ -31,24 +31,28 @@
     <div class="container-fluid">
         <div class="row table-content center-text border-bottom py-2">
             <!-- Grant Title Row -->
-            <div class="col-12 d-flex justify-content-center">
+            <div class="col-12 d-flex left-text">
                 <h5>{{grant.grant_title}}</h5>
             </div>
             
             <!-- Grant Fund and Status Row -->
-            <div class="col-6 d-flex justify-content-center">
-                {{ grant.grant_fund | currency }}
-            </div>
-            <div class="col-6 d-flex justify-content-center">
-                ACTIVE
+            <div class="row row-padding-bottom">
+                <div class="col-6 d-flex justify-content-center">
+                    {{ grant.grant_fund | currency }}
+                </div>
+                <div class="col-6 d-flex justify-content-center align-items-center">
+                    <span class="status-colour">Active</span>
+                </div>
             </div>
             
             <!-- Buttons Row -->
-            <div class="col-6 d-flex justify-content-center">
-                <a href="{{ url_for('show_grant', grant_id=grant.id) }}" class="btn btn-warning btn-sm">See & Edit</a>
-            </div>
-            <div class="col-6 d-flex justify-content-center">
-                <a href="{{ url_for('show_all_grant_application', grant_id=grant.id) }}" class="btn bg-dark text-white btn-sm">Applications</a>
+            <div class="row">
+                <div class="col-6 d-flex justify-content-center">
+                    <a href="{{ url_for('show_grant', grant_id=grant.id) }}" class="btn btn-warning btn-sm">See & Edit</a>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <a href="{{ url_for('show_all_grant_application', grant_id=grant.id) }}" class="btn bg-dark text-white btn-sm">Applications</a>
+                </div>
             </div>
         </div>
     </div>

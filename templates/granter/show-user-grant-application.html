@@ -1,23 +1,51 @@
 {% extends 'base/base.html' %}
 {%block content%}
-Grant Title: Title<br/>
+<div class="top-header">
+    <h1 class="left-text">GRant Title</h1>
+</div>
+
+<a href="{{ url_for('show_all_grant_application', grant_id=grant_id) }}">Return to Previous Page</a>
+
+<hr>
+
     <!-- Loop of question + answers provided -->
     {% for questionanswer in grant_question_user_answer %}
-
-        <!-- Loop of question + answers provided -->
-        <li>
-            <strong>Question:</strong> {{ questionanswer.question }}<br/>
+    <!-- Loop of question + answers provided -->
+    <div class="question-answer-section">
+        <div class="question-section">
+            <strong>Q:</strong> <span class="question">{{ questionanswer.question }}</span>
+        </div>
+        
+        <div class="answer-section">
             {% for answer in questionanswer.answer %}
-                <strong>Answer:</strong> {{ answer }}<br/>
+                <strong>Y:</strong> {{ answer }}
             {% endfor %}
-        </li>
+        </div>
+    </div>
+    <hr>
     {% endfor %}
 
-<!-- Add  to return or delete(and return to previous page) -->
+    <hr>
 
- <a href="{{ url_for('show_all_grant_application', grant_id=grant_id) }}">Return</a>
- <a href="{{ url_for('reject_user_grant_application_id', grant_id=grant_id, grant_application_id=grant_application_id) }}">Reject Application</a>
- <a href="{{ url_for('approve_user_grant_application_id', grant_id=grant_id, grant_application_id=grant_application_id) }}">Approve Application</a>
+    <div class="container-fluid">
+        <div class="row table-content center-text py-2">
+           
+            <!-- Grant Fund and Status Row -->
+            <div class="col-6 d-flex justify-content-center">
+                <a href="{{ url_for('reject_user_grant_application_id', grant_id=grant_id, grant_application_id=grant_application_id) }}" class="btn btn-danger btn-sm">Reject Application</a>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                <a href="{{ url_for('approve_user_grant_application_id', grant_id=grant_id, grant_application_id=grant_application_id) }}" class="btn btn-success btn-sm">Approve Application</a>
+            </div>
+
+        </div>
+    </div>
+
+ <hr>
+
+ <a href="{{ url_for('show_all_grant_application', grant_id=grant_id) }}">Return to Previous Page</a>
+
+ 
 
 {%endblock%}
 

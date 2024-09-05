@@ -133,9 +133,40 @@ thead {
     color: #F4A261;
 }
 
+.status-colour {
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 100%; 
+    height: 100%; 
+    padding: 0;
+    margin: 0; 
+    box-sizing: border-box; 
+}
+
+.row-padding-bottom{
+    padding-bottom:5px;
+}
+
+
 /* Question */
 .question {
     font-style: italic;
+}
+
+/* Questions and Answer display */
+.question-answer-section {
+    margin-bottom: 20px; 
+}
+
+.question-section {
+    margin-bottom: 10px; 
+}
+
+.answer-section {
+    margin-bottom: 15px;
 }
 
 /* Media Query */
