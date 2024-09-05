@@ -801,10 +801,12 @@ def show_all_grant_application(grant_id):
     if current_user.user_type != UserType.GRANTER:
         return redirect(url_for('dashboard'))
     applications = GrantApplication.query.filter_by(grant_id=grant_id, is_submitted = True)
+    grant = Grant.query.filter_by(id=grant_id).first()
     for grantapplication in applications:
         print(f"grant id  = {grantapplication.grant_id} +applications = {grantapplication.id} + user_id = {grantapplication.user_id} ")
 
     return render_template('granter/show-all-grant-application.html',
+    grant=grant,
     grant_id=grant_id,
     applications=applications)
 

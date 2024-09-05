@@ -1,8 +1,6 @@
 /* General */
 body {
-    /* background-color: #2A9D8F; */
     background-color:#264653;
-    
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-size: 17px;
@@ -23,83 +21,75 @@ html, body {
     overflow-x: hidden;
 }
 
-
-
-h1{
+h1 {
     font-family: "Poppins", sans-serif;
     font-weight: 800;
-
 }
 
-h2{
-    padding-top:15px;
+h2 {
+    padding-top: 15px;
 }
 
 a {
     color: white;
 }
 
-.top-header{
+.top-header {
     margin: 12px;
     background-color: #264653;
     padding: 5px;
     border-radius: 5px;
     color: #E9C46A;
-    width: fit-content
+    width: fit-content;
 }
 
-.center-text{
+.center-text {
     text-align: center;
 }
 
-.left-text{
+.left-text {
     text-align: left;
 }
 
-.grant-title-col{
+.grant-title-col {
     text-align: left;
-    font-weight: bold
+    font-weight: bold;
 }
 
-.error-message{
+.error-message {
     display: none; 
     color: red;
 }
 
-.font-weight-bold{
+.font-weight-bold {
     font-weight: bold;
 }
 
-
-
-/* Navbar Styling*/
-
-/* Custom Navbar Styling */
+/* Navbar Styling */
 .custom-navbar {
-
     padding-left: 30px;
     padding-right: 30px;
 }
 
 /* Navbar Brand Styling */
 .navbar-brand {
-    color:#264653;
+    color: #264653;
     font-family: "Poppins", sans-serif;
     font-weight: 800;
 }
 
-.nav-link{
-    color:white; 
+.nav-link {
+    color: white; 
 }
 
 .dropdown-menu {
     background-color: transparent;
     border: none;
-    color:white;
+    color: white;
 }
 
 .dropdown-item {
-    color:white;
+    color: white;
 }
 
 /* Table Styling */
@@ -119,22 +109,15 @@ thead {
 }
 
 /* Bootstrap columns */
-.container {
-    max-width: 100%;
-    overflow-x: auto;
+.container-fluid {
+    padding-right: 0;
+    padding-left: 0;
 }
 
-.table-content{
+.table-content {
     font-size: 12px;
 }
 
-
-/* Handle the table to prevent overflow */
-.table-responsive {
-    width: 100%;
-}
-
-/* Ensure buttons and content fit within columns */
 .btn-sm {
     font-size: 0.875rem; 
     padding-bottom: 5px;
@@ -143,27 +126,23 @@ thead {
 }
 
 /* Dashboard */
-
-.username{
+.username {
     font-family: "Nerko One", cursive;
     font-weight: 400;
     font-size: 30px;
-    color:#F4A261;
-
+    color: #F4A261;
 }
 
 /* Question */
-.question{
+.question {
     font-style: italic;
 }
-
-
 
 /* Media Query */
 @media (max-width: 320px) {
     .row {
         display: flex;
-        flex-wrap: nowrap;
+        flex-wrap: wrap; /* Allow rows to wrap */
     }
     .col-3 {
         flex: 1;
