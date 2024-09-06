@@ -41,7 +41,11 @@
                     {{ grant.grant_fund | currency }}
                 </div>
                 <div class="col-6 d-flex justify-content-center align-items-center">
-                    <span class="status-colour">Active</span>
+                    {%if grant.is_active%}
+                    <span class="status-colour-green">Active</span>
+                    {%else%}
+                    <span class="status-colour-red">Not active</span>
+                    {%endif%}
                 </div>
             </div>
             

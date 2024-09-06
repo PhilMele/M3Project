@@ -9,8 +9,22 @@
 <a href="{{ url_for('granter_dashboard') }}">Back to dashboard</a>
 
 <hr>
+<!-- Activate/Deactivate Grant -->
+<div class="row mb-2 center-text">
+    <div class="col-6">
+        Switch Status:
+    </div>
+    
+    <div class="col-6 d-flex justify-content-center align-items-center">
+        {%if grant.is_active%}
+        <a href="{{ url_for('deactivate_grant', grant_id=grant.id)}}" class="btn btn-danger btn-sm">Deactivate</a>
+        {%else%}
+        <a href="{{ url_for('activate_grant', grant_id=grant.id)}}" class="btn btn-success btn-sm">Activate</a>
+        {%endif%}
+    </div>
+</div>
 
-
+<hr>
 <!-- Show grant details -->
 
 <div class="row mb-2 center-text">
@@ -29,7 +43,11 @@
     
     <div class="col-6">
         <!-- Status Value -->
-        <p>{{grant.is_active}}</p>
+        {%if grant.is_active%}
+        <span class="status-colour-green">Active</span>
+        {%else%}
+        <span class="status-colour-red">Not active</span>
+        {%endif%}
     </div>
 </div>
 <div class="row mb-2 center-text">
@@ -46,21 +64,6 @@
     </div>
 </div>
 <hr>
-
-<!-- Create form to add questions -->
-    <h2>Add Question</h2>
-    <form method="POST" action="">
-        {{ addquestionform.csrf_token }}
-        {{addquestionform.hidden_tag()}}
-        <div class="container">
-            <div class="row py-2">
-                {{addquestionform.question}}
-            </div>
-            <div class="row py-2">
-                <button type="submit" class="btn btn-success btn-sm w-100">Submit</button>
-            </div>
-        </div>
-    </form>
 
 <!-- List of questions -->
 

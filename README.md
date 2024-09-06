@@ -13,11 +13,11 @@ Set referrer to all return buttons
 make grants `active` for them to be displayed to users
 add possibility to make user granter or grantee in admin panel
 Say that in addgrant and other models where therei s interger, the value is capped to -2,147,483,648 to 2,147,483,647. Adding superior numbers would cause a `400` error. To avoid getting the error, I added some javascript at the bottom of the page that checks and disbale submit button if the value is higher than it should.
-add active to Grant model
 add button to activate grant from granter dashboard + show_grant page
 only show activated grant to grantee
 add design of if is false or if true for active grant
 Add design for 500 error pages
+Add code for is_active (only did design) including granter dashboard
 
 COLOUR PALETTE
 #264653

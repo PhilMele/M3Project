@@ -742,6 +742,31 @@ def show_grant(grant_id):
        
         )
 
+@app.route("/activate-grant/<int:grant_id>", methods=['GET', 'POST'])
+@login_required
+def activate_grant(grant_id):
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
+
+    grant = Grant.query.get_or_404(grant_id)
+    grant.is_active = True
+    db.session.commit()
+    return redirect(url_for('show_grant', grant_id=grant_id))
+    
+
+@app.route("/deactivate-grant/<int:grant_id>", methods=['GET', 'POST'])
+@login_required
+def deactivate_grant(grant_id):
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
+
+    grant = Grant.query.get_or_404(grant_id)
+    grant.is_active = False
+    db.session.commit()
+    return redirect(url_for('show_grant', grant_id=grant_id))
+    
+
+
 @app.route("/create-new-grant/", methods=["GET","POST"])
 @login_required
 def create_new_grant_question():
@@ -762,6 +787,7 @@ def create_new_grant_question():
     else:
         print("the form is not valid")
     return render_template('granter/create-new-grant.html', grantform=grantform)
+
 
 
 @app.route('/show_grant/<int:grant_id>/questions/<int:grantquestion_id>/edit',methods=['GET', 'POST'])
