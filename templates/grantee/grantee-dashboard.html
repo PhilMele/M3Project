@@ -33,13 +33,13 @@
         <div class="col-4 d-flex justify-content-center">{{ grantapplication.grant.grant_fund | currency }}</div>
         <div class="col-4 d-flex justify-content-center">
             {% if grantapplication.is_approved %}
-                <p>Approved</p>
+            <span class="status-colour-green">Approved</span>
             {% elif grantapplication.is_rejected %}
-                <p>Rejected</p>
+            <span class="status-colour-black">Rejected</span>
             {% elif grantapplication.is_submitted %}
-                <p>Submitted</p>
+            <span class="status-colour-amber">Submitted</span>
             {% else %}
-                <p>Incomplete</p>
+            <span class="status-colour-red">Not Submitted</span>
             {% endif %}
         </div>
         <div class="col-4 d-flex justify-content-center">

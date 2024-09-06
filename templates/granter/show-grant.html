@@ -12,7 +12,7 @@
 <!-- Activate/Deactivate Grant -->
 <div class="row mb-2 center-text">
     <div class="col-6">
-        Switch Status:
+        Click to switch status to:
     </div>
     
     <div class="col-6 d-flex justify-content-center align-items-center">
@@ -64,6 +64,21 @@
     </div>
 </div>
 <hr>
+
+<!-- Create form to add questions -->
+<h2>Add Question</h2>
+<form method="POST" action="">
+    {{ addquestionform.csrf_token }}
+    {{addquestionform.hidden_tag()}}
+    <div class="container">
+        <div class="row py-2">
+            {{addquestionform.question}}
+        </div>
+        <div class="row py-2">
+            <button type="submit" class="btn btn-success btn-sm w-100">Submit</button>
+        </div>
+    </div>
+</form>
 
 <!-- List of questions -->
 

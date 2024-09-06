@@ -373,7 +373,7 @@ def dashboard():
 @app.route("/grants-available")
 @login_required
 def grant_available():
-    grants = Grant.query.all()
+    grants = Grant.query.filter_by(is_active=True)
     existing_applications = GrantApplication.query.filter_by(user_id=current_user.id).all()
 
     # search if user has already created an application (look up for existing id)

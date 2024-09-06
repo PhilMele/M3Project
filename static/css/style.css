@@ -140,7 +140,7 @@ thead {
     align-items: center;
     border-radius: 10px;
     width: 100%; 
-    height: 100%; 
+ 
     padding: 0;
     margin: 0; 
     box-sizing: border-box; 
@@ -153,7 +153,46 @@ thead {
     align-items: center;
     border-radius: 10px;
     width: 100%; 
-    height: 100%; 
+ 
+    padding: 0;
+    margin: 0; 
+    box-sizing: border-box; 
+}
+
+.status-colour-amber {
+    background-color: orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 100%; 
+ 
+    padding: 0;
+    margin: 0; 
+    box-sizing: border-box; 
+}
+
+.status-colour-black {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 100%; 
+ 
+    padding: 0;
+    margin: 0; 
+    box-sizing: border-box; 
+}
+
+.status-colour-gray {
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 100%; 
+ 
     padding: 0;
     margin: 0; 
     box-sizing: border-box; 
