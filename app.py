@@ -169,7 +169,6 @@ class UserRegisterForm(FlaskForm):
     )
     
     company_name = StringField("Enter your company name", validators=[Length(max=200)], render_kw={"placeholder": "Company Name"})
-    user_type = SelectField("Select User Type", choices=[(UserType.GRANTEE.value, "Grantee"), (UserType.GRANTER.value, "Granter")], validators=[DataRequired()])
     submit = SubmitField("Register")
 
     def validate_username(self, username):
@@ -181,8 +180,7 @@ class UserLoginForm(FlaskForm):
     username = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
     submit = SubmitField("Login")
-
-    
+   
 class MessagingForm(FlaskForm):
     #TODO: automatically add username without user input later on
     username = StringField("Enter username", validators=[DataRequired(),])
@@ -254,8 +252,7 @@ def change_user_status(user_id):
 @app.route("/", methods=["GET","POST"])
 def index():
     form = UserLoginForm()
-    users = User.query.all()
-
+   
     if form.validate_on_submit():
         user = User.query.filter_by(username = form.username.data).first()
         #if user exist confirm password
@@ -273,7 +270,7 @@ def index():
             flash("The user does not exist")
             print("The user does not exist")
 
-    return render_template('index.html', form=form, users=users)
+    return render_template('index.html', form=form)
 
 #register page
 @app.route("/register", methods=["GET", "POST"])
@@ -301,7 +298,6 @@ def register():
             password=hashed_password,
             email=form.email_address.data, 
             company_name=form.company_name.data,
-            user_type=UserType(form.user_type.data)
         )
       
         db.session.add(new_user)

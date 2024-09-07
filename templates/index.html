@@ -29,15 +29,12 @@
         </div>
     </form>
 
+    <hr>
+
     <div class="center-text">
       <p>Don't have an account? Click <a href="{{ url_for('register') }}">here</a></p>
     </div>
 
-    <!-- Display users (if needed) -->
-    <div class="mt-4">
-        {{ users }}
-        <p>{{ users.email }}</p>
-    </div>
 </div>
 
 {% endblock %}
