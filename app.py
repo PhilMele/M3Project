@@ -143,20 +143,6 @@ class GrantAnswer(db.Model):
          return f'<GrantAnswer: {self.grant_question} {self.answer}>'
 
 #Forms
-# class UserRegisterForm(FlaskForm):
-#     username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
-#     email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
-#     password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
-#     company_name = StringField("Enter your company name", validators=[Length(max=200)], render_kw={"placeholder": "Company Name"})
-#     user_type = SelectField("Select User Type", choices=[(UserType.GRANTEE.value, "Grantee"), (UserType.GRANTER.value, "Granter")], validators=[DataRequired()])
-#     submit = SubmitField("Register")
-
-#     #checks if username already exists: credit to Arpan Neupane's tutorial on Youtube
-#     def validate_username(self,username):
-#         existing_user_username = User.query.filter_by(username=username.data).first()
-
-#         if existing_user_username:
-#             raise ValidationError("This username is already used")
 
 class UserRegisterForm(FlaskForm):
     username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
@@ -193,7 +179,6 @@ class UserRegisterForm(FlaskForm):
 
 class UserLoginForm(FlaskForm):
     username = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
-    email_address = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
     password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
     submit = SubmitField("Login")
 
@@ -241,32 +226,28 @@ def currency_filter(value):
 @login_required
 def admin():
     #list users
+    users = User.query.order_by(User.id).all()
     #list grants
     grants = Grant.query.all()
     print(grants)
 
-    #form to add grants
-    grantform = AddGrantForm()
-    if grantform.validate_on_submit():
-        newgrant = Grant(
-            grant_title = grantform.grant_title.data,
-            grant_description = grantform.grant_description.data,
-            grant_fund = grantform.grant_fund.data
-        )
-        db.session.add(newgrant)
-        db.session.commit()
-        flash('Grant has been added', 'success')
-        return redirect(url_for('admin'))
+    return render_template('admin/admin.html', 
+    grants=grants, 
+    users=users)
+
+@login_required
+@app.route("/change-user-status/<int:user_id>", methods=["GET", "POST"])
+def change_user_status(user_id):
+    selected_user = User.query.get_or_404(user_id)
+    print(f"selected_user = {selected_user}")
+    if selected_user.user_type == UserType.GRANTEE:
+        selected_user.user_type = UserType.GRANTER
     else:
-        print("the form is not valid")
-
-    #create for loop to list all grants available
-    for grant in grants:
-        print(grant)
+        selected_user.user_type = UserType.GRANTEE
         
+    db.session.commit()
+    return redirect(url_for("admin"))
 
-
-    return render_template('admin/admin.html', grants=grants, grantform=grantform)
 
 # Authentication logic
 #Index page is login page
@@ -291,9 +272,6 @@ def index():
         else:
             flash("The user does not exist")
             print("The user does not exist")
-
-    #form to add grants
-
 
     return render_template('index.html', form=form, users=users)
 

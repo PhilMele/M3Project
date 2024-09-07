@@ -3,47 +3,39 @@
 <h1>This is the admin panel</h1>
 
 <!-- List users -->
+<div class="row mb-2 center-text">
+    <div class="col-4">
+        Username
+    </div>
+    <div class="col-4">
+        Current Status
+    </div>
+    <div class="col-4 d-flex justify-content-center align-items-center">
+        Change Status To:
+    </div>
+</div>
+{%for user in users %}
+<div class="row mb-2 center-text">
+    <div class="col-4">
+        {{user.username}}
+    </div>
+    <div class="col-4 d-flex justify-content-center align-items-center">
+        {%if user.user_type == UserType.GRANTEE%}
+        <span class="btn btn-primary btn-sm">Grantee</span>
+        {%else%}
+        <span class="btn btn-secondary btn-sm">Granter</span>
+        {%endif%}
+    </div>
+    <div class="col-4 d-flex justify-content-center align-items-center">
+        {%if user.user_type == UserType.GRANTEE%}
+        <a href="{{ url_for('change_user_status', user_id = user.id )}}" class="btn btn-danger btn-sm">Granter</a>
+        {%else%}
+        <a href="{{ url_for('change_user_status', user_id = user.id)}}" class="btn btn-success btn-sm">Grantee</a>
+        {%endif%}
+    </div>
+</div>
+{%endfor%}
 
-<!-- List Grants -->
-<h2>Grants available</h2>
 
-<table style="margin-left: 20px;"> 
-
-
-    <!-- Table headers -->
-        <th> 
-            <tr>     
-                <td>Grant Name</td> 
-                <td>See Grant</td> 
-            </tr> 
-        </th> 
-          
-    <!-- For loop logic  -->
-        {%for grant in grants%}
-        <!-- table rows -->
-        <tr> 
-            <td>{{ grant.grant_title }}{{grant.id}}</td> 
-            <td><a href="{{ url_for('show_grant', grant_id=grant.id) }}">View Details</a></td>       
-        </tr> 
-        {%endfor%}
-    </table> 
-
-
-
-
-
-    <!-- Create form to add grant -->
-    <h2>Create Grant</h2>
-    <form method="POST" action="">
-
-        {{ grantform.csrf_token }}
-        {{grantform.hidden_tag()}}
-        {{grantform.grant_title.label}} {{grantform.grant_title}}
-        {{grantform.grant_description.label}} {{grantform.grant_description}}
-        {{grantform.grant_fund.label}} {{grantform.grant_fund}}
-        {{grantform.submit}}
-    </form>
-
-    <!-- Create form to add questions -->
 
 {%endblock%}

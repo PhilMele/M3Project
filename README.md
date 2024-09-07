@@ -7,10 +7,8 @@ add extra panel for granter to see as grantee
 add admin section to change user type from grantee to granter
 IN Login form CSRF token message in browser console : ask Gareth.
 change .navbar-toggler-icon to white
-remove password check from login page
 remove uncommented stuff (grants-available)
 Set referrer to all return buttons
-make grants `active` for them to be displayed to users
 add possibility to make user granter or grantee in admin panel
 Say that in addgrant and other models where therei s interger, the value is capped to -2,147,483,648 to 2,147,483,647. Adding superior numbers would cause a `400` error. To avoid getting the error, I added some javascript at the bottom of the page that checks and disbale submit button if the value is higher than it should.
 add button to activate grant from granter dashboard + show_grant page
@@ -20,6 +18,9 @@ Add design for 500 error pages
 Add code for is_active (only did design) including granter dashboard
 Explain why grants cant be deleted
 Explain that it would make sense the granter cannot deactivate a grant after activating it.
+if time (or explain in readme): correct repetition in css for `status-colour-...`
+Missing : retrieve password system
+add grantis closed to close applications when needed.
 
 COLOUR PALETTE
 #264653
