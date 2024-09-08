@@ -3,19 +3,16 @@
 TODO:
 Set debug to false when in production
 add email system when application is rejected or approved or submitted
-add extra panel for granter to see as grantee
-add admin section to change user type from grantee to granter
 IN Login form CSRF token message in browser console : ask Gareth.
 change .navbar-toggler-icon to white
 remove uncommented stuff (grants-available)
-Set referrer to all return buttons
-add possibility to make user granter or grantee in admin panel
 Say that in addgrant and other models where therei s interger, the value is capped to -2,147,483,648 to 2,147,483,647. Adding superior numbers would cause a `400` error. To avoid getting the error, I added some javascript at the bottom of the page that checks and disbale submit button if the value is higher than it should.
-add button to activate grant from granter dashboard + show_grant page
-only show activated grant to grantee
 add design of if is false or if true for active grant
+Add logic to return user to login page if the get an error: but to do that I also need to add some logic to redirect authentcated user to dashboard if authenticated
 Add design for 500 error pages
+Add design for 404 error pages
 Add code for is_active (only did design) including granter dashboard
+add design for back button
 Explain why grants cant be deleted
 Explain that it would make sense the granter cannot deactivate a grant after activating it.
 if time (or explain in readme): correct repetition in css for `status-colour-...`
@@ -127,6 +124,15 @@ https://getbootstrap.com/docs/4.0/components/navbar/
 
 **Error page handling**
 For errors: 404 and 500 only
+
+Templates for error 404 can be found on this path: `M3Project\templates\error-handling\404.html`
+
+Templates for error 505 can be found on this path: `M3Project\templates\error-handling\500.html`
+
+Redirection:
+As there are two dashboards depending on the user identity, the `home` button returns the user to the original login page.
+
+To achieve this, the code retruns the user to `index()`, which filters whether the user is authenticated or not. If it is, a redirection is made to either `dashboard()` or `granter_dashboard()`.
 
 **WTF Forms**
     https://wtforms.readthedocs.io/en/3.1.x/

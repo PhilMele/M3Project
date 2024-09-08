@@ -247,10 +247,18 @@ def change_user_status(user_id):
     return redirect(url_for("admin"))
 
 
-# Authentication logic
+#Authentication logic
 #Index page is login page
 @app.route("/", methods=["GET","POST"])
 def index():
+    #if user is authenticated
+    #Redirect based on the user type
+    if current_user.is_authenticated:      
+            if current_user.user_type == UserType.GRANTER:
+                return redirect(url_for('granter_dashboard'))
+            elif current_user.user_type == UserType.GRANTEE:
+                return redirect(url_for('dashboard'))
+
     form = UserLoginForm()
    
     if form.validate_on_submit():
@@ -275,9 +283,16 @@ def index():
 #register page
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    #if user is authenticated
+    #Redirect based on the user type
+    if current_user.is_authenticated:      
+        if current_user.user_type == UserType.GRANTER:
+            return redirect(url_for('granter_dashboard'))
+        elif current_user.user_type == UserType.GRANTEE:
+            return redirect(url_for('dashboard'))
+
     form = UserRegisterForm()
     if form.validate_on_submit():
-
         existing_user = User.query.filter_by(username=form.username.data).first()
         existing_email = User.query.filter_by(email=form.email_address.data).first()
 
