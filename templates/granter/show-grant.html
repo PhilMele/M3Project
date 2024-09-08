@@ -17,9 +17,10 @@
     
     <div class="col-6 d-flex justify-content-center align-items-center">
         {%if grant.is_active%}
-        <a href="{{ url_for('deactivate_grant', grant_id=grant.id)}}" class="btn btn-danger btn-sm">Deactivate</a>
+        <a href="{{ url_for('close_grant', grant_id=grant.id)}}" class="btn btn-danger btn-sm">Close</a>
         {%else%}
         <a href="{{ url_for('activate_grant', grant_id=grant.id)}}" class="btn btn-success btn-sm">Activate</a>
+    
         {%endif%}
     </div>
 </div>
@@ -45,6 +46,8 @@
         <!-- Status Value -->
         {%if grant.is_active%}
         <span class="status-colour-green">Active</span>
+        {%elif grant.is_closed%}
+        <span class="status-colour-gray">Closed</span>
         {%else%}
         <span class="status-colour-red">Not active</span>
         {%endif%}

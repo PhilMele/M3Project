@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+{%block content%}
+
+<h2 class="center-text">Your Account</h2>
+
+<div class="container mt-4">
+
+    <div class="row table-content border-bottom py-2">
+        <div class="col-6 d-flex justify-content-center align-items-center text-center">
+            Username
+        </div>
+        <div class="col-6 d-flex justify-content-center align-items-center text-center">
+            {{ user.username }}
+        </div>
+    </div>
+
+    <div class="row table-content border-bottom py-2">
+        <div class="col-6 d-flex justify-content-center align-items-center text-center">
+            Email Address
+        </div>
+        <div class="col-6 d-flex justify-content-center align-items-center text-center">
+            {{ user.email }}
+        </div>
+    </div>
+
+    <div class="row table-content border-bottom py-2">
+        <div class="col-6 d-flex justify-content-center align-items-center text-center">
+            Delete Account
+        </div>
+        <div class="col-6 d-flex justify-content-center align-items-center text-center">
+            <a href="{{ url_for('delete_user_account') }}" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+    </div>
+
+</div>
+
+<hr>
+
+{%endblock%}

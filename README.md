@@ -7,14 +7,14 @@ IN Login form CSRF token message in browser console : ask Gareth.
 change .navbar-toggler-icon to white
 remove uncommented stuff (grants-available)
 Say that in addgrant and other models where therei s interger, the value is capped to -2,147,483,648 to 2,147,483,647. Adding superior numbers would cause a `400` error. To avoid getting the error, I added some javascript at the bottom of the page that checks and disbale submit button if the value is higher than it should.
-add design of if is false or if true for active grant
-Add code for is_active (only did design) including granter dashboard
 add design for back button
 Explain why grants cant be deleted
 Explain that it would make sense the granter cannot deactivate a grant after activating it.
 if time (or explain in readme): correct repetition in css for `status-colour-...`
 Missing : retrieve password system
 add grantis closed to close applications when needed.
+Create account detail page
+Add search function + pagination for grants
 
 COLOUR PALETTE
 #264653
@@ -239,6 +239,22 @@ Only accesses grants that are "active". This is achieve in `grant_available()`:
 
 **Granter Interfance**
 
+**Display of application**
+Because I didnt want the applications to be destroyed when a user deletes their account, it creates some display challenges.
+
+On some occasion, I had to add an additional filter to remove all application where user_id is not `none`.
+
+Example:
+
+    #allows granter to see all applictaions against grant id
+    @app.route("/show-all-grant-application/<int:grant_id>")
+    @login_required
+    def show_all_grant_application(grant_id):
+        if current_user.user_type != UserType.GRANTER:
+            return redirect(url_for('dashboard'))
+        applications = (GrantApplication.query.filter_by(grant_id=grant_id, is_submitted = True)).filter(GrantApplication.user_id.isnot(None)).all()
+
+Credit for user of .filter() : https://stackoverflow.com/questions/32071527/elegant-way-to-filter-by-none-or-not-none
 
 **CRUD**
 CRUD is present in a few pages. The below details the CRUD functionality applied to apply_to_grant(), as this was the most complex part of the project.

@@ -588,7 +588,9 @@ def manage_grant():
 @app.route("/account")
 @login_required
 def account():
-    return render_template('grantee/account.html')
+    user = User.query.filter_by(id=current_user.id).first()
+    print(f'user = {user.username}')
+    return render_template('account.html', user=user)
 
 
 #delete user account
@@ -631,37 +633,9 @@ def granter_dashboard():
     if current_user.user_type != UserType.GRANTER:
         return redirect(url_for('dashboard'))
 
-    grants = Grant.query.all()
+    grants = Grant.query.order_by(Grant.id).all()
     return render_template('granter/granter-dashboard.html',
     grants=grants)
-
-
-#Create a new grant
-# @app.route("/create-new-grant", methods=["GET","POST"])
-# @login_required
-# def create_new_grant():
-#     if current_user.user_type != UserType.GRANTER:
-#         return redirect(url_for('dashboard'))
-#     #form to add grants
-#     grantform = AddGrantForm()
-#     if grantform.validate_on_submit():
-#         newgrant = Grant(
-#             grant_title = grantform.grant_title.data,
-#             grant_description = grantform.grant_description.data,
-#             grant_fund = grantform.grant_fund.data
-#         )
-#         db.session.add(newgrant)
-#         db.session.commit()
-#         flash('Grant has been added', 'success')
-#         return redirect(url_for('admin'))
-#     else:
-#         print("the form is not valid")
-
-#     #create for loop to list all grants available
-#     for grant in grants:
-#         print(grant)
-
-#     return render_template('granter/show-grant.html', grants=grants, grantform=grantform)
 
 #Create a new grant
 @app.route("/create-new-grant", methods=["GET","POST"])
@@ -755,7 +729,17 @@ def deactivate_grant(grant_id):
     return redirect(url_for('show_grant', grant_id=grant_id))
     
 
-
+@app.route("/close-grant/<int:grant_id>", methods=['GET', 'POST'])
+@login_required
+def close_grant(grant_id):
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
+    grant = Grant.query.get_or_404(grant_id)
+    grant.is_active = False
+    grant.is_closed = True
+    db.session.commit()
+    return redirect(url_for('show_grant', grant_id=grant_id))
+    
 @app.route("/create-new-grant/", methods=["GET","POST"])
 @login_required
 def create_new_grant_question():
@@ -815,7 +799,7 @@ def delete_show_grant_question(grant_id, grantquestion_id):
 def show_all_grant_application(grant_id):
     if current_user.user_type != UserType.GRANTER:
         return redirect(url_for('dashboard'))
-    applications = GrantApplication.query.filter_by(grant_id=grant_id, is_submitted = True)
+    applications = (GrantApplication.query.filter_by(grant_id=grant_id, is_submitted = True)).filter(GrantApplication.user_id.isnot(None)).all()
     grant = Grant.query.filter_by(id=grant_id).first()
     for grantapplication in applications:
         print(f"grant id  = {grantapplication.grant_id} +applications = {grantapplication.id} + user_id = {grantapplication.user_id} ")
