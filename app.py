@@ -93,6 +93,7 @@ class Grant(db.Model):
     grant_fund = db.Column(db.Integer, nullable=False, default=0)
     created_on = created_on = db.Column(db.DateTime, default=datetime.utcnow)
     is_active = db.Column(db.Boolean, default=False)
+    is_closed = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f'<{self.grant_title} {self.grant_description} {self.grant_fund}>'
@@ -350,7 +351,6 @@ def internal_server_error(e):
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    
     applications = GrantApplication.query.filter_by(user_id = current_user.id).order_by(GrantApplication.id).all()
     print(f'applications = {applications}')
     

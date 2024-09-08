@@ -8,9 +8,6 @@ change .navbar-toggler-icon to white
 remove uncommented stuff (grants-available)
 Say that in addgrant and other models where therei s interger, the value is capped to -2,147,483,648 to 2,147,483,647. Adding superior numbers would cause a `400` error. To avoid getting the error, I added some javascript at the bottom of the page that checks and disbale submit button if the value is higher than it should.
 add design of if is false or if true for active grant
-Add logic to return user to login page if the get an error: but to do that I also need to add some logic to redirect authentcated user to dashboard if authenticated
-Add design for 500 error pages
-Add design for 404 error pages
 Add code for is_active (only did design) including granter dashboard
 add design for back button
 Explain why grants cant be deleted
@@ -57,12 +54,22 @@ Add filter in template: `| currency`
 
     {{ grantapplication.grant.grant_fund | currency }}
 
+**Login + Register**
+Both login and register functions redirect the user to their respective dashboard should they happen to reach the login or register page whilste authenticated:
+
+    if current_user.is_authenticated:      
+            if current_user.user_type == UserType.GRANTER:
+                return redirect(url_for('granter_dashboard'))
+            elif current_user.user_type == UserType.GRANTEE:
+                return redirect(url_for('dashboard'))
 
 **Login**
 `pip install Flask-Login`
 https://pypi.org/project/Flask-Login/
 `pip install bcrypt` - used to hash passwords
 https://pypi.org/project/bcrypt/
+
+
 
 
 **Register**
@@ -113,7 +120,8 @@ Also added checks in function to username or email address is already used, to a
             flash('Username already exists.', 'danger')
             return render_template('register.html', form=form)
 
-@login_required decorator
+
+**@login_required decorator**
 
 **Extends template**
 Documentation : https://flask.palletsprojects.com/en/1.1.x/patterns/templateinheritance/
