@@ -4,7 +4,6 @@ TODO:
 Set debug to false when in production
 add email system when application is rejected or approved or submitted
 IN Login form CSRF token message in browser console : ask Gareth.
-change .navbar-toggler-icon to white
 remove uncommented stuff (grants-available)
 Say that in addgrant and other models where therei s interger, the value is capped to -2,147,483,648 to 2,147,483,647. Adding superior numbers would cause a `400` error. To avoid getting the error, I added some javascript at the bottom of the page that checks and disbale submit button if the value is higher than it should.
 add design for back button
@@ -13,9 +12,9 @@ Explain that it would make sense the granter cannot deactivate a grant after act
 if time (or explain in readme): correct repetition in css for `status-colour-...`
 Missing : retrieve password system
 add grantis closed to close applications when needed.
-Create account detail page
 Add search function + pagination for grants
 remove grant-management references if not used before submission
+Add check to make sure user wants to delete something before pressing button
 
 COLOUR PALETTE
 #264653
@@ -193,7 +192,7 @@ if database_url and database_url.startswith('postgres://'):
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 
-Create .env file in root directory and the following line:
+Create `.env` file in root directory and the following line:
 `DATABASE_URL=postgresql://[username]:[postgres-password]@localhost/[databasename]`
 
 Note the change for `database_url`. This is due to a problem faced during the deployment on Heroku returning the following message:
@@ -207,7 +206,33 @@ Another solution could have been to roll the library back to a version prior to 
 
 Credit for solution: https://stackoverflow.com/questions/66690321/flask-and-heroku-sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy
 
+**Developement & Production Environements**
+Documentation: https://flask.palletsprojects.com/en/1.1.x/config/
+Step up
+To set up the app as development of production, the following code is implemented:
+app.py:
+    import os
+    if os.environ.get('FLASK_ENV') == 'development':
+        app.config['DEBUG'] = True
+        print("Running in development mode")
+    else:
+        app.config['DEBUG'] = False
+        print("Running in production mode")
 
+    if __name__ == "__main__":
+        app.run(debug=app.config['DEBUG'])
+
+In the same `.env` file created in the previous section (**Create environement variables & Setup PostGres on local**) add the following variables:
+    FLASK_ENV=development
+    FLASK_DEBUG=1
+
+These variables are for development only.
+
+To set up production on heroku, the following variables need to be added to Heroku variables.
+
+These variables can be defined in settings in the heroku dashboard. (Look for `Config Vars` section) then add the following:
+FLASK_ENV = production
+FLASK_DEBUG = 0
 
 **Heroku Setup**
 INstall heorku commandline (CLI): https://devcenter.heroku.com/articles/heroku-cli

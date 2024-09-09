@@ -872,5 +872,13 @@ def approve_user_grant_application_id(grant_id, grant_application_id):
 
 #Add logic to set GrantApplication as approved or rejected by Granter
 
+# Set FLASK_ENV as production or dev. environement
+if os.environ.get('FLASK_ENV') == 'development':
+    app.config['DEBUG'] = True
+    print("Running in development mode")
+else:
+    app.config['DEBUG'] = False
+    print("Running in production mode")
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=app.config['DEBUG'])
