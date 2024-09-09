@@ -15,6 +15,7 @@ Missing : retrieve password system
 add grantis closed to close applications when needed.
 Create account detail page
 Add search function + pagination for grants
+remove grant-management references if not used before submission
 
 COLOUR PALETTE
 #264653

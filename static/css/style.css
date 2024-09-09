@@ -82,6 +82,11 @@ a {
     color: white; 
 }
 
+/* Customer  */
+.bruger-menu-white{
+    color: white;
+}
+
 .dropdown-menu {
     background-color: transparent;
     border: none;
