@@ -30,7 +30,9 @@ app = Flask(__name__)
 #This is used to create messages between grantee and granter
 #WTF Documentation to set up CSRF Token : https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
 #Additional Credits to set up CSRF Token : https://stackoverflow.com/questions/34902378/where-do-i-get-secret-key-for-flask
-app.config['SECRET_KEY'] = os.urandom(24).hex()
+# app.config['SECRET_KEY'] = os.urandom(24).hex()
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_dev_key')
 
 #Database
 #had to use full path due to use of OneDrive. Will need to correct this later on for Heroku.

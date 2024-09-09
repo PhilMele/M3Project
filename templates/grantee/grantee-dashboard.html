@@ -27,6 +27,7 @@
     </div>
 
     <!-- For loop to generate rows -->
+    {% if applications %}
     {% for grantapplication in applications %}
     <div class="row table-content center-text border-bottom py-2">
         <div class="grant-title-col col-12 d-flex">{{ grantapplication.grant.grant_title }}</div>
@@ -53,6 +54,7 @@
         </div>
     </div>
     {% endfor %}
+    {%endif%}
 </div>
 
 

@@ -16,6 +16,8 @@ Add search function + pagination for grants
 remove grant-management references if not used before submission
 Add check to make sure user wants to delete something before pressing button
 
+Link: https://grant-management-mp3-709b64ecedb2.herokuapp.com/
+
 COLOUR PALETTE
 #264653
 #2A9D8F
@@ -153,6 +155,8 @@ To achieve this, the code retruns the user to `index()`, which filters whether t
     import os
     from flask import flash (to display toast like messages)
 
+    generate token keys for production: https://djecrety.ir/
+
 **Data base**
 `pip install flask-sqlalchemy`
 https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/
@@ -206,6 +210,23 @@ Another solution could have been to roll the library back to a version prior to 
 
 Credit for solution: https://stackoverflow.com/questions/66690321/flask-and-heroku-sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy
 
+
+**Heroku Setup**
+INstall heorku commandline (CLI): https://devcenter.heroku.com/articles/heroku-cli
+Run `pip install gunicorn` on terminal
+INstall PostGres: `pip install psycopg2`
+Set up requirements.txt file: `pip freeze > requirements.txt`
+Create Procfile: `echo web: gunicorn app:app > Procfile`
+Login into Heroku: `heroku login`
+Create projet on heroku: `heroku create grant-management-mp3`
+
+Problem encountered: the Procfile generated with command line from documentation ``echo web: gunicorn app:app > Procfile` created an issue, which seems to be relating to encoding: which defaulted to UTF-16 instead of UTF-8.
+
+To solve my problem, I created a new Procfile through a Notepad, selected encoding UTF-8 and called it `Procfile.txt` in the same location as the actual Procfile. I then deleted the previous Procfile and renamed `Procfile.txt` to `Procfile`.
+
+Credits: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
+
+
 **Developement & Production Environements**
 Documentation: https://flask.palletsprojects.com/en/1.1.x/config/
 Step up
@@ -234,21 +255,18 @@ These variables can be defined in settings in the heroku dashboard. (Look for `C
 FLASK_ENV = production
 FLASK_DEBUG = 0
 
-**Heroku Setup**
-INstall heorku commandline (CLI): https://devcenter.heroku.com/articles/heroku-cli
-Run `pip install gunicorn` on terminal
-INstall PostGres: `pip install psycopg2`
-Set up requirements.txt file: `pip freeze > requirements.txt`
-Create Procfile: `echo web: gunicorn app:app > Procfile`
-Login into Heroku: `heroku login`
-Create projet on heroku: `heroku create grant-management-mp3`
+To check if it works, when running the project on local (or development) the following messages will print on the console:
+    Running in development mode
+    * Debug mode: on
+    WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+    * Running on http://127.0.0.1:5000
+    Press CTRL+C to quit
+    * Restarting with stat
+    Running in development mode
+    * Debugger is active!
 
-Problem encountered: the Procfile generated with command line from documentation ``echo web: gunicorn app:app > Procfile` created an issue, which seems to be relating to encoding: which defaulted to UTF-16 instead of UTF-8.
-
-To solve my problem, I created a new Procfile through a Notepad, selected encoding UTF-8 and called it `Procfile.txt` in the same location as the actual Procfile. I then deleted the previous Procfile and renamed `Procfile.txt` to `Procfile`.
-
-Credits: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
-
+In heroku the following line will be printed in the logs:
+`Running in production mode`
 
 
 **User types**
