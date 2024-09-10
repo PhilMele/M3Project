@@ -15,10 +15,16 @@ body {
     overflow-x: hidden;
 }
 
+
 html, body {
     height: 100%;
     width: 100%;
     overflow-x: hidden;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+
 }
 
 h1 {
@@ -76,11 +82,34 @@ a {
     color: #264653;
     font-family: "Poppins", sans-serif;
     font-weight: 800;
+    margin-right: auto;
 }
 
 .nav-link {
     color: white; 
 }
+
+.navbar.custom-navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .navbar-collapse {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .navbar-nav {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+.navbar-toggler {
+    margin-left: auto;
+  }
 
 /* Customer  */
 .bruger-menu-white{
@@ -207,6 +236,16 @@ thead {
     padding-bottom:5px;
 }
 
+/* Login & Register form */
+
+.auth-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px!important;
+  }
 
 /* Question */
 .question {
@@ -227,6 +266,7 @@ thead {
 }
 
 /* Media Query */
+
 @media (max-width: 320px) {
     .row {
         display: flex;

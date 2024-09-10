@@ -2,22 +2,21 @@
 {% block content %}
 
 <div class="container mt-5">
-    <h1 class="center-text">Login Page</h1>
+    <h1 class="center-text">Login to access our grants!</h1>
+    <hr>
     
-    <form method="POST" action="">
-        {{ form.csrf_token }}
+    <form method="POST" action="" class="auth-form-container">
+        {{ form.csrf_token(id = "unique_id") }}
         {{ form.hidden_tag() }}
 
         <div class="row mb-3">
             <div class="col">
-                {{ form.username.label(class="form-label") }}
                 {{ form.username(class="form-control") }}
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col">
-                {{ form.password.label(class="form-label") }}
                 {{ form.password(class="form-control") }}
             </div>
         </div>

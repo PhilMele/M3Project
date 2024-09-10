@@ -1,8 +1,7 @@
 # M3Project
 
 TODO:
-Set debug to false when in production
-add email system when application is rejected or approved or submitted
+
 IN Login form CSRF token message in browser console : ask Gareth.
 remove uncommented stuff (grants-available)
 Say that in addgrant and other models where therei s interger, the value is capped to -2,147,483,648 to 2,147,483,647. Adding superior numbers would cause a `400` error. To avoid getting the error, I added some javascript at the bottom of the page that checks and disbale submit button if the value is higher than it should.
@@ -11,10 +10,19 @@ Explain why grants cant be deleted
 Explain that it would make sense the granter cannot deactivate a grant after activating it.
 if time (or explain in readme): correct repetition in css for `status-colour-...`
 Missing : retrieve password system
+add email system when application is rejected or approved or submitted
 add grantis closed to close applications when needed.
 Add search function + pagination for grants
 remove grant-management references if not used before submission
 Add check to make sure user wants to delete something before pressing button
+Add Django style admin panel
+
+TO DO:
+change button size from screen width 992px 
+Make single column container two columns instead from 992px
+IN dhasboard change grants available rows width and contrsain it to body
+Add footer
+Add call to action message on sign up page like Find Grant for you noew!
 
 Link: https://grant-management-mp3-709b64ecedb2.herokuapp.com/
 
@@ -155,7 +163,22 @@ To achieve this, the code retruns the user to `index()`, which filters whether t
     import os
     from flask import flash (to display toast like messages)
 
-    generate token keys for production: https://djecrety.ir/
+    Encountered problem: In production, the self generated token does not work (`app.config['SECRET_KEY'] = os.urandom(24).hex()`).
+
+    I had to generate a unique token and add it to Heroku's envorionment variables.
+
+    To generate this unique token I used the following link: https://djecrety.ir/
+
+    Other problem: `[DOM] Found 2 elements with non-unique id #csrf_token`
+
+    instead of `{{ form.csrf_token }}`, I had to update from documentation to :`form.csrf_token()`.
+
+
+
+    Credits: 
+    #WTF Documentation to set up CSRF Token : https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
+    #Additional Credits to set up CSRF Token : https://stackoverflow.com/questions/34902378/where-do-i-get-secret-key-for-flask
+    #Found 2 elements with non-unique id #csrf_token: https://www.reddit.com/r/flask/comments/gtjwbt/two_forms_csrf_token_nonunique_id_chrome_warning/
 
 **Data base**
 `pip install flask-sqlalchemy`
@@ -226,6 +249,8 @@ To solve my problem, I created a new Procfile through a Notepad, selected encodi
 
 Credits: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
 
+**Heroku Migration**
+A migration will need to be made to heroku from your local repository: ` heroku run flask db upgrade`
 
 **Developement & Production Environements**
 Documentation: https://flask.palletsprojects.com/en/1.1.x/config/
