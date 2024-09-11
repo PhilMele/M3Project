@@ -26,6 +26,11 @@ html, body {
     align-items: center;
 }
 
+.max-content-width{
+    width: 100%;
+    max-width: 840px;
+}
+
 h1 {
     font-family: "Poppins", sans-serif;
     font-weight: 800;
@@ -243,11 +248,9 @@ thead {
 
 .auth-form-container {
     display: flex;
-    flex-direction: column;
-   
-    justify-content: center;
-    width: 100%;
     max-width: 600px!important;
+    display: inline;
+    text-align: center;
   }
 
 /* Question */
