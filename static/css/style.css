@@ -24,7 +24,6 @@ html, body {
     margin: 0;
     display: flex;
     align-items: center;
-
 }
 
 h1 {
@@ -241,7 +240,7 @@ thead {
 .auth-form-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+   
     justify-content: center;
     width: 100%;
     max-width: 600px!important;
@@ -266,6 +265,33 @@ thead {
 }
 
 /* Media Query */
+
+@media (min-width: 992px) {
+    .btn-sm {
+        width: 50%;
+    }
+
+        
+    .status-colour-green {
+        width: 50%; 
+    }
+
+    .status-colour-red {
+        width: 50%; 
+    }
+
+    .status-colour-amber {
+        width: 50%;  
+    }
+
+    .status-colour-black {
+        width: 50%;  
+    }
+
+    .status-colour-gray {
+        width: 50%; 
+    }
+}
 
 @media (max-width: 320px) {
     .row {

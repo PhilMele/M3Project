@@ -23,6 +23,7 @@ Make single column container two columns instead from 992px
 IN dhasboard change grants available rows width and contrsain it to body
 Add footer
 Add call to action message on sign up page like Find Grant for you noew!
+Add ERD
 
 Link: https://grant-management-mp3-709b64ecedb2.herokuapp.com/
 
@@ -130,6 +131,7 @@ Also added checks in function to username or email address is already used, to a
             flash('Username already exists.', 'danger')
             return render_template('register.html', form=form)
 
+credits for password validator in js: https://gist.github.com/frizbee/5318c77d2084fa75cd00ea131399581a
 
 **@login_required decorator**
 

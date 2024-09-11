@@ -2,31 +2,31 @@
 {% block content %}
 
 <div class="container mt-5">
-    <h1 class="center-text">Register Page</h1>
+    <h1 class="center-text">Register</h1>
     
 
     <!-- Form section -->
-    <form method="POST" action="{{ url_for('register') }}">
-        {{ form.csrf_token() }}
+    <form method="POST" action="{{ url_for('register') }}" class="auth-form-container">
+        {{ form.csrf_token(id = "unique_id") }}
         {{ form.hidden_tag() }}
 
         <div class="row mb-3">
             <div class="col">
-                {{ form.username.label(class="form-label") }}
+                
                 {{ form.username(class="form-control") }}
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col">
-                {{ form.email_address.label(class="form-label") }}
+                
                 {{ form.email_address(class="form-control") }}
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col">
-                {{ form.password.label(class="form-label") }}
+              
                 {{ form.password(class="form-control", id="password", onkeyup="validatePassword()") }}
                 <small id="message" class="form-text"></small>
             </div>
@@ -34,16 +34,9 @@
 
         <div class="row mb-3">
             <div class="col">
-                {{ form.confirm_password.label(class="form-label") }}
+               
                 {{ form.confirm_password(class="form-control", id="confirm_password", onkeyup="validatePassword()") }}
                 <small id="confirm_message" class="form-text"></small>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col">
-                {{ form.company_name.label(class="form-label") }}
-                {{ form.company_name(class="form-control") }}
             </div>
         </div>
 

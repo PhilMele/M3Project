@@ -171,7 +171,6 @@ class UserRegisterForm(FlaskForm):
         render_kw={"placeholder": "Confirm Password"}
     )
     
-    company_name = StringField("Enter your company name", validators=[Length(max=200)], render_kw={"placeholder": "Company Name"})
     submit = SubmitField("Register")
 
     def validate_username(self, username):
@@ -315,7 +314,6 @@ def register():
             username=form.username.data, 
             password=hashed_password,
             email=form.email_address.data, 
-            company_name=form.company_name.data,
         )
       
         db.session.add(new_user)
