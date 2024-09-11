@@ -10,16 +10,16 @@
 
 <hr>
 <!-- Activate/Deactivate Grant -->
-<div class="row mb-2 center-text">
+<div class="row mb-2 d-flex justify-content-center align-items-center">
     <div class="col-6">
         Click to switch status to:
     </div>
     
     <div class="col-6 d-flex justify-content-center align-items-center">
         {%if grant.is_active%}
-        <a href="{{ url_for('close_grant', grant_id=grant.id)}}" class="btn btn-danger btn-sm">Close</a>
+        <a href="{{ url_for('close_grant', grant_id=grant.id)}}" class="btn btn-danger btn-sm large-screen-width">Close</a>
         {%else%}
-        <a href="{{ url_for('activate_grant', grant_id=grant.id)}}" class="btn btn-success btn-sm">Activate</a>
+        <a href="{{ url_for('activate_grant', grant_id=grant.id)}}" class="btn btn-success btn-sm large-screen-width">Activate</a>
     
         {%endif%}
     </div>
@@ -45,11 +45,11 @@
     <div class="col-6">
         <!-- Status Value -->
         {%if grant.is_active%}
-        <span class="status-colour-green">Active</span>
+        <span class="status-colour-green large-screen-width">Active</span>
         {%elif grant.is_closed%}
-        <span class="status-colour-gray">Closed</span>
+        <span class="status-colour-gray large-screen-width">Closed</span>
         {%else%}
-        <span class="status-colour-red">Not active</span>
+        <span class="status-colour-red large-screen-width">Not active</span>
         {%endif%}
     </div>
 </div>
@@ -99,11 +99,11 @@
 </div>
 <div class="row mb-2 center-text">
     <div class="col-6">
-        <a class="btn btn-primary btn-sm" href="{{ url_for('edit_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Edit</a>
+        <a class="btn btn-primary btn-sm large-screen-width" href="{{ url_for('edit_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Edit</a>
     </div>
     
     <div class="col-6">
-        <a class="btn btn-danger btn-sm" href="{{ url_for('delete_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Delete</a>
+        <a class="btn btn-danger btn-sm large-screen-width" href="{{ url_for('delete_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Delete</a>
     </div>
 </div>
 <hr>

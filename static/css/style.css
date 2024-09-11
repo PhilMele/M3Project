@@ -52,6 +52,10 @@ a {
     text-align: center;
 }
 
+.center-element{
+    justify-content: center;
+}
+
 .left-text {
     text-align: left;
 }
@@ -290,6 +294,10 @@ thead {
 
     .status-colour-gray {
         width: 50%; 
+    }
+
+    .large-screen-width{
+        width: 100%;
     }
 }
 
