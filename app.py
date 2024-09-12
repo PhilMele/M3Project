@@ -433,7 +433,7 @@ def delete_application(grant_id,grant_application_id):
     db.session.delete(grantapplication)
     db.session.commit()
     flash('Application deleted')
-    return redirect(request.referrer or url_for('grant_available'))
+    return redirect(url_for('dashboard'))
 
 #display application after submission
 @app.route("/read-submitted-application//<int:grant_id>/<int:grant_application_id>")

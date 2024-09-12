@@ -27,7 +27,7 @@
 
 <form action="{{ url_for('delete_application', grant_id=grant_id, grant_application_id=grant_application_id) }}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <button type="submit" class="btn btn-danger btn-sm">Delete Application</button>
+    <button type="submit" class="btn btn-danger btn-sm large-screen-width">Delete Application</button>
 </form>
 
 <hr>

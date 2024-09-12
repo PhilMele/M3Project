@@ -31,7 +31,7 @@
                     <input type="hidden" name="delete_answer_grant_application_id" value="{{ grant_application_id }}">
                     {{ grantanswerform.csrf_token }}
                     {{ grantanswerform.hidden_tag() }}
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    <button type="submit" class="btn btn-danger btn-sm large-screen-width">Delete</button>
                 </form>
             </div>
         </div>
@@ -46,7 +46,7 @@
                         {{ editanswerform.answer() }}
                     </div>
                     <div class="row py-2">
-                        <button type="submit" class="btn btn-success btn-sm w-100">Submit Edit</button>
+                        <button type="submit" class="btn btn-success btn-sm large-screen-width">Edit</button>
                     </div>
                 </div>     
             </form>
@@ -80,9 +80,9 @@
 <!-- Add Submit button that ticks application as submitted if all questions are answered -->
 
 {%if submit_button == True %}
-    <a href="{{ url_for('submit_application', grant_id=grant.id, grant_application_id=grant_application_id) }}" class="btn btn-success btn-sm">Submit</a>
+    <a href="{{ url_for('submit_application', grant_id=grant.id, grant_application_id=grant_application_id) }}" class="btn btn-success btn-sm large-screen-width">Submit</a>
     {%else%}
-    <a href="" class="btn btn-secondary btn-sm">Application Incomplete</a>
+    <a href="" class="btn btn-secondary btn-sm large-screen-width">Application Incomplete</a>
 {%endif%}
 
 <hr>

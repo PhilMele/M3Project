@@ -16,25 +16,317 @@ Add search function + pagination for grants
 remove grant-management references if not used before submission
 Add check to make sure user wants to delete something before pressing button
 Add Django style admin panel
+Prevent user from deleting application once approved but rather create another status as "withdrawn"
+Talk about contact us feature
 
 TO DO:
-change button size from screen width 992px 
 Make single column container two columns instead from 992px
 IN dhasboard change grants available rows width and contrsain it to body
 Add footer
-Add call to action message on sign up page like Find Grant for you noew!
 Add ERD
+Add delete appluctaion for granter if application not active
+removae manage grants from navbar
+fix collapse menu in navbar so its not transparent
+Remove contact us from navbar
+Add search function to dashbaords + grants available
 
-Link: https://grant-management-mp3-709b64ecedb2.herokuapp.com/
+Title - Grant Management
+
+View the live site: https://grant-management-mp3-709b64ecedb2.herokuapp.com/
 
 COLOUR PALETTE
 #264653
 #2A9D8F
 #E9C46A
 #F4A261
-#E76F51
 
-Features
+
+# Table of Contents
+
+1. [User Experience](#ux)
+   - [Project Goals](#project-goals)
+     * [User Goals](#user-goals)
+     * [Site Owner Goals](#site-owner-goals)
+   - [User Stories](#ux-subsection)
+     * [Local Business](#local-business)
+     * [Public Sector](#public-sector)
+     * [Users](#user)
+
+2. [Design](#design)
+   - [Colours](#colours)
+   - [Typography](#typography)
+   - [Icons & Images](#icons-images)
+   - [Wireframes](#wireframes)
+   - [Databases](#databases)
+
+3. [Features](#features)
+   - [Authentication](#auth)
+   - [Admin Panel](#admin-panel)
+   - [Create Grant](#create-grant)
+   - [Create Grant Questions](#create-grant-questions)
+   - [Read, Edit & Delete Grant Questions](#read-edit-delete-grant-questions)
+   - [Create Grant Application](#create-application)
+   - [Read, Edit & Delete Application](#read-edit-delete-application)
+   - [Submit Application](#submit-application)
+   - [Approve & Reject Application](#approve-reject-application)
+ 
+4. [Technologies](#tech)
+
+5. [Testing](#testing)
+   - [Validator Testing](#val-testing)
+     * [HTML](#html)
+     * [CSS](#css)
+     * [Javascript](#js)
+   - [Lighthouse Testing](#lighthouse-testing)
+   - [User Testing](#user-testing)
+
+6. [Bugs](#bugs)
+   - [Current bugs](#current-bugs)
+   - [Design & User Experience improvements](#design-improvements)
+   - [Logic improvements](#logic-improvements)
+     
+7. [Deployment](#deployment)
+
+8. [Credits](#credits)
+
+
+
+
+
+
+## 1. User Experience <a name="ux"></a>
+
+There are three types of users for this product. The actual user applying looking to apply for a grant (the "Grantee"), the user issuing and validating granter applications (the "Granter") and the administrator.
+
+### 1.1 Project Goals <a name="project-goals"></a>
+
+
+#### 1.1.1 User Goals & Expectations <a name="user-goals"></a>
+
+The goal of this product is to offer a platform to people to apply for grant with local authorities. 
+
+With the exception of large granting bodies, grants are still applied to by email. 
+
+This makes it hard for grantees to know what is available, and also harder for granters who still need to look into their emails to find applications: this causes a second problem around document control.
+
+The whole grant validation and management process is a very long process, which could be split into 2 mains phases:
+* Phase 1 - Grant creation and grant application. This phase includes the creation and the publication of the grant, by the Granter, and the application phase by the Grantee all the way to grant validation or rejection by the Granter.
+* Phase 2 - Grant Management. This phase includes the management of reporting documentation from both parties together with communication.
+
+Note: Although it was my intention to cover both phases in this project, I have come to realise, Phase 1 was already a longer piece than anticipated. As a result, this product will address Phase 1 only.
+
+### 1.2 User Stories <a name="user-goals"></a>
+
+* As the administrator I want to assign a Granter role to accounts registered as Grantee as default.
+
+* As a granter, I want all people accessing my grants to be logged in, for analytics purposes. 
+
+* As a granter, I want to create a grant and attach any number of questions to it. 
+* As the administrator I want to be able to link questions to grants and their issuing granter.
+
+* As a granter, I want to be able to edit or delete questions.
+
+* As a granter, I want to decide the grant status: whether it is innactive (not ready to be published), active (published) and close whenever my fund has run out (closed). 
+
+* As a grantee, I want to be able to create an account and apply to any available grant.
+
+* As a grantee, I want to be able to answer grant questions, edit or delete them
+
+* As a grantee, before or after submitting my application I want to be able to review my application.
+
+* As a granter, I do not want submitted application to be editable.
+
+* As a granter, I do not want application to be submitted against grants with a status of "closed".
+
+* As a granter, I want to be able to review application and either approve or reject the appplication.
+
+* As a grantee, I want to be kept up to date of my application whether the application is still pending, approved or rejected. 
+
+
+
+## 2. Design <a name="ui"></a>
+
+The design is simple and avoids using images.
+
+### 2.1 Colours <a name="colours"></a>
+As this is a coprorate product, colours used are simple, but also add some sense excitment through bright yellow and orange.
+
+![Colour Palette](readme-images/color-palette/colour-palette.png)
+
+### 2.2 Typography <a name="typography"></a>
+Typography follows the same principle as the colours with the use of Poppins and Nerko One.
+
+We have selected Google Fonts, instead of custom fonts, to benefit from better support.
+
+This font can be found on: https://fonts.google.com/
+
+### 2.3 Icons & Images <a name="icons-images"></a>
+
+No static images were used for this project.
+
+Credits need to however be given to Fontawesome for their icons: https://fontawesome.com/
+
+### 2.4 Wireframes <a name="wireframes"></a>
+
+**Sign Up**
+
+**Register**
+
+**Grantee Dashboard**
+
+<img src="" alt="" width="320px">
+
+**Grants Available**
+
+<img src="" alt="" width="320px">
+
+**Apply to Grante**
+
+<img src="" alt="" width="320px">
+
+**Granter Dashboard**
+
+<img src="" alt="" width="320px">
+
+**Create Grant Dashboard**
+
+<img src="" alt="" width="320px">
+
+**See Grant Applications**
+
+<img src="" alt="" width="320px">
+
+**Read Specific Applications**
+
+<img src="" alt="" width="320px">
+
+### 2.5 Databases <a name="databases"></a>
+
+The models define the structure and relationships of entities in the application. 
+
+These entities include users, grants, grant applications, questions related to grants, and answers to those questions. 
+
+Each model corresponds to a table in a PostgreSQL database.
+
+**ER Diagram**
+<img src="readme-images/erd/flask - ERD.png" alt="" width="320px">
+
+**1. UserType Enum**
+
+UserType is an enumeration used to distinguish between the two user types: "Grantee" and "Granter".
+
+This enum is associated with the user_type field in the User model to indicate the type of user, leading to specific permissions in the business logic.
+
+**2. User Model**
+Represents the users of the system: Grantees and Granters.
+
+Fields:
+id: Primary key, unique identifier for each user.
+username: Unique username of the user.
+password: User's password (likely stored hashed).
+email: Unique email of the user.
+company_name: Company name (optional).
+user_type: Either "Grantee" or "Granter" as per the UserType enum.
+created_on: Timestamp of when the user was created.
+Relationships:
+Grants: A User (acting as a granter) can have many grants associated with them (usergrants).
+GrantApplications: A User (acting as a grantee) can submit multiple grant applications (usergrantapplications).
+GrantAnswers: A User can submit multiple answers to grant questions (usergrantanswers).
+
+**3. Grant Model**
+Represents a grant that is available for applicants to apply for.
+
+Fields:
+id: Primary key, unique identifier for each grant.
+user_id: Foreign key linking to the User (granter) who created the grant.
+grant_title: Title of the grant.
+grant_description: Description of the grant.
+grant_fund: Amount of funds available for the grant.
+created_on: Timestamp of when the grant was created.
+is_active: Indicates if the grant is currently active.
+is_closed: Indicates if the grant is closed for applications.
+
+Relationships:
+User: The Grant model has a foreign key relationship with User (granter).
+GrantQuestions: A grant can have multiple questions (questions) linked to it.
+GrantApplications: A grant can have multiple applications (applications) linked to it.
+
+**4. GrantQuestion Model**
+Represents a question associated with a grant that applicants need to answer.
+
+Fields:
+id: Primary key, unique identifier for each question.
+user_id: Foreign key linking to the User who created the question (granter).
+grant_id: Foreign key linking to the Grant the question is associated with.
+question: The actual question text.
+created_on: Timestamp of when the question was created.
+
+Relationships:
+Grant: A question belongs to a specific grant (grant).
+GrantAnswers: A question can have multiple answers (answers) submitted by applicants.
+
+**5. GrantApplication Model**
+
+Represents an application that a user (grantee) submits for a grant.
+
+Fields:
+id: Primary key, unique identifier for each application.
+user_id: Foreign key linking to the User who submitted the application (grantee).
+grant_id: Foreign key linking to the Grant the application is for.
+is_submitted: Boolean indicating if the application has been submitted.
+is_approved: Boolean indicating if the application has been approved.
+is_rejected: Boolean indicating if the application has been rejected.
+
+Relationships:
+Grant: The application is linked to a specific grant id.
+User: The application is submitted by a specific user id.
+GrantAnswers: An application can have multiple answers submitted by a User.
+
+**6. GrantAnswer Model**
+
+Represents an answer to a question in a grant application.
+
+Fields:
+id: Primary key, unique identifier for each answer.
+user_id: Foreign key linking to the User who submitted the answer.
+application_id: Foreign key linking to the GrantApplication the answer is attached to.
+grant_question_id: Foreign key linking to the GrantQuestion being answered.
+answer: The actual answer text.
+created_on: Timestamp of when the answer was created.
+
+Relationships:
+User: The answer is submitted by a specific user.
+GrantApplication: The answer belongs to a specific application.
+GrantQuestion: The answer is associated with a specific question.
+
+**Interactions Between Models**
+User can CRUD(Create,Read,Update,Delete) grants, questions, applications and answers.
+
+A grant can have multiple associated questions for applicants to answer.
+
+Each grant can also have multiple applications.
+
+
+## 3. Features <a name="features"></a>
+
+### 3.1 Authentication <a name="auth"></a>
+
+
+
+### 3.1 Admin Panel <a name="admin-panel"></a>
+### 3.1 Create Grant <a name="create-grant"></a>
+### 3.1 Create Grant Questions <a name="create-grant-questions"></a>
+### 3.1 Read, Edit & Delete Grant Questions <a name="read-edit-delete-grant-questions"></a>
+### 3.1 Create Grant Application <a name="create-application"></a>
+### 3.1 Read, Edit & Delete Application <a name="read-edit-delete-application"></a>
+### 3.1 Submit Application <a name="submit-application"></a>
+### 3.1 Approve & Reject Application <a name="approve-reject-application"></a>
+
+
+
+
+////
+
 **Navbar**
 The Navbar displays 2 different version based on the UserType.
 
@@ -577,6 +869,9 @@ In order to avoid a users submitting someone else application by using the path 
 Depending on the status of the application, template: `grants-available.html` displays different options.
 
 Once the application has been submitted, the user can either delete or read the application with `read_submitted_application()`
+
+**Credits**
+DB Beaver for ERD generator : https://dbeaver.com/docs/dbeaver/ER-Diagrams/
 
 **To improve**
 MIgrations : I made a few mistakes with the foreign keys, in particular when trying to establish relationships. I had to delete the migrations and restrat from strach on a few occasions, as I didnt know how to fix my problems from the migration files.
