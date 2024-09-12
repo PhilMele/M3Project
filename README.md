@@ -457,17 +457,8 @@ Questions are listed on the template through `list_question` variable, which ret
 Question can be edited (through `edit_show_grant_question()`) or deleted (`delete_show_grant_question()`). The functions are linked within the template itself
 
 
-    <div class="row mb-2">
-        <div class="col-12">
-            <h2>List of Questions</h2>
-        </div>
-    </div>
     {%for question in list_question%}
-    <div class="row mb-2">
-        <div class="col-12">
-            <p>Question: {{question.question}}</p>
-        </div>
-    </div>
+
     <div class="row mb-2 center-text">
         <div class="col-6">
             <a class="btn btn-primary btn-sm large-screen-width" href="{{ url_for('edit_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Edit</a>
@@ -477,7 +468,7 @@ Question can be edited (through `edit_show_grant_question()`) or deleted (`delet
             <a class="btn btn-danger btn-sm large-screen-width" href="{{ url_for('delete_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Delete</a>
         </div>
     </div>
-    <hr>
+
     {%endfor%}
 
 Finally, Granter can manage the grant lifecycle from this page.  They can see the current status of the grant (inactive, active or closed), and change this status to the next one with `activate_grant()` and `close_grant()`. Grant objects are created are innactive by default (`is_active = False`)
@@ -502,6 +493,53 @@ Note: Once a grant is moved from inactive to active, the granter cannot de-activ
 Once closed, the grant can only be re-activated.
 
 ### 3.6 Create Grant Application <a name="create-application"></a>
+This function is for Grantees to apply to a grant and is managed by `apply_to_grant()`, which takes the parameters of `grant_id` and `grant_application_id`.
+
+This function is accessible directly from the Grantee Dashboard (`grantee-dashboard.html`) which redirects the user to `grants-available.html` template, managed by `grant_available()`.
+
+`grant_available()` lists all active grants created by granters:
+
+    grants = Grant.query.filter_by(is_active=True)
+
+It also, lists all grants that the currently authenticated user (`current_user`) has started or even submitted, to avoid them submitting multiple similar application, or simply allowing them to start an application and finish later.
+
+To do this, an additional variable was created `existing_applications`, which filters all applications made by current user.
+
+    existing_applications = GrantApplication.query.filter_by(user_id=current_user.id).all()
+
+Using a Dictionnary Comprehension, I can create a dictionnary and append an existing application (if it exists) against a grant_id my by current_user.
+
+The clearest definition I found is the following (form:https://www.datacamp.com/tutorial/python-dictionary-comprehension ):"Dictionary comprehension is a method for transforming one dictionary into another dictionary. During this transformation, items within the original dictionary can be conditionally included in the new dictionary, and each item can be transformed as needed."
+
+    `dict_variable = {key:value for (key,value) in dictonary.items()}`
+
+In practice, by passing `existing_applications` and `grants` in the template, the rendering of the list of grants and their existing applications from current_users was handled this way:
+
+    {% for grant in grants %}     
+        <!-- If application exists -->
+            <!-- If application exists AND is submitted -->
+            {% if grant.id in existing_application_id and existing_application_id[grant.id].is_submitted %}
+            <div class="col-4 d-flex justify-content-center btn-sm large-screen-width">
+                <a href="{{ url_for('read_submitted_application', grant_id=grant.id, grant_application_id=existing_application_id[grant.id].id) }}" class="btn btn-primary btn-sm">Open</a>
+            </div>
+            <!-- If application exists AND is NOT submitted -->
+            {% elif grant.id in existing_application_id and not existing_application_id[grant.id].is_submitted %}
+            <div class="col-4 d-flex justify-content-center btn-sm large-screen-width">
+                <a href="{{ url_for('apply_to_grant', grant_id=grant.id, grant_application_id=existing_application_id[grant.id].id) }}" class="btn btn-primary btn-sm">Open</a>
+            </div>
+        <!-- If application does not exist -->
+        {%else%}
+            <div class="col-4 d-flex justify-content-center btn-sm large-screen-width">
+                <a href="{{ url_for('activate_application', grant_id=grant.id) }}" class="btn btn-primary btn-sm">Apply</a>
+            </div>
+        {%endif%}
+    {% endfor %}
+
+Once grants with an existing application and those without one are identified, can either :
+*Create a new application through `activate_application()` which will create an new application model object and redirect the user to `apply_to_grant()` with the parameters of the current `grand_id` and the newly created `grant_application_id`.
+*Continue the existing application or read an a already submitted application. This part is covered in the next section.
+
+
 ### 3.7 Read, Edit & Delete Application <a name="read-edit-delete-application"></a>
 ### 3.8 Submit Application <a name="submit-application"></a>
 ### 3.9 Approve & Reject Application <a name="approve-reject-application"></a>
