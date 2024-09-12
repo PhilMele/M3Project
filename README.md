@@ -69,6 +69,15 @@ COLOUR PALETTE
    - [Read, Edit & Delete Application](#read-edit-delete-application)
    - [Submit Application](#submit-application)
    - [Approve & Reject Application](#approve-reject-application)
+   - [CSRF Token](#csrf-token)
+   - [Context Processor](#context-processor)
+   - [Currency Display](#currency-display)
+   - [Decorators](#decorators)
+   - [WTForms](#wtf)
+   - [Customer Error Pages](#error-pages)
+   - [Navbar](#csrf-token)
+   
+
  
 4. [Technologies](#tech)
 
@@ -209,7 +218,7 @@ These entities include users, grants, grant applications, questions related to g
 Each model corresponds to a table in a PostgreSQL database.
 
 **ER Diagram**
-<img src="readme-images/erd/flask - ERD.png" alt="" width="320px">
+<img src="documentation/erd/flask - ERD.png" alt="" width="320px">
 
 **1. UserType Enum**
 
@@ -311,9 +320,97 @@ Each grant can also have multiple applications.
 
 ### 3.1 Authentication <a name="auth"></a>
 
+**is_authenticated**: Both login and register functions redirect the user to their respective dashboard, should they happen to reach the login or register page whilste authenticated:
 
+    if current_user.is_authenticated:      
+            if current_user.user_type == UserType.GRANTER:
+                return redirect(url_for('granter_dashboard'))
+            elif current_user.user_type == UserType.GRANTEE:
+                return redirect(url_for('dashboard'))
+
+**Login**
+The login function can be found in `def index()`
+
+It is linked to the User Model, through `UserLoginForm()`.
+
+Documentation and sources used can be found below.
+
+The following command will need to be run:
+    `pip install Flask-Login` (https://pypi.org/project/Flask-Login/)
+    `pip install bcrypt` - used to hash passwords (https://pypi.org/project/bcrypt/)
+
+**Register**
+The registration process is delivered by `def register()` and leverages the use of `UserRegisterForm`.
+
+In order to improve the user experience, a few validators were implemented through the flask form. In addition, some javascript was also implemented at the bottom of `register.html` to render the form requirements into actions to the end user.
+
+Note of errors encountered: Some special characters were not included at the first iteration of validators. Making any password like `mypassword!1` invalide.
+
+The below code was inspired from answer to this github post (credits for password validator in js: https://gist.github.com/frizbee/5318c77d2084fa75cd00ea131399581a)
+
+    class UserRegisterForm(FlaskForm):
+        username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
+        email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
+        
+        password = PasswordField(
+            "Enter your password",
+            validators=[
+                DataRequired(),
+                Length(min=8, message="Password must be at least 8 characters long."),
+                Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=-]{8,}$', message="Password must contain at least one letter, one number. You can also include special characters.")
+            ],
+            render_kw={"placeholder": "Password"}
+        )
+        
+        confirm_password = PasswordField(
+            "Confirm your password",
+            validators=[
+                DataRequired(),
+                Length(min=8),
+                Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=-]{8,}$')
+            ],
+            render_kw={"placeholder": "Confirm Password"}
+        )
+      
+        submit = SubmitField("Register")
+
+        def validate_username(self, username):
+            existing_user_username = User.query.filter_by(username=username.data).first()
+            if existing_user_username:
+                raise ValidationError("This username is already used")
+
+
+To avoid the 500 error, checks were added to function if username or email address is already used:
+
+    if existing_user:
+            flash('Username already exists.', 'danger')
+            return render_template('register.html', form=form)
 
 ### 3.1 Admin Panel <a name="admin-panel"></a>
+
+For the purpose of this project a basic admin panel with limited action was created and can be found in `admin()`.
+
+The pannel allows for user to change their status from grantee to granter, and granter to grantee.
+
+This panel was solely built for the purpose of the examination of the project to give examinator easy access to both user type.
+
+As the project will be accessible on github, the admin panel does not allow for user account deletion, to avoid outside user deleting all users from the admin panel.
+
+To delete a user account, one need to log-in with the user credentials and find the "delete" option in Account Details section in Navbar.
+
+As part future development, it would make sense to build a superuser function and have a django style admin panel.
+
+To access admin panel simply follow these steps:
+* Register an account
+* To the root url add `admin`. (for example: http://127.0.0.1:5500/admin)
+
+You will be prompted to the following page, where with, for each user, their current user type in the middle column and the possibility to switch to another user type in the right column.
+
+By clicking on the other user type in the right column, the related user account will change from one type to the other.
+
+<img src="documentation/screen-shots/admin-panel.png" alt="change user type in admin panel" width="320px">
+
+
 ### 3.1 Create Grant <a name="create-grant"></a>
 ### 3.1 Create Grant Questions <a name="create-grant-questions"></a>
 ### 3.1 Read, Edit & Delete Grant Questions <a name="read-edit-delete-grant-questions"></a>
@@ -357,73 +454,6 @@ Add filter in template: `| currency`
 
     {{ grantapplication.grant.grant_fund | currency }}
 
-**Login + Register**
-Both login and register functions redirect the user to their respective dashboard should they happen to reach the login or register page whilste authenticated:
-
-    if current_user.is_authenticated:      
-            if current_user.user_type == UserType.GRANTER:
-                return redirect(url_for('granter_dashboard'))
-            elif current_user.user_type == UserType.GRANTEE:
-                return redirect(url_for('dashboard'))
-
-**Login**
-`pip install Flask-Login`
-https://pypi.org/project/Flask-Login/
-`pip install bcrypt` - used to hash passwords
-https://pypi.org/project/bcrypt/
-
-
-
-
-**Register**
-Implement `UserRegistrationForm`.
-
-
-Use of javascripts for validators.
-
-errors encountered: Some special characters were not included at the first iteration of validators. Making any password like `mypassword!1` invalide.
-
-    class UserRegisterForm(FlaskForm):
-        username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
-        email_address = StringField("Enter your email address", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Email Address"})
-        
-        password = PasswordField(
-            "Enter your password",
-            validators=[
-                DataRequired(),
-                Length(min=8, message="Password must be at least 8 characters long."),
-                Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=-]{8,}$', message="Password must contain at least one letter, one number. You can also include special characters.")
-            ],
-            render_kw={"placeholder": "Password"}
-        )
-        
-        confirm_password = PasswordField(
-            "Confirm your password",
-            validators=[
-                DataRequired(),
-                Length(min=8),
-                Regexp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=-]{8,}$')
-            ],
-            render_kw={"placeholder": "Confirm Password"}
-        )
-        
-        company_name = StringField("Enter your company name", validators=[Length(max=200)], render_kw={"placeholder": "Company Name"})
-        user_type = SelectField("Select User Type", choices=[(UserType.GRANTEE.value, "Grantee"), (UserType.GRANTER.value, "Granter")], validators=[DataRequired()])
-        submit = SubmitField("Register")
-
-        def validate_username(self, username):
-            existing_user_username = User.query.filter_by(username=username.data).first()
-            if existing_user_username:
-                raise ValidationError("This username is already used")
-
-
-Also added checks in function to username or email address is already used, to avoid 500 error.
-
-    if existing_user:
-            flash('Username already exists.', 'danger')
-            return render_template('register.html', form=form)
-
-credits for password validator in js: https://gist.github.com/frizbee/5318c77d2084fa75cd00ea131399581a
 
 **@login_required decorator**
 
