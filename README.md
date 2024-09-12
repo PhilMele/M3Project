@@ -18,6 +18,7 @@ Add check to make sure user wants to delete something before pressing button
 Add Django style admin panel
 Prevent user from deleting application once approved but rather create another status as "withdrawn"
 Talk about contact us feature
+Add additional security submitted application so that only if current_user is the application user can access
 
 TO DO:
 Make single column container two columns instead from 992px
@@ -45,12 +46,7 @@ COLOUR PALETTE
 
 1. [User Experience](#ux)
    - [Project Goals](#project-goals)
-     * [User Goals](#user-goals)
-     * [Site Owner Goals](#site-owner-goals)
    - [User Stories](#ux-subsection)
-     * [Local Business](#local-business)
-     * [Public Sector](#public-sector)
-     * [Users](#user)
 
 2. [Design](#design)
    - [Colours](#colours)
@@ -109,9 +105,6 @@ There are three types of users for this product. The actual user applying lookin
 
 ### 1.1 Project Goals <a name="project-goals"></a>
 
-
-#### 1.1.1 User Goals & Expectations <a name="user-goals"></a>
-
 The goal of this product is to offer a platform to people to apply for grant with local authorities. 
 
 With the exception of large granting bodies, grants are still applied to by email. 
@@ -130,7 +123,12 @@ Note: Although it was my intention to cover both phases in this project, I have 
 
 * As a granter, I want all people accessing my grants to be logged in, for analytics purposes. 
 
+* As a grantee I want to be able to created an account and delete it.
+
+* As a granter I want to keep track of any application submitted by my grantees, even if they delete an account, for KPI purposes.
+
 * As a granter, I want to create a grant and attach any number of questions to it. 
+
 * As the administrator I want to be able to link questions to grants and their issuing granter.
 
 * As a granter, I want to be able to edit or delete questions.
@@ -566,7 +564,7 @@ If all questions are answered (`submit_button = True`) then submit button become
 
 Business logic (python):
 
-#logic to enable "submit" button
+    #logic to enable "submit" button
     submit_button = False
     #counts number of questions to answer
     application_question_total_count = len(grant_questions)
@@ -577,7 +575,6 @@ Business logic (python):
     #compare both counts
     if application_answer_total_count == application_question_total_count:
         submit_button = True
-    
     #if count is lower : submit button disabled
     elif application_answer_total_count < application_question_total_count:
         pass
@@ -607,24 +604,68 @@ Rendering logic (html + JS):
 
 **Application Submitted**
 
-Once submitted, the Grantee can only read or delete their application.
+Once submitted, the Grantee is redirected to `read-submitted-application.html` and can only read or delete their application.
+
+This template is managed by `read_submitted_application()`. The function returns all questions listed against `grant_id` parameter, then creates a python list of matching GrantAnswer objects through a loop.
+
+The loop returns GrantAnswer objects that with a common `current_user.id` and `grant_question.id`.
+
+    def read_submitted_application(grant_id, grant_application_id):
+        user_submitted_application = GrantApplication.query.get_or_404(grant_application_id)
+        grant_question = GrantQuestion.query.filter(GrantQuestion.grant_id == grant_id).order_by(GrantQuestion.id).all()
+
+        #create list to match questions and answers
+        grant_question_user_answer = []
+
+        for grantquestion in grant_question:
+            user_answer = GrantAnswer.query.filter_by(grant_question_id=grantquestion.id, user_id=current_user.id).all()
+            grant_question_user_answer.append({
+                'question':grantquestion.question,
+                'answer':[answer.answer for answer in user_answer]
+            })
 
 Grantee can then follow the status of their application on the dashboard from submitted, rejected or approved.
 
 ### 3.8 Submit Application <a name="submit-application"></a>
+Application submission is managed by `submit_application()` and takes the parameters of `grant_application_id` and `grant_id` and redirects the user to `read_submitted_application()`and its related template.
 
+In order to avoid users submitting other users proposals by playing with the URL, the function includes a check before marking the application_id as submitted:
 
-Once the user submit their application, `submit_application()` redirects them to `read-submitted-application.html` which is managed by `read_submitted_application()`, passing the parameters of `grant_id` and `grant_application_id` along the way.
+    if submitted_application_user_id == current_user.id:
+        application.is_submitted = True
+
+This check ensures that the submitting user is the user that has created the proposal in the first instance.
 
 ### 3.9 Approve & Reject Application <a name="approve-reject-application"></a>
-### 3.10 Approve & Reject Application <a name="approve-reject-application"></a>
-### 3.11 CSRF Token <a name="csrf-token"></a>
-### 3.12 Context Processor <a name="context-processor"></a>
-### 3.13 Currency Display <a name="currency-display"></a>
-### 3.14 Decorators <a name="decorators"></a>
-### 3.15 WTForms <a name="wtf"></a>
-### 3.16 Customer Error Pages <a name="error-pages"></a>
-### 3.17 Navbar <a name="navbar"></a>
+Approving and rejecting application is only available to Granter.
+
+Grantees applications can be accessed from the Granter Dashboard, by clicking on "Application", which redirecs the granter to `show_all_grant_application()` passing `grant_id` as a parameter.
+
+This function returns all applications sharing a common `grant_id` foreign key. In addition, it filters application that have a User set as None.
+
+This scenario could happen, as a user might submit an application but decides to delete their account.
+
+There is a case for the granting authority wanting to keep track of these applications for KPI pespectives. As a result, they are not deleted if the submitting user deletes their account. They were however removed from display, as there is no current use for the project at this stage.
+
+    applications = (GrantApplication.query.filter_by(grant_id=grant_id, is_submitted = True)).filter(GrantApplication.user_id.isnot(None)).all()
+
+Note for future improvements: in order to implement the KPI element mentioned above, it would make sense to keep the user ID assigned to the application, and not delete the user model object when the user decides to delete their account and simply remove personal information covered by GDPR. 
+
+When accessing the applications, the granter can click on each of them to review them and switch each application status to either "Approved" (`approve_user_grant_application_id()`)  or "Rejected" (`reject_user_grant_application_id()`)
+
+<img src="documentation/screen-shots/approve-reject-application.png" alt="approve or reject grant application" width="320px">
+
+Grantee can then see the status of their application changed from their dashboard.
+
+<img src="documentation/screen-shots/grantee-dashboard.png" alt="grantee dashboard view with application status" width="320px">
+
+### 3.10 CSRF Token <a name="csrf-token"></a>
+### 3.11 Context Processor <a name="context-processor"></a>
+### 3.12 Currency Display <a name="currency-display"></a>
+### 3.13 Decorators <a name="decorators"></a>
+### 3.14 WTForms <a name="wtf"></a>
+### 3.15 Customer Error Pages <a name="error-pages"></a>
+### 3.16 Navbar <a name="navbar"></a>
 
 
 
