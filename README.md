@@ -75,7 +75,7 @@ COLOUR PALETTE
    - [Decorators](#decorators)
    - [WTForms](#wtf)
    - [Customer Error Pages](#error-pages)
-   - [Navbar](#csrf-token)
+   - [Navbar](#navbar)
    
 
  
@@ -218,6 +218,7 @@ These entities include users, grants, grant applications, questions related to g
 Each model corresponds to a table in a PostgreSQL database.
 
 **ER Diagram**
+
 <img src="documentation/erd/flask - ERD.png" alt="" width="320px">
 
 **1. UserType Enum**
@@ -227,6 +228,7 @@ UserType is an enumeration used to distinguish between the two user types: "Gran
 This enum is associated with the user_type field in the User model to indicate the type of user, leading to specific permissions in the business logic.
 
 **2. User Model**
+
 Represents the users of the system: Grantees and Granters.
 
 Fields:
@@ -243,6 +245,7 @@ GrantApplications: A User (acting as a grantee) can submit multiple grant applic
 GrantAnswers: A User can submit multiple answers to grant questions (usergrantanswers).
 
 **3. Grant Model**
+
 Represents a grant that is available for applicants to apply for.
 
 Fields:
@@ -261,6 +264,7 @@ GrantQuestions: A grant can have multiple questions (questions) linked to it.
 GrantApplications: A grant can have multiple applications (applications) linked to it.
 
 **4. GrantQuestion Model**
+
 Represents a question associated with a grant that applicants need to answer.
 
 Fields:
@@ -309,6 +313,7 @@ GrantApplication: The answer belongs to a specific application.
 GrantQuestion: The answer is associated with a specific question.
 
 **Interactions Between Models**
+
 User can CRUD(Create,Read,Update,Delete) grants, questions, applications and answers.
 
 A grant can have multiple associated questions for applicants to answer.
@@ -328,8 +333,7 @@ Each grant can also have multiple applications.
             elif current_user.user_type == UserType.GRANTEE:
                 return redirect(url_for('dashboard'))
 
-**Login**
-The login function can be found in `def index()`
+**Login**: The login function can be found in `def index()`
 
 It is linked to the User Model, through `UserLoginForm()`.
 
@@ -339,14 +343,13 @@ The following command will need to be run:
     `pip install Flask-Login` (https://pypi.org/project/Flask-Login/)
     `pip install bcrypt` - used to hash passwords (https://pypi.org/project/bcrypt/)
 
-**Register**
-The registration process is delivered by `def register()` and leverages the use of `UserRegisterForm`.
+**Register**: The registration process is delivered by `def register()` and leverages the use of `UserRegisterForm`.
 
 In order to improve the user experience, a few validators were implemented through the flask form. In addition, some javascript was also implemented at the bottom of `register.html` to render the form requirements into actions to the end user.
 
 Note of errors encountered: Some special characters were not included at the first iteration of validators. Making any password like `mypassword!1` invalide.
 
-The below code was inspired from answer to this github post (credits for password validator in js: https://gist.github.com/frizbee/5318c77d2084fa75cd00ea131399581a)
+The below code was inspired from answer to this github post (credits : https://gist.github.com/frizbee/5318c77d2084fa75cd00ea131399581a)
 
     class UserRegisterForm(FlaskForm):
         username = StringField("Enter your username", validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
@@ -386,7 +389,7 @@ To avoid the 500 error, checks were added to function if username or email addre
             flash('Username already exists.', 'danger')
             return render_template('register.html', form=form)
 
-### 3.1 Admin Panel <a name="admin-panel"></a>
+### 3.2 Admin Panel <a name="admin-panel"></a>
 
 For the purpose of this project a basic admin panel with limited action was created and can be found in `admin()`.
 
@@ -411,13 +414,59 @@ By clicking on the other user type in the right column, the related user account
 <img src="documentation/screen-shots/admin-panel.png" alt="change user type in admin panel" width="320px">
 
 
-### 3.1 Create Grant <a name="create-grant"></a>
-### 3.1 Create Grant Questions <a name="create-grant-questions"></a>
-### 3.1 Read, Edit & Delete Grant Questions <a name="read-edit-delete-grant-questions"></a>
-### 3.1 Create Grant Application <a name="create-application"></a>
-### 3.1 Read, Edit & Delete Application <a name="read-edit-delete-application"></a>
-### 3.1 Submit Application <a name="submit-application"></a>
-### 3.1 Approve & Reject Application <a name="approve-reject-application"></a>
+### 3.3 Create Grant <a name="create-grant"></a>
+This functionnality is only available to Granter and is triggered `create_new_grant().
+
+The function starts by checking user type. If the user type is not Granter, it will redirect the user to the Grantee dashboard:
+
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
+
+Note: this logic is repeated for every granter related function. As part of future development, it would be interesting to look at a way to create a `@granter_only` decorator, or maybe simply creating a second app for Granters with a specific dashboard through an API.
+
+The rest of the function leverages `AddGrantForm()` to create Grant model objects and populate each field.
+
+Upon successful creation of the grant, Granter is redirected to `show_grant()` to create related questions.
+
+### 3.4 Create Grant Questions <a name="create-grant-questions"></a>
+
+This functionnality is only available to Granter and is triggered `show_grant()`. The function take the newly created `grant_id` as a parameter.
+
+    def show_grant(grant_id):
+
+It allows granter to see the granter they have created and any number of questions to it, using `AddGrantQuestionForm`.
+
+Questions are then listed on the template through `list_question` variable, which returns all GrantQuestion in the database that match the filter of `grant_id` parameter.
+
+    list_question = GrantQuestion.query.filter_by(grant_id=grant.id).order_by(GrantQuestion.id).all()
+
+This page also allows the granter to manage the grant itself.
+
+From this page, it can see the current status of the grant (inactive, active or closed), and change this status to the next one.
+
+Note: Once a grant is moved from inactive to active, the granter cannot de-activate it and can only close it.
+
+Once closed, the grant can only be re-activated.
+
+<img src="documentation/screen-shots/show-grant.png" alt="display specific grant management page to granter" width="320px">
+
+### 3.5 Read, Edit & Delete Grant Questions <a name="read-edit-delete-grant-questions"></a>
+
+
+### 3.6 Create Grant Application <a name="create-application"></a>
+### 3.7 Read, Edit & Delete Application <a name="read-edit-delete-application"></a>
+### 3.8 Submit Application <a name="submit-application"></a>
+### 3.9 Approve & Reject Application <a name="approve-reject-application"></a>
+### 3.10 Approve & Reject Application <a name="approve-reject-application"></a>
+### 3.11 CSRF Token <a name="csrf-token"></a>
+### 3.12 Context Processor <a name="context-processor"></a>
+### 3.13 Currency Display <a name="currency-display"></a>
+### 3.14 Decorators <a name="decorators"></a>
+### 3.15 WTForms <a name="wtf"></a>
+### 3.16 Customer Error Pages <a name="error-pages"></a>
+### 3.17 Navbar <a name="navbar"></a>
+
+
 
 
 
