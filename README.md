@@ -151,7 +151,7 @@ The design is simple and avoids using images.
 ### 2.1 Colours <a name="colours"></a>
 As this is a coprorate product, colours used are simple, but also add some sense excitment through bright yellow and orange.
 
-![Colour Palette](/readme-images/color-palette/colour-palette.png)
+![Colour Palette](documentation/colour-palette/colour-palette.png)
 
 ### 2.2 Typography <a name="typography"></a>
 Typography follows the same principle as the colours with the use of Poppins and Nerko One.
