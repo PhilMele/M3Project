@@ -536,12 +536,86 @@ In practice, by passing `existing_applications` and `grants` in the template, th
     {% endfor %}
 
 Once grants with an existing application and those without one are identified, can either :
-*Create a new application through `activate_application()` which will create an new application model object and redirect the user to `apply_to_grant()` with the parameters of the current `grand_id` and the newly created `grant_application_id`.
-*Continue the existing application or read an a already submitted application. This part is covered in the next section.
-
+* Create a new application through `activate_application()` which will create an new application model object and redirect the user to `apply_to_grant()` with the parameters of the current `grand_id` and the newly created `grant_application_id`.
+* Continue the existing application or read an a already submitted application. This part is covered in the next section.
 
 ### 3.7 Read, Edit & Delete Application <a name="read-edit-delete-application"></a>
+This section distinguishes whether the application has been submitted by the user or not.
+
+
+<img src="documentation/screen-shots/submit-application.png" alt="submit grant application" width="320px">
+
+
+**Application Not Submitted**
+Application that are not submitted are managed by `apply_to_grant()` which allows the grantee to either:
+* Answer unanswered questions using `AnswerGrantQuestionForm()` through variable `grantanswerform`
+* Edit previously answered questions through the same ``AnswerGrantQuestionForm()` using form variable `editanswerform` which redirects the user to `edit_grant_answer()`
+* Delete answered questions or delete the application as a whole through redirecting user to `delete_grant_answer()`
+
+It returns:
+* All GrantQuestion objects attached to the `grant_id` parameter and 
+* All GrantAnswer objects that have been created against the same `grant_id` parameter by `current_user`.
+
+Similarly to the previous section, it uses `Dictionnary Comprehension` to achieve the combination of these two points.
+
+Note for future improvements: the code could be simplified. At the time of creating `apply_to_grant()`, `grant_application_id` wasnt passed as a parameter of the function and was added later on. The code could make the Dictionnary Comprehension redundant by simply taking into account `grant_application_id` in the filter of the variable that returns the GrantAnswer objects.
+
+Finally, some javascript at the bottom of template regulates whether the grantee can submit their application or not, by checking if all questions have been answered.
+
+If all questions are answered (`submit_button = True`) then submit button becomes clickable, otherwise it shows that the application is not completed.
+
+Business logic (python):
+
+#logic to enable "submit" button
+    submit_button = False
+    #counts number of questions to answer
+    application_question_total_count = len(grant_questions)
+    print(f"application_question_total_count: {application_question_total_count}")
+    #counts number of questions answered
+    application_answer_total_count = len(answers)
+    print(f"application_answer_total_count: {application_answer_total_count}")
+    #compare both counts
+    if application_answer_total_count == application_question_total_count:
+        submit_button = True
+    
+    #if count is lower : submit button disabled
+    elif application_answer_total_count < application_question_total_count:
+        pass
+    #if count is equal : submit button is enabled
+    else:
+        print("Something is wrong with count")
+
+Rendering logic (html + JS):
+
+    {%if submit_button == True %}
+        <a href="{{ url_for('submit_application', grant_id=grant.id, grant_application_id=grant_application_id) }}" class="btn btn-success btn-sm large-screen-width">Submit</a>
+        {%else%}
+        <a href="" class="btn btn-secondary btn-sm large-screen-width">Application Incomplete</a>
+    {%endif%}
+
+    <script>
+        function toggleEditForm(questionId) {
+            var form = document.getElementById('edit-form-' + questionId);
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        }
+    </script>
+
+
+**Application Submitted**
+
+Once submitted, the Grantee can only read or delete their application.
+
+Grantee can then follow the status of their application on the dashboard from submitted, rejected or approved.
+
 ### 3.8 Submit Application <a name="submit-application"></a>
+
+
+Once the user submit their application, `submit_application()` redirects them to `read-submitted-application.html` which is managed by `read_submitted_application()`, passing the parameters of `grant_id` and `grant_application_id` along the way.
+
 ### 3.9 Approve & Reject Application <a name="approve-reject-application"></a>
 ### 3.10 Approve & Reject Application <a name="approve-reject-application"></a>
 ### 3.11 CSRF Token <a name="csrf-token"></a>

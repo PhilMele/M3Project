@@ -463,7 +463,7 @@ def read_submitted_application(grant_id, grant_application_id):
 #allows to apply and answer grant question
 @app.route("/apply-to-grant/<int:grant_id>/<int:grant_application_id>", methods=['GET', 'POST'])
 @login_required
-def apply_to_grant(grant_id,grant_application_id):
+def apply_to_grant(grant_id,grant_application_id,  methods=['GET', 'POST']):
     #TO DO: add logic to prvent user getting back to this page if grant is submitted
     #if appliction is submitted = redirect user to grants available page.
 
