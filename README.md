@@ -436,22 +436,70 @@ This functionnality is only available to Granter and is triggered `show_grant()`
 
 It allows granter to see the granter they have created and any number of questions to it, using `AddGrantQuestionForm`.
 
-Questions are then listed on the template through `list_question` variable, which returns all GrantQuestion in the database that match the filter of `grant_id` parameter.
+<img src="documentation/screen-shots/show-grant.png" alt="display specific grant management page to granter" width="320px">
+
+Note on problem encountered: the fund field of the Grant Model is an interger. As interger have a range limit of -2,147,483,648 to 2,147,483,647, all grant value exceeding this range would generate a error.
+
+As a result, a validator was added to the form to check the validity of the value entered by the granter. This validator takes the form of a javascript, at the bottom of the template. Since it is sepcific to this template, it made more sense to have it at this page, rather than in a specific .js file.
+
+### 3.5 Read, Edit & Delete Grant Questions <a name="read-edit-delete-grant-questions"></a>
+
+This functionnality is only available to Granter and is also managed by `show_grant()`, which takes the newly created `grant_id` as a parameter.
+
+    def show_grant(grant_id):
+
+This function also display the possibility for the granter to read the grant and the questions they attached to it.
+
+Questions are listed on the template through `list_question` variable, which returns all GrantQuestion in the database that match the filter of `grant_id` parameter.
 
     list_question = GrantQuestion.query.filter_by(grant_id=grant.id).order_by(GrantQuestion.id).all()
 
-This page also allows the granter to manage the grant itself.
+Question can be edited (through `edit_show_grant_question()`) or deleted (`delete_show_grant_question()`). The functions are linked within the template itself
 
-From this page, it can see the current status of the grant (inactive, active or closed), and change this status to the next one.
+
+    <div class="row mb-2">
+        <div class="col-12">
+            <h2>List of Questions</h2>
+        </div>
+    </div>
+    {%for question in list_question%}
+    <div class="row mb-2">
+        <div class="col-12">
+            <p>Question: {{question.question}}</p>
+        </div>
+    </div>
+    <div class="row mb-2 center-text">
+        <div class="col-6">
+            <a class="btn btn-primary btn-sm large-screen-width" href="{{ url_for('edit_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Edit</a>
+        </div>
+        
+        <div class="col-6">
+            <a class="btn btn-danger btn-sm large-screen-width" href="{{ url_for('delete_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Delete</a>
+        </div>
+    </div>
+    <hr>
+    {%endfor%}
+
+Finally, Granter can manage the grant lifecycle from this page.  They can see the current status of the grant (inactive, active or closed), and change this status to the next one with `activate_grant()` and `close_grant()`. Grant objects are created are innactive by default (`is_active = False`)
+
+    <div class="row mb-2 d-flex justify-content-center align-items-center">
+        <div class="col-6">
+            Click to switch status to:
+        </div>
+        
+        <div class="col-6 d-flex justify-content-center align-items-center">
+            {%if grant.is_active%}
+            <a href="{{ url_for('close_grant', grant_id=grant.id)}}" class="btn btn-danger btn-sm large-screen-width">Close</a>
+            {%else%}
+            <a href="{{ url_for('activate_grant', grant_id=grant.id)}}" class="btn btn-success btn-sm large-screen-width">Activate</a>
+        
+            {%endif%}
+        </div>
+    </div>
 
 Note: Once a grant is moved from inactive to active, the granter cannot de-activate it and can only close it.
 
 Once closed, the grant can only be re-activated.
-
-<img src="documentation/screen-shots/show-grant.png" alt="display specific grant management page to granter" width="320px">
-
-### 3.5 Read, Edit & Delete Grant Questions <a name="read-edit-delete-grant-questions"></a>
-
 
 ### 3.6 Create Grant Application <a name="create-application"></a>
 ### 3.7 Read, Edit & Delete Application <a name="read-edit-delete-application"></a>
