@@ -33,6 +33,7 @@ Add search function to dashbaords + grants available
 ADD SSL Certificate
 Check CSRF token is correclty impelemented on all forms
 Add favicon
+change colours of validators on signup register
 
 
 Title - Grant Management
@@ -265,7 +266,7 @@ Represents a grant that is available for applicants to apply for.
 | **Field**           | **Description**                                                 |
 |---------------------|-----------------------------------------------------------------|
 | `id`                | Primary key, unique identifier for each grant.                  |
-| `user_id`           | Foreign key linking to the User (granter) who created the grant. |
+| `user_id`           | Foreign key linking to the User object who created the grant. |
 | `grant_title`       | Title of the grant.                                             |
 | `grant_description` | Description of the grant.                                       |
 | `grant_fund`        | Amount of funds available for the grant.                        |
@@ -286,8 +287,8 @@ Represents a question associated with a grant that applicants need to answer.
 | **Field**     | **Description**                                                      |
 |---------------|----------------------------------------------------------------------|
 | `id`          | Primary key, unique identifier for each question.                    |
-| `user_id`     | Foreign key linking to the User who created the question (granter).   |
-| `grant_id`    | Foreign key linking to the Grant the question is associated with.     |
+| `user_id`     | Foreign key linking to the User object who created the question (granter).   |
+| `grant_id`    | Foreign key linking to the Grant object the question is associated with.     |
 | `question`    | The actual question text.                                            |
 | `created_on`  | Timestamp of when the question was created.                          |
 
@@ -303,8 +304,8 @@ Represents an application that a user (grantee) submits for a grant.
 | **Field**       | **Description**                                                        |
 |-----------------|------------------------------------------------------------------------|
 | `id`            | Primary key, unique identifier for each application.                   |
-| `user_id`       | Foreign key linking to the User who submitted the application (grantee).|
-| `grant_id`      | Foreign key linking to the Grant the application is for.               |
+| `user_id`       | Foreign key linking to the User object who submitted the application (grantee).|
+| `grant_id`      | Foreign key linking to the Grant object the application is for.               |
 | `is_submitted`  | Boolean indicating if the application has been submitted.              |
 | `is_approved`   | Boolean indicating if the application has been approved.               |
 | `is_rejected`   | Boolean indicating if the application has been rejected.               |
@@ -322,9 +323,9 @@ Represents an answer to a question in a grant application.
 | **Field**          | **Description**                                                       |
 |--------------------|-----------------------------------------------------------------------|
 | `id`               | Primary key, unique identifier for each answer.                       |
-| `user_id`          | Foreign key linking to the User who submitted the answer.             |
-| `application_id`   | Foreign key linking to the GrantApplication the answer is attached to.|
-| `grant_question_id`| Foreign key linking to the GrantQuestion being answered.              |
+| `user_id`          | Foreign key linking to the User object who submitted the answer.             |
+| `application_id`   | Foreign key linking to the GrantApplication object the answer is attached to.|
+| `grant_question_id`| Foreign key linking to the GrantQuestion object being answered.              |
 | `answer`           | The actual answer text.                                               |
 | `created_on`       | Timestamp of when the answer was created.                             |
 

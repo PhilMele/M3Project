@@ -40,10 +40,10 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="nav-link" href="{{url_for('grant_available')}}">Grants</a>
+                <a class="nav-link" href="{{url_for('dashboard')}}">Dashboard</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="{{url_for('manage_grant')}}">Manage Grants</a>
+                <a class="nav-link" href="{{url_for('grant_available')}}">Grants</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,7 +52,6 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="{{url_for('account')}}">Account Details</a>
                   <a class="dropdown-item" href="{{url_for('logout')}}">Log Out</a>
-                  <a class="dropdown-item" href="">Contact Us</a>
                 </div>
               </li>
             </ul>
@@ -69,10 +68,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="{{ url_for('create_new_grant') }}">Create A New Grant</a>
+              <a class="nav-link" href="{{url_for('granter_dashboard')}}">Dashboard</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="{{url_for('granter_dashboard')}}">Manage Grants</a>
+              <a class="nav-link" href="{{ url_for('create_new_grant') }}">Create A New Grant</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -81,7 +80,6 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{{url_for('account')}}">Account Details</a>
                 <a class="dropdown-item" href="{{url_for('logout')}}">Log Out</a>
-                <a class="dropdown-item" href="">Contact Us</a>
               </div>
             </li>
           </ul>
