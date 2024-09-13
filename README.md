@@ -224,18 +224,41 @@ This enum is associated with the user_type field in the User model to indicate t
 
 Represents the users of the system: Grantees and Granters.
 
-Fields:
-id: Primary key, unique identifier for each user.
-username: Unique username of the user.
-password: User's password (likely stored hashed).
-email: Unique email of the user.
-company_name: Company name (optional).
-user_type: Either "Grantee" or "Granter" as per the UserType enum.
-created_on: Timestamp of when the user was created.
+| **Field**       | **Description**                                              |
+|-----------------|--------------------------------------------------------------|
+| `id`            | Primary key, unique identifier for each user.                |
+| `username`      | Unique username of the user.                                 |
+| `password`      | User's password (likely stored hashed).                      |
+| `email`         | Unique email of the user.                                    |
+| `company_name`  | Company name (optional).                                     |
+| `user_type`     | Either "Grantee" or "Granter" as per the `UserType` enum.    |
+| `created_on`    | Timestamp of when the user was created.                      |
+
 Relationships:
-Grants: A User (acting as a granter) can have many grants associated with them (usergrants).
-GrantApplications: A User (acting as a grantee) can submit multiple grant applications (usergrantapplications).
-GrantAnswers: A User can submit multiple answers to grant questions (usergrantanswers).
+* Grants: A User (acting as a granter) can have many grants associated with them (usergrants).
+* GrantApplications: A User (acting as a grantee) can submit multiple grant applications (usergrantapplications).
+* GrantAnswers: A User can submit multiple answers to grant questions (usergrantanswers).
+
+`UserType Enum`
+
+UserType is an enumeration used to distinguish between the two user types: "Grantee" and "Granter".
+
+This enum is associated with the user_type field in the User model to indicate the type of user, leading to specific permissions in the business logic.
+
+    class UserType(enum.Enum):
+        GRANTEE = "Grantee"
+        GRANTER = "Granter"
+
+    class User(db.Model,UserMixin):
+        id = db.Column(db.Integer, primary_key=True)
+        username = db.Column(db.String(200), unique=True, nullable=False)
+        password= db.Column(db.String(200), nullable=False)
+        email = db.Column(db.String(200), unique=True, nullable=False)
+        company_name = db.Column(db.String(200), nullable=True)
+        user_type = db.Column(db.Enum(UserType), nullable=False, default=UserType.GRANTEE)
+        created_on = db.Column(db.DateTime, default=datetime.utcnow)
+    
+
 
 **3. Grant Model**
 
