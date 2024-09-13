@@ -824,9 +824,9 @@ Then call the decorator on top of each function:
 
 ### 3.14 Customer Error Pages <a name="error-pages"></a>
 
-
-
-
+To improve the user experience in the unfortunate event of a internal server error (500) or missing page (404) bespoke error handling templates have been created, which can be found at the following paths:
+* `templates\error-handling\404.html`
+* `templates\error-handling\500.html`
 
 
 ////
