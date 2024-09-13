@@ -74,6 +74,7 @@ COLOUR PALETTE
      * [HTML](#html)
      * [CSS](#css)
      * [Javascript](#js)
+     * [Python](#py)
    - [Lighthouse Testing](#lighthouse-testing)
    - [User Testing](#user-testing)
 6. [Bugs](#bugs)
@@ -864,91 +865,117 @@ To improve the user experience in the unfortunate event of a internal server err
 
 ## 5. Testing <a name="testing"></a>
 ### 5.1 Validator Testing <a name="val-testing"></a>
+#### 5.1.1 HTML <a name="html"></a>
    <details>
       <summary>index.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/index.png" alt="index.html" />
       </p>
    </details>
+
    <details>
       <summary>register.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/register.png" alt="register.html" />
       </p>
    </details>
+
    <details>
       <summary>account.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/account.png" alt="account.html" />
       </p>
    </details>
+
    <details>
       <summary>admin.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/admin.png" alt="admin.html" />
       </p>
    </details>
+
    <details>
       <summary>apply-to-grant.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/apply-to-grant.png" alt="apply-to-grant.html" />
       </p>
    </details>
+
    <details>
       <summary>grantee-dashboard.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/grantee-dashboard.png" alt="grantee-dashboard.html" />
       </p>
    </details>
+
    <details>
       <summary>grants-available.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/grants-available.png" alt="grants-available.html" />
       </p>
    </details>
+
    <details>
       <summary>read-submitted-application.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/read-submitted-application.png" alt="read-submitted-application.html" />
       </p>
    </details>
+
    <details>
       <summary>create-new-grant.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/create-new-grant.png" alt="create-new-grant.html" />
       </p>
    </details>
+
    <details>
       <summary>edit-question.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/edit-question.png" alt="edit-question.html" />
       </p>
    </details>
+
    <details>
       <summary>granter-dashboard.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/granter-dashboard.png" alt="granter-dashboard.html" />
       </p>
    </details>
+
    <details>
       <summary>show-all-grant-application.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/show-all-grant-application.png" alt="show-all-grant-application.html" />
       </p>
    </details>
+
    <details>
       <summary>show-grant.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/show-grant.png" alt="show-grant.html" />
       </p>
    </details>
+
    <details>
       <summary>show-user-grant-application.html</summary>
       <p>
          <img src="documentation/screen-shots/html-validators/show-user-grant-application.png" alt="show-user-grant-application.html" />
       </p>
    </details>
-   
+
+#### 5.1.2 CSS <a name="css"></a>
+
+   <details>
+      <summary>style.css</summary>
+      <p>
+         <img src="documentation/screen-shots/css-testing/css-jigsaw-testing.png" alt="styles.css" />
+      </p>
+   </details>
+
+#### 5.1.3 Javascript <a name="js"></a>
+#### 5.1.3 Python <a name="py"></a>
+
 ### 5.2 Lighthouse Testing <a name="lighthouse-testing"></a>
 <details>
     <summary>INDEX</summary>
