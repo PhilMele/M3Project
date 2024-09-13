@@ -1015,6 +1015,13 @@ As a result, it hasn't been compiled in a single js file, but instead put at the
 
 #### 5.1.3 Python <a name="py"></a>
 
+   <details>
+      <summary>app.py</summary>
+      <p>
+         <img src="documentation/screen-shots/python-testing/python-testing.png" alt="app.py" />
+      </p>
+   </details>
+
 ### 5.2 Lighthouse Testing <a name="lighthouse-testing"></a>
 <details>
     <summary>INDEX</summary>
