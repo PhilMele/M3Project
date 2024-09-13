@@ -974,6 +974,45 @@ To improve the user experience in the unfortunate event of a internal server err
    </details>
 
 #### 5.1.3 Javascript <a name="js"></a>
+
+The javascript used in this project is front end related and specific to the pages it applies. It was considered trivial as it does perform any form of backend validation and only serves the user experience.
+
+As a result, it hasn't been compiled in a single js file, but instead put at the bottom of the pages it serves.
+
+<details>
+    <summary>register.html</summary>
+    <p>
+        <img src="documentation/screen-shots/js-testing/register.png" alt="styles.css" />
+    </p>
+
+    Note: the checker advises that the function is never used. This is because the checker was only provided the javascript.
+
+    The reference to the function can be found in the form:     
+        {{ form.password(class="form-control", id="password", onkeyup="validatePassword()") }}
+
+        {{ form.confirm_password(class="form-control", id="confirm_password", onkeyup="validatePassword()") }}
+</details>
+
+<details>
+    <summary>create-new-grant.html</summary>
+    <p>
+        <img src="documentation/screen-shots/js-testing/create-new-grant.png" alt="styles.css" />
+    </p>
+</details>
+
+<details>
+    <summary>apply-to-grant.html</summary>
+    <p>
+        <img src="documentation/screen-shots/js-testing/apply-to-grant.png" alt="styles.css" />
+    </p>
+
+    Note: the checker advises that the toggle is never used. This is because the checker was only provided the javascript.
+
+    The reference to the toggle can be found in the button:     
+
+        <button class="btn btn-primary btn-sm w-100" onclick="toggleEditForm('{{ grantquestion.id }}')">Save</button>
+</details>
+
 #### 5.1.3 Python <a name="py"></a>
 
 ### 5.2 Lighthouse Testing <a name="lighthouse-testing"></a>
