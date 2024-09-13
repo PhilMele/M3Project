@@ -19,18 +19,14 @@ Add Django style admin panel
 Prevent user from deleting application once approved but rather create another status as "withdrawn"
 Talk about contact us feature
 Add additional security submitted application so that only if current_user is the application user can access
+Make single column container two columns instead from 992px
+ADD SSL Certificate
+Add search function to dashbaords + grants available
+Add delete appluctaion for granter if application not active
 
 TO DO:
-Make single column container two columns instead from 992px
-IN dhasboard change grants available rows width and contrsain it to body
-Add footer
-Add ERD
-Add delete appluctaion for granter if application not active
-removae manage grants from navbar
+
 fix collapse menu in navbar so its not transparent
-Remove contact us from navbar
-Add search function to dashbaords + grants available
-ADD SSL Certificate
 Check CSRF token is correclty impelemented on all forms
 Add favicon
 change colours of validators on signup register

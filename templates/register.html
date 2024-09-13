@@ -73,14 +73,14 @@
         }
 
         message.textContent = strengthMessage;
-        message.style.color = strengthMessage === "Password is strong." ? "green" : "red";
+        message.style.color = strengthMessage === "Password is strong." ? "#2ecc71" : "#e74c3c";
 
         if (password !== confirm_password) {
             confirmMessage.textContent = "Passwords do not match.";
-            confirmMessage.style.color = "red";
+            confirmMessage.style.color = "#e74c3c"; 
         } else {
             confirmMessage.textContent = "Passwords match.";
-            confirmMessage.style.color = "green";
+            confirmMessage.style.color = "#2ecc71";
         }
     }
 </script>
