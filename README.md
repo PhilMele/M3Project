@@ -30,6 +30,9 @@ removae manage grants from navbar
 fix collapse menu in navbar so its not transparent
 Remove contact us from navbar
 Add search function to dashbaords + grants available
+ADD SSL Certificate
+Check CSRF token is correclty impelemented on all forms
+
 
 Title - Grant Management
 
@@ -65,13 +68,12 @@ COLOUR PALETTE
    - [Read, Edit & Delete Application](#read-edit-delete-application)
    - [Submit Application](#submit-application)
    - [Approve & Reject Application](#approve-reject-application)
-   - [CSRF Token](#csrf-token)
-   - [Context Processor](#context-processor)
+   - [CSRF Token & WTForms](#csrf-token)
+   - [Context Processor & Navbar](#context-processor)
    - [Currency Display](#currency-display)
    - [Decorators](#decorators)
-   - [WTForms](#wtf)
    - [Customer Error Pages](#error-pages)
-   - [Navbar](#navbar)
+
    
 
  
@@ -659,13 +661,134 @@ Grantee can then see the status of their application changed from their dashboar
 
 <img src="documentation/screen-shots/grantee-dashboard.png" alt="grantee dashboard view with application status" width="320px">
 
-### 3.10 CSRF Token <a name="csrf-token"></a>
-### 3.11 Context Processor <a name="context-processor"></a>
+### 3.10 CSRF Token & WTForms <a name="csrf-token"></a>
+The projects introduces the use of WTForms and CSRF Token, for increased security.
+
+To get the package working, 2 dependencies will need to be installed: 
+
+    pip install wtforms
+    pip install flask-wtf
+
+Once installed, at the top of app.py template, import the followings:
+
+    from wtforms.form import Form
+    from flask_wtf import FlaskForm
+    from wtforms import BooleanField, StringField, PasswordField, SubmitField, SelectField, IntegerField, TextAreaField
+    from wtforms.validators import DataRequired, InputRequired, Length, ValidationError,Regexp
+
+
+WTForms allows to create forms with backend validators easily.
+
+In this project, the forms also include the use of CSRF token for increased security.
+
+    from flask_wtf.csrf import CSRFProtect
+    import os
+    from flask import flash 
+
+
+Taking a short example with the UserLoginForm used for user authentication:
+
+    class UserLoginForm(FlaskForm):
+    username = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
+    password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
+    submit = SubmitField("Login")
+
+The form here checks the data entered in not missing (`DataRequired()`), constrain the length of each field (`Length(min=4, max=200)]`) and adds a placeholder (`render_kw={"placeholder": "Username"}`)
+
+
+The form is then used in the business logic as follows:
+
+    form = UserLoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username = form.username.data).first()
+        #if user exist confirm password
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user)
+                if current_user.user_type != UserType.GRANTER:
+                    return redirect(url_for('dashboard'))
+                else:
+                    return redirect(url_for('granter_dashboard'))
+            else:
+                flash("The password does not exist")
+                print("The password does not exist")
+        else:
+            flash("The user does not exist")
+            print("The user does not exist")
+
+Finally, in the template renders the form in the classic format, with the addition of the CSRF token:
+
+    <form method="POST" action="" class="auth-form-container">
+        {{ form.csrf_token(id = "unique_id") }}
+        {{ form.hidden_tag() }}
+
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.username(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                {{ form.password(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col center-text">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </div>
+    </form>
+
+**First problem encountered during the set up of the CSRF token**: During the original setup, the CSRF token was generated through `app.config['SECRET_KEY'] = os.urandom(24).hex()`, as seen on some documentation. Although this appraoch worked in local, it did not work in Heroku.
+
+To solve this problem, I had to generate a unique token and add it to Heroku's envorionment variables.
+
+Changing the initial key generating line to : 
+
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_dev_key')
+
+To generate this unique token I used the following link: https://djecrety.ir/
+
+
+**Second problem encountered during the set up of the CSRF token**: The CSRF documentaton recommends to call the token in the form this way `{{ form.csrf_token }}`. 
+
+However, this produced the following warning the browser: `[DOM] Found 2 elements with non-unique id #csrf_token`.
+
+Changing to `{{form.csrf_token()}}` solved this problem. This explains the `{{ form.csrf_token(id = "unique_id") }}` tag on index.html.
+
+Documentation:
+https://wtforms.readthedocs.io/en/3.1.x/
+https://flask.palletsprojects.com/en/3.0.x/patterns/wtforms/
+
+Documentation to set up CSRF Token : 
+https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
+
+#Additional Credits to set up CSRF Token : 
+https://stackoverflow.com/questions/34902378/where-do-i-get-secret-key-for-flask
+
+#Found 2 elements with non-unique id #csrf_token: https://www.reddit.com/r/flask/comments/gtjwbt/two_forms_csrf_token_nonunique_id_chrome_warning/
+
+### 3.11 Context Processor & Navbar <a name="context-processor"></a>
+
+The project includes a boostrap navbar and displays 2 different versions based on the UserType.
+
+**Problem encountered**: The initial logic `  {% if current_user.user_type == UserType.GRANTEE %}` wasnt sufficent to make `UserType` from the User Model available in the `if statement`.
+
+In order to make UserType available, a `context processor` had to be injected which can be found in the template as follows:
+
+    @app.context_processor
+    def inject_user_type():
+        return dict(UserType=UserType)
+
+The logic `{% if current_user.user_type == UserType.GRANTEE %}` in the template now works.
+
+Documentation: https://flask.palletsprojects.com/en/2.3.x/templating/
+
 ### 3.12 Currency Display <a name="currency-display"></a>
 ### 3.13 Decorators <a name="decorators"></a>
-### 3.14 WTForms <a name="wtf"></a>
-### 3.15 Customer Error Pages <a name="error-pages"></a>
-### 3.16 Navbar <a name="navbar"></a>
+### 3.14 Customer Error Pages <a name="error-pages"></a>
 
 
 
