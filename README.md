@@ -685,6 +685,9 @@ In this project, the forms also include the use of CSRF token for increased secu
     import os
     from flask import flash 
 
+    #CSRF Token
+    csrf = CSRFProtect(app) 
+
 
 Taking a short example with the UserLoginForm used for user authentication:
 
@@ -805,6 +808,20 @@ Doucmentation: https://flask.palletsprojects.com/en/1.1.x/templating/
 Additional help: https://stackoverflow.com/questions/12078571/jinja-templates-format-a-float-as-comma-separated-currency
 
 ### 3.13 Decorators <a name="decorators"></a>
+
+The project introduces `@login_required` decorator, which allows to only allow authenticated users to access a specific page.
+
+The decorator is used on function, with the exception of `index()` (login function) and `register()` (user registration function).
+
+To implement it import login required at the top of app.py:
+
+    from flask_login import login_required
+
+Then call the decorator on top of each function:
+
+    @login_required
+    def admin():
+
 ### 3.14 Customer Error Pages <a name="error-pages"></a>
 
 
