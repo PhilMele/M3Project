@@ -283,6 +283,15 @@ thead {
     text-decoration: none;
 }
 
+.social-icons a {
+color: white; /* Icon color */
+text-decoration: none; /* Remove underline */
+}
+  
+.social-icons i {
+font-size: 24px; /* Adjust icon size */
+}
+
 .social-icons a:hover {
     color: #F4A261;
 }
