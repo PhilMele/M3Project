@@ -107,11 +107,17 @@
     {% endwith %}
     <!-- Page content -->
     <div id="content" class="max-content-width">{% block content %}{% endblock %}</div>
-    <div id="footer">
-
+    
     <!-- Footer content -->
+    <div id="footer">
       {% block footer %}
-      &copy; Copyright 2024 by <a href="">you</a>.
+      <div class="center-text social-icons">
+        <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+      </div>
+      <span class="center-text"> Don't be shy, reach out!</span>
       {% endblock %}
     </div>
     <!-- JavaScript for Bootstrap -->
