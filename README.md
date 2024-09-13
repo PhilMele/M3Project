@@ -25,7 +25,6 @@ Add search function to dashbaords + grants available
 Add delete appluctaion for granter if application not active
 
 TO DO:
-
 fix collapse menu in navbar so its not transparent
 Check CSRF token is correclty impelemented on all forms
 Add favicon
@@ -739,7 +738,7 @@ The form is then used in the business logic as follows:
 
 Finally, in the template renders the form in the classic format, with the addition of the CSRF token:
 
-    <form method="POST" action="" class="auth-form-container">
+    <form method="POST" class="auth-form-container">
         {{ form.csrf_token(id = "unique_id") }}
         {{ form.hidden_tag() }}
 
