@@ -32,6 +32,7 @@ Remove contact us from navbar
 Add search function to dashbaords + grants available
 ADD SSL Certificate
 Check CSRF token is correclty impelemented on all forms
+Add favicon
 
 
 Title - Grant Management
@@ -50,14 +51,12 @@ COLOUR PALETTE
 1. [User Experience](#ux)
    - [Project Goals](#project-goals)
    - [User Stories](#ux-subsection)
-
 2. [Design](#design)
    - [Colours](#colours)
    - [Typography](#typography)
    - [Icons & Images](#icons-images)
    - [Wireframes](#wireframes)
    - [Databases](#databases)
-
 3. [Features](#features)
    - [Authentication](#auth)
    - [Admin Panel](#admin-panel)
@@ -73,12 +72,7 @@ COLOUR PALETTE
    - [Template Filter & Currency Display](#currency-display)
    - [Decorators](#decorators)
    - [Customer Error Pages](#error-pages)
-
-   
-
- 
 4. [Technologies](#tech)
-
 5. [Testing](#testing)
    - [Validator Testing](#val-testing)
      * [HTML](#html)
@@ -86,7 +80,6 @@ COLOUR PALETTE
      * [Javascript](#js)
    - [Lighthouse Testing](#lighthouse-testing)
    - [User Testing](#user-testing)
-
 6. [Bugs](#bugs)
    - [Current bugs](#current-bugs)
    - [Design & User Experience improvements](#design-improvements)
@@ -828,6 +821,33 @@ To improve the user experience in the unfortunate event of a internal server err
 * `templates\error-handling\404.html`
 * `templates\error-handling\500.html`
 
+## 4. Technologies <a name="tech"></a>
+* HTML & CSS - Used for front end rendering on templates.
+* Bootstrap - The Bootstrap framework is used throughout this website for layouts and styling.
+* Javascript - Used on a few occasions for rendering purposes.
+* Flask & Python - Use for business logic and backend
+* Font Awesome - Font awesome Icons are used for the social icons displayed in the footer and the navbar's "burger menu" in mobile view.
+* Google Fonts - Google fonts are used to render the fonts.
+* Visual Studio Code - VS Code is the Integrated Development Environment used to develop the Website.
+* GitHub - GithHub is the hosting site used to store the source code for the Website and Git Pages is used for the deployment of the live site.
+* Git - Git is used as version control software to commit and push code to the GitHub repository where the source code is stored.
+* Google Chrome Developer Tools - Used to debug front end.
+* Pixso - Used to design wireframes.
+* ui.dev - Used to generate first image in Readme file rendering site in different format.
+* notion.so - Used to generate tables for Readme file.
+* Favicon.io - Used to generate favicon
+* Heroku for server and PostgreSQL database hosting
+
+## 5. Testing <a name="testing"></a>
+### 5.1 Validator Testing <a name="val-testing"></a>
+### 5.2 Lighthouse Testing <a name="lighthouse-testing"></a>
+### 5.3 User Testing <a name="user-testing"></a>
+## 6. Bugs <a name="bugs"></a>
+### 6.1 Current bugs <a name="current-bugs"></a>
+### 6.2 Design & User Experience Improvements <a name="design-improvements"></a>
+### 6.3 Logic Improvements <a name="logic-improvements"></a>
+## 7. Deployment <a name="deployment"></a>
+## 8. Credits <a name="credits"></a>
 
 ////
 
