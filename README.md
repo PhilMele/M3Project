@@ -70,7 +70,7 @@ COLOUR PALETTE
    - [Approve & Reject Application](#approve-reject-application)
    - [CSRF Token & WTForms](#csrf-token)
    - [Context Processor & Navbar](#context-processor)
-   - [Currency Display](#currency-display)
+   - [Template Filter & Currency Display](#currency-display)
    - [Decorators](#decorators)
    - [Customer Error Pages](#error-pages)
 
@@ -786,7 +786,24 @@ The logic `{% if current_user.user_type == UserType.GRANTEE %}` in the template 
 
 Documentation: https://flask.palletsprojects.com/en/2.3.x/templating/
 
-### 3.12 Currency Display <a name="currency-display"></a>
+### 3.12 Template Filter & Currency Display <a name="currency-display"></a>
+To display currency with a Pound sign, a seperate function had to be implemented in app.py: 
+
+    @app.template_filter('currency')
+    def currency_filter(value):
+        try:
+            return f"£ {value:,.2f}"
+        except (ValueError, TypeError):
+            return value
+
+Once implemented, the template filter can be called (in £, only)  by adding a `| currency`:
+
+    {{ grantapplication.grant.grant_fund | currency }}
+
+Doucmentation: https://flask.palletsprojects.com/en/1.1.x/templating/
+
+Additional help: https://stackoverflow.com/questions/12078571/jinja-templates-format-a-float-as-comma-separated-currency
+
 ### 3.13 Decorators <a name="decorators"></a>
 ### 3.14 Customer Error Pages <a name="error-pages"></a>
 
