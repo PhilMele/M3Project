@@ -29,6 +29,7 @@ fix collapse menu in navbar so its not transparent
 Check CSRF token is correclty impelemented on all forms
 Add favicon
 change colours of validators on signup register
+remove print statements
 
 
 Title - Grant Management
@@ -525,7 +526,7 @@ To do this, an additional variable was created `existing_applications`, which fi
 
     existing_applications = GrantApplication.query.filter_by(user_id=current_user.id).all()
 
-Using a Dictionnary Comprehension, I can create a dictionnary and append an existing application (if it exists) against a grant_id my by current_user.
+As advised by my mentor Gareth McGirth, using a Dictionnary Comprehension, I can create a dictionnary and append an existing application (if it exists) against a grant_id my by current_user.
 
 The clearest definition I found is the following (form:https://www.datacamp.com/tutorial/python-dictionary-comprehension ):"Dictionary comprehension is a method for transforming one dictionary into another dictionary. During this transformation, items within the original dictionary can be conditionally included in the new dictionary, and each item can be transformed as needed."
 
@@ -1005,7 +1006,6 @@ As a result, it hasn't been compiled in a single js file, but instead put at the
     <p>
         <img src="documentation/screen-shots/js-testing/apply-to-grant.png" alt="styles.css" />
     </p>
-
     Note: the checker advises that the toggle is never used. This is because the checker was only provided the javascript.
 
     The reference to the toggle can be found in the button:     
