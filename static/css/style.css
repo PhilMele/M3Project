@@ -66,8 +66,10 @@ a {
 }
 
 .grant-title-col {
+    padding-bottom: 5px;
     text-align: left;
     font-weight: bold;
+    font-size: large;
 }
 
 .error-message {
