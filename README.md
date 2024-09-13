@@ -867,89 +867,222 @@ To improve the user experience in the unfortunate event of a internal server err
    <details>
       <summary>index.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/index.png" alt="index.html" />
+         <img src="documentation/screen-shots/html-validators/index.png" alt="index.html" />
       </p>
    </details>
    <details>
       <summary>register.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/register.png" alt="register.html" />
+         <img src="documentation/screen-shots/html-validators/register.png" alt="register.html" />
       </p>
    </details>
    <details>
       <summary>account.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/account.png" alt="account.html" />
+         <img src="documentation/screen-shots/html-validators/account.png" alt="account.html" />
       </p>
    </details>
    <details>
       <summary>admin.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/admin.png" alt="admin.html" />
+         <img src="documentation/screen-shots/html-validators/admin.png" alt="admin.html" />
       </p>
    </details>
    <details>
       <summary>apply-to-grant.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/apply-to-grant.png" alt="apply-to-grant.html" />
+         <img src="documentation/screen-shots/html-validators/apply-to-grant.png" alt="apply-to-grant.html" />
       </p>
    </details>
    <details>
       <summary>grantee-dashboard.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/grantee-dashboard.png" alt="grantee-dashboard.html" />
+         <img src="documentation/screen-shots/html-validators/grantee-dashboard.png" alt="grantee-dashboard.html" />
       </p>
    </details>
    <details>
       <summary>grants-available.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/grants-available.png" alt="grants-available.html" />
+         <img src="documentation/screen-shots/html-validators/grants-available.png" alt="grants-available.html" />
       </p>
    </details>
    <details>
       <summary>read-submitted-application.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/read-submitted-application.png" alt="read-submitted-application.html" />
+         <img src="documentation/screen-shots/html-validators/read-submitted-application.png" alt="read-submitted-application.html" />
       </p>
    </details>
    <details>
       <summary>create-new-grant.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/create-new-grant.png" alt="create-new-grant.html" />
+         <img src="documentation/screen-shots/html-validators/create-new-grant.png" alt="create-new-grant.html" />
       </p>
    </details>
    <details>
       <summary>edit-question.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/edit-question.png" alt="edit-question.html" />
+         <img src="documentation/screen-shots/html-validators/edit-question.png" alt="edit-question.html" />
       </p>
    </details>
    <details>
       <summary>granter-dashboard.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/granter-dashboard.png" alt="granter-dashboard.html" />
+         <img src="documentation/screen-shots/html-validators/granter-dashboard.png" alt="granter-dashboard.html" />
       </p>
    </details>
    <details>
       <summary>show-all-grant-application.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/show-all-grant-application.png" alt="show-all-grant-application.html" />
+         <img src="documentation/screen-shots/html-validators/show-all-grant-application.png" alt="show-all-grant-application.html" />
       </p>
    </details>
    <details>
       <summary>show-grant.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/show-grant.png" alt="show-grant.html" />
+         <img src="documentation/screen-shots/html-validators/show-grant.png" alt="show-grant.html" />
       </p>
    </details>
    <details>
       <summary>show-user-grant-application.html</summary>
       <p>
-         <img src="documentation/screen-shots/html validators/show-user-grant-application.png" alt="show-user-grant-application.html" />
+         <img src="documentation/screen-shots/html-validators/show-user-grant-application.png" alt="show-user-grant-application.html" />
       </p>
    </details>
    
 ### 5.2 Lighthouse Testing <a name="lighthouse-testing"></a>
+<details>
+    <summary>INDEX</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-index.png" alt="index mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-index.png" alt="index desktop" />
+    </p>
+</details>
+<details>
+    <summary>REGISTER</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-register.png" alt="register mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-register.png" alt="register desktop" />
+    </p>
+</details>
+<details>
+    <summary>ACCOUNT</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-account.png" alt="account mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-account.png" alt="account desktop" />
+    </p>
+</details>
+<details>
+    <summary>ADMIN</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-admin.png" alt="admin mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-admin.png" alt="admin desktop" />
+    </p>
+</details>
+<details>
+    <summary>APPLY TO GRANT</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-apply-to-grant.png" alt="apply-to-grant mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-apply-to-grant.png" alt="apply-to-grant desktop" />
+    </p>
+</details>
+<details>
+    <summary>GRANTEE DASHBOARD</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-grantee-dashboard.png" alt="grantee-dashboard mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-grantee-dashboard.png" alt="grantee-dashboard desktop" />
+    </p>
+</details>
+<details>
+    <summary>GRANTS AVAILABLE</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-grants-available.png" alt="grants-available mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-grants-available.png" alt="grants-available desktop" />
+    </p>
+</details>
+<details>
+    <summary>READ SUBMITTED APPLICATION</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-read-submitted-application.png" alt="read-submitted-application mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-read-submitted-application.png" alt="read-submitted-application desktop" />
+    </p>
+</details>
+<details>
+    <summary>CREATE NEW GRANT</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-create-new-grant.png" alt="create-new-grant mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-create-new-grant.png" alt="create-new-grant desktop" />
+    </p>
+</details>
+<details>
+    <summary>INDEX</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-index.png" alt="index mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-index.png" alt="index desktop" />
+    </p>
+</details>
+<details>
+    <summary>EDIT QUESTION</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-edit-question.png" alt="edit-question mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-edit-question.png" alt="edit-question desktop" />
+    </p>
+</details>
+<details>
+    <summary>GRANTER DASHBOARD</summary>
+    <p>
+        <h3>Mobile</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/mobile-granter-dashboard.png" alt="granter-dashboard mobile" />
+    </p>
+    <p>
+        <h3>Desktop</h3>
+        <img src="documentation/screen-shots/lighthouse-testing/desktop-granter-dashboard.png" alt="granter-dashboard desktop" />
+    </p>
+</details>
+   
 ### 5.3 User Testing <a name="user-testing"></a>
 ## 6. Bugs <a name="bugs"></a>
 ### 6.1 Current bugs <a name="current-bugs"></a>
