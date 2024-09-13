@@ -214,13 +214,11 @@ Each model corresponds to a table in a PostgreSQL database.
 
 <img src="documentation/erd/flask - ERD.png" alt="" width="320px">
 
-**1. UserType Enum**
-
 UserType is an enumeration used to distinguish between the two user types: "Grantee" and "Granter".
 
 This enum is associated with the user_type field in the User model to indicate the type of user, leading to specific permissions in the business logic.
 
-**2. User Model**
+**1. User Model**
 
 Represents the users of the system: Grantees and Granters.
 
@@ -239,7 +237,7 @@ Relationships:
 * GrantApplications: A User (acting as a grantee) can submit multiple grant applications (usergrantapplications).
 * GrantAnswers: A User can submit multiple answers to grant questions (usergrantanswers).
 
-`UserType Enum`
+**UserType Enum**
 
 UserType is an enumeration used to distinguish between the two user types: "Grantee" and "Granter".
 
@@ -260,73 +258,80 @@ This enum is associated with the user_type field in the User model to indicate t
     
 
 
-**3. Grant Model**
+**2. Grant Model**
 
 Represents a grant that is available for applicants to apply for.
 
-Fields:
-id: Primary key, unique identifier for each grant.
-user_id: Foreign key linking to the User (granter) who created the grant.
-grant_title: Title of the grant.
-grant_description: Description of the grant.
-grant_fund: Amount of funds available for the grant.
-created_on: Timestamp of when the grant was created.
-is_active: Indicates if the grant is currently active.
-is_closed: Indicates if the grant is closed for applications.
+| **Field**           | **Description**                                                 |
+|---------------------|-----------------------------------------------------------------|
+| `id`                | Primary key, unique identifier for each grant.                  |
+| `user_id`           | Foreign key linking to the User (granter) who created the grant. |
+| `grant_title`       | Title of the grant.                                             |
+| `grant_description` | Description of the grant.                                       |
+| `grant_fund`        | Amount of funds available for the grant.                        |
+| `created_on`        | Timestamp of when the grant was created.                        |
+| `is_active`         | Indicates if the grant is currently active.                     |
+| `is_closed`         | Indicates if the grant is closed for applications.              |
+
 
 Relationships:
-User: The Grant model has a foreign key relationship with User (granter).
-GrantQuestions: A grant can have multiple questions (questions) linked to it.
-GrantApplications: A grant can have multiple applications (applications) linked to it.
+* User: The Grant model has a foreign key relationship with User (granter).
+* GrantQuestions: A grant can have multiple questions (questions) linked to it.
+* GrantApplications: A grant can have multiple applications (applications) linked to it.
 
-**4. GrantQuestion Model**
+**3. GrantQuestion Model**
 
 Represents a question associated with a grant that applicants need to answer.
 
-Fields:
-id: Primary key, unique identifier for each question.
-user_id: Foreign key linking to the User who created the question (granter).
-grant_id: Foreign key linking to the Grant the question is associated with.
-question: The actual question text.
-created_on: Timestamp of when the question was created.
+| **Field**     | **Description**                                                      |
+|---------------|----------------------------------------------------------------------|
+| `id`          | Primary key, unique identifier for each question.                    |
+| `user_id`     | Foreign key linking to the User who created the question (granter).   |
+| `grant_id`    | Foreign key linking to the Grant the question is associated with.     |
+| `question`    | The actual question text.                                            |
+| `created_on`  | Timestamp of when the question was created.                          |
+
 
 Relationships:
-Grant: A question belongs to a specific grant (grant).
-GrantAnswers: A question can have multiple answers (answers) submitted by applicants.
+* Grant: A question belongs to a specific grant (grant).
+* GrantAnswers: A question can have multiple answers (answers) submitted by applicants.
 
-**5. GrantApplication Model**
+**4. GrantApplication Model**
 
 Represents an application that a user (grantee) submits for a grant.
 
-Fields:
-id: Primary key, unique identifier for each application.
-user_id: Foreign key linking to the User who submitted the application (grantee).
-grant_id: Foreign key linking to the Grant the application is for.
-is_submitted: Boolean indicating if the application has been submitted.
-is_approved: Boolean indicating if the application has been approved.
-is_rejected: Boolean indicating if the application has been rejected.
+| **Field**       | **Description**                                                        |
+|-----------------|------------------------------------------------------------------------|
+| `id`            | Primary key, unique identifier for each application.                   |
+| `user_id`       | Foreign key linking to the User who submitted the application (grantee).|
+| `grant_id`      | Foreign key linking to the Grant the application is for.               |
+| `is_submitted`  | Boolean indicating if the application has been submitted.              |
+| `is_approved`   | Boolean indicating if the application has been approved.               |
+| `is_rejected`   | Boolean indicating if the application has been rejected.               |
+
 
 Relationships:
-Grant: The application is linked to a specific grant id.
-User: The application is submitted by a specific user id.
-GrantAnswers: An application can have multiple answers submitted by a User.
+* Grant: The application is linked to a specific grant id.
+* User: The application is submitted by a specific user id.
+* GrantAnswers: An application can have multiple answers submitted by a User.
 
-**6. GrantAnswer Model**
+**5. GrantAnswer Model**
 
 Represents an answer to a question in a grant application.
 
-Fields:
-id: Primary key, unique identifier for each answer.
-user_id: Foreign key linking to the User who submitted the answer.
-application_id: Foreign key linking to the GrantApplication the answer is attached to.
-grant_question_id: Foreign key linking to the GrantQuestion being answered.
-answer: The actual answer text.
-created_on: Timestamp of when the answer was created.
+| **Field**          | **Description**                                                       |
+|--------------------|-----------------------------------------------------------------------|
+| `id`               | Primary key, unique identifier for each answer.                       |
+| `user_id`          | Foreign key linking to the User who submitted the answer.             |
+| `application_id`   | Foreign key linking to the GrantApplication the answer is attached to.|
+| `grant_question_id`| Foreign key linking to the GrantQuestion being answered.              |
+| `answer`           | The actual answer text.                                               |
+| `created_on`       | Timestamp of when the answer was created.                             |
 
 Relationships:
-User: The answer is submitted by a specific user.
-GrantApplication: The answer belongs to a specific application.
-GrantQuestion: The answer is associated with a specific question.
+* User: The answer is submitted by a specific user.
+* GrantApplication: The answer belongs to a specific application.
+* GrantQuestion: The answer is associated with a specific question.
 
 **Interactions Between Models**
 
