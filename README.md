@@ -23,6 +23,7 @@ Make single column container two columns instead from 992px
 ADD SSL Certificate
 Add search function to dashbaords + grants available
 Add delete appluctaion for granter if application not active
+The granter can technically access the grantee dashboard, so they can see their grant and what the grantee see. need a button to make this accessible without playing with URL
 
 TO DO:
 fix collapse menu in navbar so its not transparent
@@ -30,6 +31,7 @@ Check CSRF token is correclty impelemented on all forms
 Add favicon
 change colours of validators on signup register
 remove print statements
+recheck python following add of more code
 
 
 Title - Grant Management

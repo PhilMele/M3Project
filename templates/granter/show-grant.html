@@ -74,6 +74,14 @@
         <p>{{grant.grant_description}}</p>
     </div>
 </div>
+{% if list_question_empty %}
+<div class="row mb-2 center-text">
+    <div class="col-12">
+    <!-- Delete Grant Button-->
+    <a class="btn btn-danger btn-sm large-screen-width" href="{{ url_for('delete_grant', grant_id=grant.id) }}">Delete Grant</a>
+    </div>
+</div>
+{%endif%}
 <hr>
 
 <!-- Create form to add questions -->

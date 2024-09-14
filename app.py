@@ -847,6 +847,21 @@ def show_grant(grant_id):
         )
 
 
+@app.route(
+    '/delete_grant/<int:grant_id>',
+    methods=['GET', 'POST']
+    )
+@login_required
+def delete_grant(grant_id):
+    if current_user.user_type != UserType.GRANTER:
+        return redirect(url_for('dashboard'))
+    question = Grant.query.get_or_404(grant_id)
+    db.session.delete(question)
+    db.session.commit()
+    flash('Grant deleted', 'success')
+    return redirect(url_for('granter_dashboard'))
+
+
 @app.route("/activate-grant/<int:grant_id>", methods=['GET', 'POST'])
 @login_required
 def activate_grant(grant_id):
