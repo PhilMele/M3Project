@@ -31,7 +31,7 @@
     {% for grantapplication in applications %}
     <div class="row table-content center-text border-bottom py-2">
         <div class="grant-title-col col-12 d-flex">{{ grantapplication.grant.grant_title }}</div>
-        <div class="col-4 d-flex justify-content-center">{{ grantapplication.grant.grant_fund | currency }}</div>
+        <div class="col-4 d-flex justify-content-center align-items-center">{{ grantapplication.grant.grant_fund | currency }}</div>
         <div class="col-4 d-flex justify-content-center">
             {% if grantapplication.is_approved %}
             <span class="status-colour-green">Approved</span>
