@@ -40,8 +40,7 @@
             <span class="status-colour-gray">Not Started</span>
         {%endif%}
         </div>
-        <div class="col-4 d-flex justify-content-center">
-            <div class="container">           
+        <div class="col-4 d-flex justify-content-center">          
                     <!-- If application exists -->
                     <!-- If application exists AND is submitted -->
                     {% if grant.id in existing_application_id and existing_application_id[grant.id].is_submitted %}
@@ -60,7 +59,6 @@
                     </div>
                     {%endif%}
               
-            </div> 
         </div>
     </div>
     {% endfor %}

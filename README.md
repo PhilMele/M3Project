@@ -24,13 +24,13 @@ ADD SSL Certificate
 Add search function to dashbaords + grants available
 Add delete appluctaion for granter if application not active
 The granter can technically access the grantee dashboard, so they can see their grant and what the grantee see. need a button to make this accessible without playing with URL
-Some function like delete grant, are innaccessible from front-end, but could be accessed with URL. Would require more work to make this more secure.
+Some function like delete grant, are innaccessible from front-end, but could be accessed with URL from another granter. Would require more work to make this more secure.
+Do not know how to test if the CSRF token actually works
 
 TO DO:
 fix collapse menu in navbar so its not transparent
 Check CSRF token is correclty impelemented on all forms
 Add favicon
-change colours of validators on signup register
 remove print statements
 recheck python following add of more code
 
@@ -125,7 +125,9 @@ Note: Although it was my intention to cover both phases in this project, I have 
 
 * As a granter I want to keep track of any application submitted by my grantees, even if they delete an account, for KPI purposes.
 
-* As a granter, I want to create a grant and attach any number of questions to it. 
+* As a granter, I want to create a grant and attach any number of questions to it, edit or delete them.
+
+* As an adminstrator, I do not want granter to be able to delete grant or questions after the grant is accessible to grantees.
 
 * As the administrator I want to be able to link questions to grants and their issuing granter.
 
@@ -145,6 +147,8 @@ Note: Although it was my intention to cover both phases in this project, I have 
 
 * As a granter, I want to be able to review application and either approve or reject the appplication.
 
+* As a granter, I do not want to know the identity of the grantee when assessing their application.
+
 * As a grantee, I want to be kept up to date of my application whether the application is still pending, approved or rejected. 
 
 
@@ -152,6 +156,8 @@ Note: Although it was my intention to cover both phases in this project, I have 
 ## 2. Design <a name="ui"></a>
 
 The design is simple and avoids using images.
+
+It is made to work on screen width from 340px to 4K, but the content width is capped to 840pxs.
 
 ### 2.1 Colours <a name="colours"></a>
 As this is a coprorate product, colours used are simple, but also add some sense excitment through bright yellow and orange.

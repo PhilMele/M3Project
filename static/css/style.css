@@ -334,6 +334,17 @@ font-size: 24px; /* Adjust icon size */
     .large-screen-width{
         width: 100%;
     }
+
+    /* navbar */
+    .dropdown-menu {
+        background-color: white;
+        border: none;
+        color: white;
+    }
+    
+    .dropdown-item {
+        color: black;
+    }
 }
 
 @media (max-width: 320px) {
