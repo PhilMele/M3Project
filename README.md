@@ -112,6 +112,8 @@ Note: Although it was my intention to cover both phases in this project, I have 
 
 ### 1.2 User Stories <a name="user-goals"></a>
 
+* As a user (granter, admin or grantee) I want to be able to create an account.
+
 * As the administrator I want to assign a Granter role to accounts registered as Grantee as default.
 
 * As a granter, I want all people accessing my grants to be logged in, for analytics purposes. 
@@ -1271,6 +1273,7 @@ To avoid password being leaked on github when the code is pushed, we use variabl
 documentation: https://pypi.org/project/python-dotenv/
 
 To do this: 
+
 `pip install python-dotenv`
 
 Add:

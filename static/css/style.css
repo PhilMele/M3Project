@@ -254,6 +254,12 @@ thead {
     display: inline;
     text-align: center;
   }
+/* Show Grant */
+
+.accessible-red{
+    color:#e74c3c;
+    font-weight: bold;
+}
 
 /* Question */
 .question {

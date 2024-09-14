@@ -357,8 +357,6 @@ def admin():
     users = User.query.order_by(User.id).all()
     # list grants
     grants = Grant.query.all()
-    print(grants)
-
     return render_template(
         'admin/admin.html',
         grants=grants,
@@ -370,7 +368,6 @@ def admin():
 @app.route("/change-user-status/<int:user_id>", methods=["GET", "POST"])
 def change_user_status(user_id):
     selected_user = User.query.get_or_404(user_id)
-    print(f"selected_user = {selected_user}")
     if selected_user.user_type == UserType.GRANTEE:
         selected_user.user_type = UserType.GRANTER
     else:
@@ -403,10 +400,8 @@ def index():
                     return redirect(url_for('granter_dashboard'))
             else:
                 flash("The password does not exist")
-                print("The password does not exist")
         else:
             flash("The user does not exist")
-            print("The user does not exist")
 
     return render_template('index.html', form=form)
 
@@ -454,9 +449,6 @@ def register():
             return redirect(url_for('dashboard'))
         else:
             return redirect(url_for('granter_dashboard'))
-    else:
-        # Print form validation errors
-        print(f"Form validation errors: {form.errors}")
     return render_template('register.html', form=form)
 
 
@@ -659,8 +651,6 @@ def apply_to_grant(grant_id, grant_application_id, methods=['GET', 'POST']):
                 grant_id=grant_id,
                 grant_application_id=grant_application_id
                 ))
-        else:
-            print("the form is not valid")
 
     # logic to enable "submit" button
     submit_button = False
@@ -716,8 +706,6 @@ def edit_grant_answer(grant_id, grantanswer_id):
                 grant_id=grant_id,
                 grant_application_id=application_id
                 ))
-        else:
-            print("the form is not valid")
     return render_template(
         'grantee/apply-to-grant.html',
         editanswerform=editanswerform,
@@ -757,7 +745,6 @@ def manage_grant():
 @login_required
 def account():
     user = User.query.filter_by(id=current_user.id).first()
-    print(f'user = {user.username}')
     return render_template('account.html', user=user)
 
 
@@ -803,8 +790,6 @@ def create_new_grant():
         db.session.commit()
         flash('Grant has been added', 'success')
         return redirect(url_for('show_grant', grant_id=newgrant.id))
-    else:
-        print("the form is not valid")
     return render_template(
         'granter/create-new-grant.html',
         grantform=grantform
@@ -821,11 +806,15 @@ def show_grant(grant_id):
     list_question = GrantQuestion.query.filter_by(
         grant_id=grant.id
         ).order_by(GrantQuestion.id).all()
+    print(f'list_question = {list_question}')
+    #checks if list_question is empty and assign variable
+    list_question_empty = False
+    if list_question == []:
+         list_question_empty = True
 
     # add grant question
     addquestionform = AddGrantQuestionForm()
     if addquestionform.validate_on_submit():
-        print("the form works")
         newquestion = GrantQuestion(
             question=addquestionform.question.data,
             grant_id=grant.id,
@@ -854,6 +843,7 @@ def show_grant(grant_id):
         addquestionform=addquestionform,
         list_question=list_question,
         answerquestionform=answerquestionform,
+        list_question_empty=list_question_empty
         )
 
 
@@ -910,8 +900,7 @@ def create_new_grant_question():
         db.session.commit()
         flash('Grant has been added', 'success')
         return redirect(url_for('show_grant', grant_id=newgrant.id))
-    else:
-        print("the form is not valid")
+
     return render_template(
         'granter/create-new-grant.html',
         grantform=grantform
@@ -1058,10 +1047,8 @@ def approve_user_grant_application_id(grant_id, grant_application_id):
 # Set FLASK_ENV as production or dev. environement
 if os.environ.get('FLASK_ENV') == 'development':
     app.config['DEBUG'] = True
-    print("Running in development mode")
 else:
     app.config['DEBUG'] = False
-    print("Running in production mode")
 
 if __name__ == "__main__":
     app.run(debug=app.config['DEBUG'])

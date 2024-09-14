@@ -12,15 +12,23 @@
 <!-- Activate/Deactivate Grant -->
 <div class="row mb-2 d-flex justify-content-center align-items-center">
     <div class="col-6">
-        Click to switch status to:
+        {% if list_question_empty %}
+            <span class="accessible-red">To Activate: add questions.</span>
+            {%else%}
+            Click to switch status to:
+        {%endif%}
     </div>
     
     <div class="col-6 d-flex justify-content-center align-items-center">
         {%if grant.is_active%}
         <a href="{{ url_for('close_grant', grant_id=grant.id)}}" class="btn btn-danger btn-sm large-screen-width">Close</a>
         {%else%}
-        <a href="{{ url_for('activate_grant', grant_id=grant.id)}}" class="btn btn-success btn-sm large-screen-width">Activate</a>
-    
+
+            {% if list_question_empty %}
+                <span class="status-colour-gray large-screen-width">Activate</span>
+            {%else%}
+                <a href="{{ url_for('activate_grant', grant_id=grant.id)}}" class="btn btn-success btn-sm large-screen-width">Activate</a>
+            {%endif%}
         {%endif%}
     </div>
 </div>
