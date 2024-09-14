@@ -325,11 +325,18 @@ class EditGrantQuestionForm(FlaskForm):
 
 
 class AnswerGrantQuestionForm(FlaskForm):
-    answer = StringField(
+    answer = TextAreaField(
         "Enter Answer",
         validators=[
             DataRequired(),
-            ]
+            Length(max=200)
+            ],
+        render_kw={
+            "maxlength": 200,
+            "class": "form-control",
+            "placeholder": "Enter Answer",
+            "rows": 3
+            }
         )
     submit = SubmitField('Submit')
 
