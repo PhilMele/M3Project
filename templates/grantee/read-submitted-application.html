@@ -4,6 +4,7 @@
     <h1 class="left-text">{{user_submitted_application.grant.grant_title}}</h1>
 </div>
 
+<!-- Return link -->
 <a href="{{ url_for('grant_available') }}">Return to Previous Page</a>
 
 <hr>
@@ -23,7 +24,7 @@
     <hr>
 
 {% endfor %}
-<!-- Add  to return or delete(and return to previous page) -->
+<!-- Delete button -->
 
 <form action="{{ url_for('delete_application', grant_id=grant_id, grant_application_id=grant_application_id) }}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -31,7 +32,7 @@
 </form>
 
 <hr>
-
+<!-- Return link -->
 <a href="{{ url_for('grant_available') }}">Return to Previous Page</a>
 
 

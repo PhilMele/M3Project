@@ -807,10 +807,10 @@ def show_grant(grant_id):
         grant_id=grant.id
         ).order_by(GrantQuestion.id).all()
     print(f'list_question = {list_question}')
-    #checks if list_question is empty and assign variable
+    # checks if list_question is empty and assign variable
     list_question_empty = False
     if list_question == []:
-         list_question_empty = True
+        list_question_empty = True
 
     # add grant question
     addquestionform = AddGrantQuestionForm()

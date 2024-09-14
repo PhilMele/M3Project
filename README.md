@@ -28,23 +28,14 @@ Some function like delete grant, are innaccessible from front-end, but could be 
 Do not know how to test if the CSRF token actually works
 
 TO DO:
-fix collapse menu in navbar so its not transparent
 Check CSRF token is correclty impelemented on all forms
 Add favicon
 remove print statements
-recheck python following add of more code
 
 
 Title - Grant Management
 
 View the live site: https://grant-management-mp3-709b64ecedb2.herokuapp.com/
-
-COLOUR PALETTE
-#264653
-#2A9D8F
-#E9C46A
-#F4A261
-
 
 # Table of Contents
 
@@ -91,10 +82,6 @@ COLOUR PALETTE
 8. [Credits](#credits)
 
 
-
-
-
-
 ## 1. User Experience <a name="ux"></a>
 
 There are three types of users for this product. The actual user applying looking to apply for a grant (the "Grantee"), the user issuing and validating granter applications (the "Granter") and the administrator.
@@ -102,6 +89,8 @@ There are three types of users for this product. The actual user applying lookin
 ### 1.1 Project Goals <a name="project-goals"></a>
 
 The goal of this product is to offer a platform to people to apply for grant with local authorities. 
+
+This is platform is not meant to be standalone website, but instead will be linked to an existing website. By clicking on a link on the local authorities website, the user will be redirected to the index page. As a result, there is not need for additional page for the unauthenticated user than the login and account registration page.
 
 With the exception of large granting bodies, grants are still applied to by email. 
 
