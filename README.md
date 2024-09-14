@@ -24,6 +24,7 @@ ADD SSL Certificate
 Add search function to dashbaords + grants available
 Add delete appluctaion for granter if application not active
 The granter can technically access the grantee dashboard, so they can see their grant and what the grantee see. need a button to make this accessible without playing with URL
+Some function like delete grant, are innaccessible from front-end, but could be accessed with URL. Would require more work to make this more secure.
 
 TO DO:
 fix collapse menu in navbar so its not transparent

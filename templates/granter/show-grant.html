@@ -117,10 +117,12 @@
     <div class="col-6">
         <a class="btn btn-primary btn-sm large-screen-width" href="{{ url_for('edit_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Edit</a>
     </div>
-    
+    {%if grant.is_active%}
+    {%else%}
     <div class="col-6">
         <a class="btn btn-danger btn-sm large-screen-width" href="{{ url_for('delete_show_grant_question', grant_id=grant.id, grantquestion_id=question.id) }}">Delete</a>
     </div>
+    {%endif%}
 </div>
 <hr>
 {%endfor%}
