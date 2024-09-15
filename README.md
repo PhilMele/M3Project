@@ -1,16 +1,6 @@
 # M3Project
 
-TODO:
-
-Do not know how to test if the CSRF token actually works
-Automatic upload of static files to cloud solution.
-
-TO DO:
-
-add hover on navbar
-List bugs
-List imrpovements
-Add credits
+![rendering](/documentation/screen-shots/front-page/front-page.png)
 
 Title - Grant Management
 
@@ -537,7 +527,7 @@ You will be prompted to the following page, where with, for each user, their cur
 
 By clicking on the other user type in the right column, the related user account will change from one type to the other.
 
-<img src="documentation/screen-shots/admin-panel.png" alt="change user type in admin panel" width="320px">
+<img src="documentation/screen-shots/website-screenshots/admin-panel.png" alt="change user type in admin panel" width="320px">
 
 
 ### 3.3 Create Grant <a name="create-grant"></a>
@@ -562,7 +552,7 @@ This functionnality is only available to Granter and is triggered `show_grant()`
 
 It allows granter to see the granter they have created and any number of questions to it, using `AddGrantQuestionForm`.
 
-<img src="documentation/screen-shots/show-grant.png" alt="display specific grant management page to granter" width="320px">
+<img src="documentation/screen-shots/website-screenshots/show-grant.png" alt="display specific grant management page to granter" width="320px">
 
 Note on problem encountered: the fund field of the Grant Model is an interger. As interger have a range limit of -2,147,483,648 to 2,147,483,647, all grant value exceeding this range would generate a error.
 
@@ -669,7 +659,7 @@ Once grants with an existing application and those without one are identified, c
 This section distinguishes whether the application has been submitted by the user or not.
 
 
-<img src="documentation/screen-shots/submit-application.png" alt="submit grant application" width="320px">
+<img src="documentation/screen-shots/website-screenshots/submit-application.png" alt="submit grant application" width="320px">
 
 
 **Application Not Submitted**
@@ -781,11 +771,11 @@ Note for future improvements: in order to implement the KPI element mentioned ab
 
 When accessing the applications, the granter can click on each of them to review them and switch each application status to either "Approved" (`approve_user_grant_application_id()`)  or "Rejected" (`reject_user_grant_application_id()`)
 
-<img src="documentation/screen-shots/approve-reject-application.png" alt="approve or reject grant application" width="320px">
+<img src="documentation/screen-shots/website-screenshots/approve-reject-application.png" alt="approve or reject grant application" width="320px">
 
 Grantee can then see the status of their application changed from their dashboard.
 
-<img src="documentation/screen-shots/grantee-dashboard.png" alt="grantee dashboard view with application status" width="320px">
+<img src="documentation/screen-shots/website-screenshots/grantee-dashboard.png" alt="grantee dashboard view with application status" width="320px">
 
 ### 3.10 CSRF Token & WTForms <a name="csrf-token"></a>
 The projects introduces the use of WTForms and CSRF Token, for increased security.
@@ -1358,8 +1348,10 @@ To set up production on heroku, the following variables need to be added to Hero
 
 These variables can be defined in settings in the heroku dashboard. (Look for Config Vars section) then add the following: 
 
-    FLASK_ENV = production 
-    FLASK_DEBUG = 0
+    DATABASE_URL = herokuDefinedDatabaseURL
+    FLASK_ENV = `production` 
+    FLASK_DEBUG = `0`
+    SECRET_KEY = yourSecretKey (this relates to the CSRF token key)
 
 **How to check if the variables work**
 
@@ -1384,434 +1376,3 @@ In heroku the following line will be printed in the logs:
 * Currency display : https://stackoverflow.com/questions/12078571/jinja-templates-format-a-float-as-comma-separated-currency
 * John Elder for his Flask Friday youtube videos
 * Gareth McGir (mentor) for the advice to look at Dictonnary Comprehension
-
-
-////
-
-**Navbar**
-The Navbar displays 2 different version based on the UserType.
-
-Passing a logic like `  {% if current_user.user_type == UserType.GRANTEE %}` wasnt sufficent to make `UserType` available in if statements.
-
-In order to make UserType available, a `context processor` had to be injected.
-
-Documentation: https://flask.palletsprojects.com/en/2.3.x/templating/
-
-    @app.context_processor
-    def inject_user_type():
-        return dict(UserType=UserType)
-
-**Currency Display**
-Doucmentation: https://flask.palletsprojects.com/en/1.1.x/templating/
-
-Additional help: https://stackoverflow.com/questions/12078571/jinja-templates-format-a-float-as-comma-separated-currency
-
-App.py:
-    @app.template_filter('currency')
-    def currency_filter(value):
-        try:
-            return f"£ {value:,.2f}"
-        except (ValueError, TypeError):
-            return value
-
-Add filter in template: `| currency`
-
-    {{ grantapplication.grant.grant_fund | currency }}
-
-
-**@login_required decorator**
-
-**Extends template**
-Documentation : https://flask.palletsprojects.com/en/1.1.x/patterns/templateinheritance/
-
-**Navbar**
-Documentation
-https://getbootstrap.com/docs/4.0/components/navbar/
-
-**Error page handling**
-For errors: 404 and 500 only
-
-Templates for error 404 can be found on this path: `M3Project\templates\error-handling\404.html`
-
-Templates for error 505 can be found on this path: `M3Project\templates\error-handling\500.html`
-
-Redirection:
-As there are two dashboards depending on the user identity, the `home` button returns the user to the original login page.
-
-To achieve this, the code retruns the user to `index()`, which filters whether the user is authenticated or not. If it is, a redirection is made to either `dashboard()` or `granter_dashboard()`.
-
-**WTF Forms**
-    https://wtforms.readthedocs.io/en/3.1.x/
-    https://flask.palletsprojects.com/en/3.0.x/patterns/wtforms/
-
-    Mention use of validators to display messages when form is not compeleted
-
-    Use of CSRF Token
-    from flask_wtf.csrf import CSRFProtect
-    import os
-    from flask import flash (to display toast like messages)
-
-    Encountered problem: In production, the self generated token does not work (`app.config['SECRET_KEY'] = os.urandom(24).hex()`).
-
-    I had to generate a unique token and add it to Heroku's envorionment variables.
-
-    To generate this unique token I used the following link: https://djecrety.ir/
-
-    Other problem: `[DOM] Found 2 elements with non-unique id #csrf_token`
-
-    instead of `{{ form.csrf_token }}`, I had to update from documentation to :`form.csrf_token()`.
-
-
-
-    Credits: 
-    #WTF Documentation to set up CSRF Token : https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
-    #Additional Credits to set up CSRF Token : https://stackoverflow.com/questions/34902378/where-do-i-get-secret-key-for-flask
-    #Found 2 elements with non-unique id #csrf_token: https://www.reddit.com/r/flask/comments/gtjwbt/two_forms_csrf_token_nonunique_id_chrome_warning/
-
-
-
-
-**Heroku Setup**
-INstall heorku commandline (CLI): https://devcenter.heroku.com/articles/heroku-cli
-Run `pip install gunicorn` on terminal
-INstall PostGres: `pip install psycopg2`
-Set up requirements.txt file: `pip freeze > requirements.txt`
-Create Procfile: `echo web: gunicorn app:app > Procfile`
-Login into Heroku: `heroku login`
-Create projet on heroku: `heroku create grant-management-mp3`
-
-Problem encountered: the Procfile generated with command line from documentation `echo web: gunicorn app:app > Procfile` created an issue, which seems to be relating to encoding: which defaulted to UTF-16 instead of UTF-8.
-
-To solve my problem, I created a new Procfile through a Notepad, selected encoding UTF-8 and called it `Procfile.txt` in the same location as the actual Procfile. Then, delete the previous Procfile and renamed `Procfile.txt` to `Procfile`.
-
-Credits: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
-
-**Heroku Migration**
-A migration will need to be made to heroku from your local repository: ` heroku run flask db upgrade`
-
-**Developement & Production Environements**
-Documentation: https://flask.palletsprojects.com/en/1.1.x/config/
-Step up
-To set up the app as development of production, the following code is implemented:
-app.py:
-    import os
-    if os.environ.get('FLASK_ENV') == 'development':
-        app.config['DEBUG'] = True
-        print("Running in development mode")
-    else:
-        app.config['DEBUG'] = False
-        print("Running in production mode")
-
-    if __name__ == "__main__":
-        app.run(debug=app.config['DEBUG'])
-
-In the same `.env` file created in the previous section (**Create environement variables & Setup PostGres on local**) add the following variables:
-    FLASK_ENV=development
-    FLASK_DEBUG=1
-
-These variables are for development only.
-
-To set up production on heroku, the following variables need to be added to Heroku variables.
-
-These variables can be defined in settings in the heroku dashboard. (Look for `Config Vars` section) then add the following:
-FLASK_ENV = production
-FLASK_DEBUG = 0
-
-To check if it works, when running the project on local (or development) the following messages will print on the console:
-    Running in development mode
-    * Debug mode: on
-    WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
-    * Running on http://127.0.0.1:5000
-    Press CTRL+C to quit
-    * Restarting with stat
-    Running in development mode
-    * Debugger is active!
-
-In heroku the following line will be printed in the logs:
-`Running in production mode`
-
-
-**User types**
-`from enum import Enum`
-https://docs.python.org/3/library/enum.html
-
-**Foreign Keys**
-FK problem
-Note: in `class GrantAnswer(db.Model)` the foreign key applied to field `grant_question_id` is `grant_question.id`. It seems running `flask db migrate` autorenamed the table generated by `class GrantQuestion(db.Model)` to `grant_question. This was found out by checking migration file: #bdd8261021d8.
-
-**Grantee Interface**
-Only accesses grants that are "active". This is achieve in `grant_available()`:
-    grants = Grant.query.filter_by(is_active=True)
-
-**Granter Interfance**
-
-**Display of application**
-Because I didnt want the applications to be destroyed when a user deletes their account, it creates some display challenges.
-
-On some occasion, I had to add an additional filter to remove all application where user_id is not `none`.
-
-Example:
-
-    #allows granter to see all applictaions against grant id
-    @app.route("/show-all-grant-application/<int:grant_id>")
-    @login_required
-    def show_all_grant_application(grant_id):
-        if current_user.user_type != UserType.GRANTER:
-            return redirect(url_for('dashboard'))
-        applications = (GrantApplication.query.filter_by(grant_id=grant_id, is_submitted = True)).filter(GrantApplication.user_id.isnot(None)).all()
-
-Credit for user of .filter() : https://stackoverflow.com/questions/32071527/elegant-way-to-filter-by-none-or-not-none
-
-**CRUD**
-CRUD is present in a few pages. The below details the CRUD functionality applied to apply_to_grant(), as this was the most complex part of the project.
-
-**Create**
-To answer a specific question, the user populates a form.
-
-The form is defined as a FlaskForm
-
-    class AnswerGrantQuestionForm(FlaskForm):
-        answer = StringField("Enter Answer", validators=[DataRequired(),])
-        submit = SubmitField('Submit')
-
-In this example, the form is aimed at populating model `GrantAnswer`
-
-This model works in conjunction with 3 others models
-
-    class User(db.Model,UserMixin):
-        id = db.Column(db.Integer, primary_key=True)
-        ...
-
-    class Grant(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        ...
-
-    class GrantQuestion(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-        user = db.relationship('User', backref='usergrantquestions')
-        grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
-        grant = db.relationship('Grant', backref='questions')
-        question = db.Column(db.String(200), nullable=False)
-        created_on = db.Column(db.DateTime, default=datetime.utcnow)
-        answers = relationship('GrantAnswer', backref='question', lazy=True)
-
-    class GrantAnswer(db.Model):
-        id = db.Column(db.Integer,primary_key=True)
-        user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-        user = db.relationship('User', backref='usergrantanswers')
-        grant_question_id = db.Column(db.Integer, db.ForeignKey('grant_question.id'))#the FK was automatically named `grant_question` in the migration.
-        grant_question = relationship('GrantQuestion', back_populates='answers')
-        answer = db.Column(db.String(300), nullable=False)
-        ..
-
-Logic
-When populationg this form, it is important to keep in mind ForeignKey with `GrantQuestion` and `User`.
-
-As a result, some additional logic needs to take place in both the apply_to_grant() and its template.
-
-In the function, we need to capture:
-`gantquestion.id`, which can be obtained through the loop
-`answer`, which is captured through the form field
-`user`, which is captured through `current_user`
-
-    grantanswerform = AnswerGrantQuestionForm()
-    if request.method == 'POST':
-        grant_question_id = request.form.get('grant_question_id')
-        #answer_form = None
-        if grantanswerform.validate_on_submit():
-            newanswer = GrantAnswer(
-                user = current_user,
-                answer = grantanswerform.answer.data,
-                grant_question_id=grant_question_id,
-                )
-            print(f'newanswer is {newanswer.user}')
-            print(f'newanswer is {newanswer.answer}')
-            print(f'newanswer is {newanswer.grant_question_id}')
-            grantanswerform.answer.data = ''
-            db.session.add(newanswer)
-            db.session.commit()
-            flash('Answer has been added', 'success')
-            return redirect(url_for('apply_to_grant', grant_id=grant_id))
-        else:
-            print("the form is not valid")
-
-Template logic
-The template of the form adds the following elements:
-`csrf_token`, adding extra protection, this field is invisibile to the user
-a hidden input field, which passes the `grantquestion.id` as a value. This value is then captured in the form logic.
-the user answer with `answer`
-
-    <form method="POST" action="">
-    <input type="hidden" name="grant_question_id" value="{{ grantquestion.id }}">
-        {{ grantanswerform.csrf_token }}
-        {{grantanswerform.hidden_tag()}}
-        {{grantanswerform.answer}}
-    
-        {{grantanswerform.submit}}
-    
-    </form>
-
-
-
-**Read**
-I wanted to avoid restricting the number of question to a number set in the GrantQuestion model.
-
-I wanted to allow the granter to create as many question as they wanted.
-
-This caused a few problem as I also wanted to set an answer field to each question.
-
-This resulted in having to create 2 models : GrantQuestion (with a FK to Grant ID) and AnswerQuestion.
-
-    class Grant(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        ...
-
-    class GrantQuestion(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-        user = db.relationship('User', backref='usergrantquestions')
-        grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
-        grant = db.relationship('Grant', backref='questions')
-        question = db.Column(db.String(200), nullable=False)
-        created_on = db.Column(db.DateTime, default=datetime.utcnow)
-        answers = relationship('GrantAnswer', backref='question', lazy=True)
-
-    class GrantAnswer(db.Model):
-        id = db.Column(db.Integer,primary_key=True)
-        user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-        user = db.relationship('User', backref='usergrantanswers')
-        grant_question_id = db.Column(db.Integer, db.ForeignKey('grant_question.id'))#the FK was automatically named `grant_question` in the migration.
-        grant_question = relationship('GrantQuestion', back_populates='answers')
-        answer = db.Column(db.String(300), nullable=False)
-        ..
-
-The questions are displayed based on the Grant_id of the URL. Based on this grant id, I run an intial loop through GrantQuestion, which returns all questions attached to a specific grant iD.
-
-NExt steps proved to be trickier. I wanted to display either the user's answer to the specific grant, if they had answered already, or display a answer field.
-
-To do this, I needed to create a nested loop, which would loop through all the answers with a common GrantQuestion_id and filter the `current_user` answers and return them.
-
-To achieve this, I created a first variable `answers` which would return all answers against `current_user` and `GrantQuestion.id`
-
-answers = GrantAnswer.query.join(GrantQuestion).filter(
-        GrantQuestion.grant_id == grant_id,
-        GrantAnswer.user_id == current_user.id
-    ).all()
-
-I was suggested to look at `Dictionary Comprehension` to solve my problem.
-
-The clearest definition I found is the following (form:https://www.datacamp.com/tutorial/python-dictionary-comprehension ):"Dictionary comprehension is a method for transforming one dictionary into another dictionary. During this transformation, items within the original dictionary can be conditionally included in the new dictionary, and each item can be transformed as needed."
-
-`dict_variable = {key:value for (key,value) in dictonary.items()}`
-
-I therefore created a second variable:
-`answers_from_user_id = {answer.grant_question_id: answer for answer in answers}`
-
-`answer` represents each object within `GrantAnswer`
-`answer.grant_question_id` returns the ID of each `answer` and is the `key` of the comprehension.
-`answer` (first one) represents the value
-`answer` (second one) represents the (key,value)
-`answers` is the dictionary created through the variable of the same name.
-
-
-This `` variable allowed me to return the correct result which looks like this in the console:
-`print(answers_from_user_id) ={1: <GrantAnswer: <Grant: <Grant 1 Grant1Description 35000> Grant 1 Question 1> Answer 1 to Grant1 Question1>}`
-
-However, in order to apply this to the template additional steps where needed.
-
-An intial forloop over `grantquestion` was created. 
-
-    {%for grantquestion in grant_questions%}
-    {%endfor%}
-
-As a second step a condition check is performed, looking for a `grantquestion_id` answered by `current_user` in the newly created dictionary `answers_from_user_id`.
-
-    {%for grantquestion in grant_questions%}
-        {% if grantquestion.id in answers_from_user_id %}
-        {%endif}
-    {%endfor%}
-
-As a final step, to display the answer in a satisfying mannger in the template, I call `{{ answers_from_user_id[grantquestion.id].answer }}`
-
-    {%for grantquestion in grant_questions%}
-        {% if grantquestion.id in answers_from_user_id %}
-            <p>Your Answer: {{ answers_from_user_id[grantquestion.id].answer }}</p>
-        {%endif}
-    {%endfor%}
-
-
-Which returns the `current_user` answer with matching grantquestion.id.
-
-If this answer does not exists, it template returns a form.
-
-**Update**
-
-**Delete**
-Deletion of a grant answer is handle in `delete_grant_answer()` which takes the parameters of `grant_id`, `grantanswer_id`.
-
-Considering `grantanswer_id` already has a specific id having `grant_id` in the path is not fully necessary except for ease of access for the `return redirect()`.
-
-`return redirect()` returns the user to the grant_id template the answer was originally deleted from. To achieve this, values of `grant_id` and `grant_application_id` are used. `grant_id` is extracted from the function's parameter, and `grant_application_id` is taken from the the template (`<input type="hidden" name="delete_answer_grant_application_id" value="{{ grant_application_id }}">`) and returned in the function through variable `grant_application_id = request.form.get('delete_answer_grant_application_id')`.
-
-
-**Note** - For `delete_application()`, I didnt created a form and couldnt call the hidden_tag from WTF forms.
-
-In order to hide the CSRF token, I added it to a hidden input:
-`<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">`
-
-I am not sure if this could create security issues. Looking at a few posts on stackover flow, it does not seem to compromise security:
-https://stackoverflow.com/questions/68289406/flask-hidden-input-field-with-csrf-token-is-visible-in-elements-pane
-https://stackoverflow.com/questions/32620613/if-a-csrf-token-is-placed-inside-a-hidden-input-isnt-it-possible-for-a-malicio
-
-
-**Note - Cascade**
-When deleting the application ID, the answers remained in the database and were rendered in the next application.
-
-In order to remove the answer objects (child) associated with the application object (parent), `cascade` was implemented.
-
-documentation: https://docs.sqlalchemy.org/en/20/orm/cascades.html
-
-In the sample below `cascade='all, delete-orphan'` will delete all child objects associated with parent object.
-
-    class GrantApplication(db.Model):
-        id = db.Column(db.Integer,primary_key=True)
-        answers = db.relationship('GrantAnswer', backref='grant_application', cascade='all, delete-orphan')
-
-
-    class GrantAnswer(db.Model):
-        id = db.Column(db.Integer,primary_key=True)
-        application_id = db.Column(db.Integer, db.ForeignKey('grant_application.id'))
-        application = db.relationship('GrantApplication', backref='userapplications')
-
-
-NOTE: Say I wanted to apply the method to all models, but resulted in a number of errors. Didnt have time to do it. Only this relationship needed `cascade` implemented for the project to work.
-
-**Application Status**
-When a user creates an application, the application is given an `ID` and is default value of `False` against `is_submitted field.
-
-    class GrantApplication(db.Model):
-        id = db.Column(db.Integer,primary_key=True)
-        user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-        user = db.relationship('User', backref='usergrantapplications')
-        grant_id = db.Column(db.Integer, db.ForeignKey('grant.id'))
-        grant = db.relationship('Grant', backref='applications')
-        is_submitted = db.Column(db.Boolean, default=False)
-
-This status is updated to `True` when all question listed a the `grant_id` Foreign Key the application is assigned against, which is achieved through `submit_application()`.
-
-In order to avoid a users submitting someone else application by using the path in the URL, the function also checks if `the user_id` registered agianst the `application_id` is `current_user`, before marking an application as submitted.
-
-    if submitted_application_user_id == current_user.id:
-            submission = GrantApplication(
-            user_id = current_user.id,
-            grant_id = grant_id,
-            is_submitted = True
-        )
-
-Depending on the status of the application, template: `grants-available.html` displays different options.
-
-Once the application has been submitted, the user can either delete or read the application with `read_submitted_application()`
-
-**Credits**
-DB Beaver for ERD generator : https://dbeaver.com/docs/dbeaver/ER-Diagrams/
