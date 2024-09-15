@@ -173,56 +173,83 @@ Credits need to however be given to Fontawesome for their icons: https://fontawe
 
 ### 2.4 Wireframes <a name="wireframes"></a>
 
-   <details>
-      <summary>Login</summary>
-      <p>
-         <img src="/documentation/screen-shots/wireframes/login.png" alt="login wireframe page"  width="320px" />
-      </p>
-   </details>
+<details>
+    <summary>Login</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/login.png" alt="login wireframe page"  width="320px" />
+    </p>
+</details>
 
-   <details>
-      <summary>Register</summary>
-      <p>
-         <img src="/documentation/screen-shots/wireframes/register.png" alt="register wireframe page"  width="320px" />
-      </p>
-   </details>
+<details>
+    <summary>Register</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/register.png" alt="register wireframe page"  width="320px" />
+    </p>
+</details>
 
-   <details>
-      <summary>Grantee Dashboard</summary>
-      <p>
-         <img src="/documentation/screen-shots/wireframes/grantee-dashboard.png" alt="grantee-dashboard wireframe page"  width="320px"/>
-      </p>
-   </details>
+<details>
+    <summary>Grantee Dashboard</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/grantee-dashboard.png" alt="grantee-dashboard wireframe page"  width="320px"/>
+    </p>
+</details>
 
-   <details>
-      <summary>Grants Available</summary>
-      <p>
-         <img src="/documentation/screen-shots/wireframes/grants-available.png" alt="grants-available wireframe page"  width="320px" />
-      </p>
-   </details>
+<details>
+    <summary>Grants Available</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/grants-available.png" alt="grants-available wireframe page"  width="320px" />
+    </p>
+</details>
 
-   <details>
-      <summary>Apply to Grant</summary>
-      <p>
-         <img src="/documentation/screen-shots/wireframes/apply-to-grant.png" alt="apply-to-grant wireframe page"  width="320px" style="border: 2px solid black;" />
-      </p>
-   </details>
+<details>
+    <summary>Apply to Grant</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/apply-to-grant.png" alt="apply-to-grant wireframe page"  width="320px" />
+    </p>
+</details>
 
-**Granter Dashboard**
+<details>
+    <summary>Granter Dashboard</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/granter-dashboard.png" alt="granter-dashboard wireframe page"  width="320px"/>
+    </p>
+</details>
 
-<img src="" alt="" width="320px">
+<details>
+    <summary>Create Grant</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/create-new-grant.png" alt="create-new-grant wireframe page"  width="320px"/>
+    </p>
+</details>
 
-**Create Grant Dashboard**
+<details>
+    <summary>Show Grant</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/show-grant.png" alt="show-grant wireframe page"  width="320px"/>
+    </p>
+</details>
 
-<img src="" alt="" width="320px">
+<details>
+    <summary>Show All Grant Applications</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/show-all-grant-application.png" alt="show-all-grant-application wireframe page"  width="320px" />
+    </p>
+</details>
 
-**See Grant Applications**
+<details>
+    <summary>Show User Grant Applications</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/show-user-grant-application.png" alt="show-user-grant-application wireframe page"  width="320px" />
+    </p>
+</details>
 
-<img src="" alt="" width="320px">
+<details>
+    <summary>Account</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/account.png" alt="account wireframe page"  width="320px" />
+    </p>
+</details>
 
-**Read Specific Applications**
-
-<img src="" alt="" width="320px">
 
 ### 2.5 Databases <a name="databases"></a>
 
