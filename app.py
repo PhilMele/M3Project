@@ -343,7 +343,7 @@ class AnswerGrantQuestionForm(FlaskForm):
 
 # 500 error generating function
 @app.route('/generate-error')
-def generate_error():
+def generate_500_error():
     # Deliberately cause a division by zero error
     x = 1 / 0
     return "death."
@@ -1077,8 +1077,10 @@ def approve_user_grant_application_id(grant_id, grant_application_id):
 # Set FLASK_ENV as production or dev. environement
 if os.environ.get('FLASK_ENV') == 'development':
     app.config['DEBUG'] = True
+    print("Running in dev. mode")
 else:
     app.config['DEBUG'] = False
+    print("Running in production mode")
 
 if __name__ == "__main__":
     app.run(debug=app.config['DEBUG'])
