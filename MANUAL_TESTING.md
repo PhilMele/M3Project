@@ -80,6 +80,7 @@
 run `flask shell`
 
 In the shell write the following lines:
+
     from app import db, GrantApplication
     applications = GrantApplication.query.all()
     for application in applications:

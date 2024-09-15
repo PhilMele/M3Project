@@ -271,9 +271,11 @@ To setup the database, the following steps need to be taken:
 **Problem encountered**: In `app.config['SQLALCHEMY_DATABASE_URI'] =`, I had to specify the full path as the local project was hosted on OneDrive and caused problems. If the project was hosted directly on local machine, the use of the relative path should work.
 
 **Setup - PostgreSQL**
+
 To set up of PostGres on Local run : `pip install psycopg2` (Documentation: https://medium.com/@shahrukhshl0/building-a-flask-crud-application-with-psycopg2-58de201e3c14)
 
 **Create environement variables & Setup PostgreSQL on local**
+
 To avoid password being leaked on github when the code is pushed, we use variables which are stored in files that are not pushed to git hub. (Documentation: https://pypi.org/project/python-dotenv/)
 
 To do this run: `pip install python-dotenv`
@@ -1270,6 +1272,59 @@ Click on this link to see manual testing steps: [Manual Testing Guide](MANUAL_TE
 ### 6.2 Design & User Experience Improvements <a name="design-improvements"></a>
 ### 6.3 Logic Improvements <a name="logic-improvements"></a>
 ## 7. Deployment <a name="deployment"></a>
+
+To setup Heroku: 
+* Install Heroku commandline (CLI) (Documentation: https://devcenter.heroku.com/articles/heroku-cli), run: `pip install gunicorn` 
+* Install PostGres: `pip install psycopg2` 
+* Set up requirements.txt file and run  `pip freeze > requirements.txt`
+* Create Procfile and run `echo web: gunicorn app:app > Procfile`
+* Login into Heroku: run `heroku login` (you will need to have an existing account)
+* Create projet on heroku: heroku create project-name
+
+**Problem encountered**: the Procfile generated with command line from documentation ``echo web: gunicorn app:app > Procfile` created an issue relating to encoding. The encoding defaulted to UTF-16 instead of UTF-8.
+
+To solve this problem: create a new Procfile through a Notepad, selected encoding UTF-8 and called it Procfile.txt in the same location as the actual Procfile. I then deleted the previous Procfile and renamed Procfile.txt to Procfile.
+
+Credits: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
+
+Heroku Migration: a migration will be needed to migrate to heroku from your local repository. Run: `heroku run flask db upgrade`
+
+**Developement & Production Environements Documentation**
+To set up the app as development or production, the following code has been implemented in app.py: 
+
+    import os 
+
+    if os.environ.get('FLASK_ENV') == 'development': 
+        app.config['DEBUG'] = True 
+            print("Running in development mode") 
+        else: 
+        app.config['DEBUG'] = False 
+            print("Running in production mode")
+
+    if __name__ == "__main__":
+        app.run(debug=app.config['DEBUG'])
+
+**Development Variables**
+In `.env` previsouly created add the following variables: 
+    FLASK_ENV=development 
+    FLASK_DEBUG=1
+
+These variables are for development only.
+
+**Production Variables**
+To set up production on heroku, the following variables need to be added to Heroku variables.
+
+These variables can be defined in settings in the heroku dashboard. (Look for Config Vars section) then add the following: 
+    FLASK_ENV = production 
+    FLASK_DEBUG = 0
+
+**How to check if the variables work**
+To check if it works, when running the project on local (or development) the following messages will print on the console: 
+    Running in development mode 
+
+In heroku the following line will be printed in the logs: 
+    Running in production mode
+
 ## 8. Credits <a name="credits"></a>
 
 ////
