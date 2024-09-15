@@ -1293,8 +1293,8 @@ There is however a flaws both in frontend and backend that could be improved.
 * Add email system and notifications: When applications are rejected or approved, a system could be implemented for the user to recieve an email notification to let them know of their application status. This email system could also be used to send other transactional emails (account verification). Additionally, live notification could be pushed to the user during browsing either through http requests, or via a websocket system but will require to pay for Redis heroku extension.
 * Add grading system: some grant organisation have grading system, which could be implemented on the granter side.
 * Serve static file on external cloud platform: the only image currently used is a favicon. This favicon is hosted on an S3 Bucket, as building a document uploader felt like an overkill for a single static image. However, in future developments, in would make sense to integrate with webservice to serve media files, in particular if users were to be asked to upload their own documents like financial models or presentations.
-* Prevent user from deleting application but instead remove it from display:
-* Contact us for not logged in users:
+* Prevent user from deleting application but instead remove it from display: I do not like the idea of removing data from database. My experience in grant is limited, however I could imagine local authorities wanting to keep as much data as possible, with exception of anything GDPR would ask to be deleted. As a result, it would be interesting to switch the delete from database functions to function that simply remove data from front end. 
+* Contact us for not logged in users: There is currently no communication system available for user wanting to contact the administrator if they are struggling to connect. This feature was initially built in the previous commits, but removed it as I could not finish it.
 
 ## 7. Deployment <a name="deployment"></a>
 ### 7.1 Local Deployment <a name="local-deployment"></a>
