@@ -97,17 +97,17 @@
   </head>
   <body>
     <!-- Displays flask messages -->
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class="flashes">
-        {% for message in messages %}
-        <div class="alert alert-success fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
         {% endfor %}
-        </ul>
-      {% endif %}
+      </ul>
+    {% endif %}
     {% endwith %}
     <!-- Page content -->
     <div id="content" class="max-content-width">{% block content %}{% endblock %}</div>

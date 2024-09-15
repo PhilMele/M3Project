@@ -414,9 +414,9 @@ def index():
                 else:
                     return redirect(url_for('granter_dashboard'))
             else:
-                flash("The password does not exist")
+                flash("The password does not exist", "danger")
         else:
-            flash("The user does not exist")
+            flash("The user does not exist", "danger")
 
     return render_template('index.html', form=form)
 
@@ -425,7 +425,7 @@ def index():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     # If user is authenticated
-    # Redirect based on the user type
+    # redirect to respective dashboard
     if current_user.is_authenticated:
         if current_user.user_type == UserType.GRANTER:
             return redirect(url_for('granter_dashboard'))
@@ -433,6 +433,8 @@ def register():
             return redirect(url_for('dashboard'))
 
     form = UserRegisterForm()
+
+    # check if form is valid
     if form.validate_on_submit():
         existing_user = User.query.filter_by(
             username=form.username.data
@@ -441,13 +443,18 @@ def register():
             email=form.email_address.data
             ).first()
 
+        # if username or email already exist in database
         if existing_user:
             flash('Username already exists.', 'danger')
+            # re-render the form with the existing errors
             return render_template('register.html', form=form)
 
         if existing_email:
             flash('Email address already in use.', 'danger')
+            # re-render the form with the existing errors
             return render_template('register.html', form=form)
+
+        # Creates user object
         hashed_password = bcrypt.generate_password_hash(
             form.password.data
             ).decode('utf-8')
@@ -464,6 +471,13 @@ def register():
             return redirect(url_for('dashboard'))
         else:
             return redirect(url_for('granter_dashboard'))
+
+    # Handle form validation errors
+    if form.errors:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(error, 'danger')
+
     return render_template('register.html', form=form)
 
 

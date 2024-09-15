@@ -1169,6 +1169,19 @@ As a result, it hasn't been compiled in a single js file, but instead put at the
 </details>
    
 ### 5.3 User Testing <a name="user-testing"></a>
+
+
+Database query for #42:
+run `flask shell`
+
+In the shell write the following lines:
+    from app import db, GrantApplication
+    applications = GrantApplication.query.all()
+    for application in applications:
+        print(f"Application ID: {application.id}, User ID: {application.user_id}")
+
+To leave shell, type: `exit()`
+
 ## 6. Bugs <a name="bugs"></a>
 ### 6.1 Current bugs <a name="current-bugs"></a>
 ### 6.2 Design & User Experience Improvements <a name="design-improvements"></a>
