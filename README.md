@@ -260,6 +260,52 @@ Credits need to however be given to Fontawesome for their icons: https://fontawe
 
 ### 2.5 Databases <a name="databases"></a>
 
+**Setup - SQLAlchemy**
+
+To setup the database, the following steps need to be taken:
+* To get started run: `pip install flask-sqlalchemy` (Documentation: https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/)
+* To make changes to database install Flask-Migrate package and run : `pip install Flask-Migrate` (Documentation:https://flask-migrate.readthedocs.io/en/latest/)
+* An initial migration will need to be made by running command : `$ flask db init`. (db refers to the database)
+* Everytime a change is made to the models run commands :`$ flask db migrate -m "migration description"` & `$ flask db upgrade`
+
+**Problem encountered**: In `app.config['SQLALCHEMY_DATABASE_URI'] =`, I had to specify the full path as the local project was hosted on OneDrive and caused problems. If the project was hosted directly on local machine, the use of the relative path should work.
+
+**Setup - PostgreSQL**
+To set up of PostGres on Local run : `pip install psycopg2` (Documentation: https://medium.com/@shahrukhshl0/building-a-flask-crud-application-with-psycopg2-58de201e3c14)
+
+**Create environement variables & Setup PostgreSQL on local**
+To avoid password being leaked on github when the code is pushed, we use variables which are stored in files that are not pushed to git hub. (Documentation: https://pypi.org/project/python-dotenv/)
+
+To do this run: `pip install python-dotenv`
+
+To app.py, add:
+
+    ...
+    from dotenv import load_dotenv
+    ...
+    load_dotenv()
+    ...
+    database_url = os.environ.get('DATABASE_URL')
+    if database_url and database_url.startswith('postgres://'):
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+
+After this, create `.env` file in root directory and the following line:
+`DATABASE_URL=postgresql://[username]:[postgres-password]@localhost/[databasename]`
+
+**Problem encountered**: note the change for `database_url`. This is due to a problem faced during the deployment on Heroku returning the following message: `sqlalchemy.exc.NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:postgres`
+
+This error is due to a change in SQLalchemy library which has not been reflected with Heroku. The library now requires a reference to `postgresql` which Heroku still refers as `postgres`.
+
+As a result, in order for the library to work on heroku an if statement has been added to the code, which handles this situation.
+
+Another solution could have been to roll the library back to a version prior to <1.4.0 (1.3.23 is the last 1.3.x release).
+
+Credit for solution: https://stackoverflow.com/questions/66690321/flask-and-heroku-sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy
+
+**Model Overview**
+
 The models define the structure and relationships of entities in the application. 
 
 These entities include users, grants, grant applications, questions related to grants, and answers to those questions. 
@@ -1308,59 +1354,7 @@ To achieve this, the code retruns the user to `index()`, which filters whether t
     #Additional Credits to set up CSRF Token : https://stackoverflow.com/questions/34902378/where-do-i-get-secret-key-for-flask
     #Found 2 elements with non-unique id #csrf_token: https://www.reddit.com/r/flask/comments/gtjwbt/two_forms_csrf_token_nonunique_id_chrome_warning/
 
-**Data base**
-`pip install flask-sqlalchemy`
-https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/
 
-Being used to django, Flask-Migrate seem to offer the same functionality of writting up migration
-`pip install Flask-Migrate`
-https://flask-migrate.readthedocs.io/en/latest/
-
-Initial command : `$ flask db init`
-Following command: `$ flask db migrate -m "Initial migration."`
-To apply migrations: `$ flask db upgrade`
-
-Problem encountered: 
-In `app.config['SQLALCHEMY_DATABASE_URI'] =`, I had to specify the full path as the project is hosted on OneDrive which causes problems. If the project was hosted directly on local machine, I should be able to have the relative path.
-
-Set up of PostGres on Local
-`pip install psycopg2`
-https://medium.com/@shahrukhshl0/building-a-flask-crud-application-with-psycopg2-58de201e3c14
-
-**Create environement variables & Setup PostGres on local**
-To avoid password being leaked on github when the code is pushed, we use variables which are stored in files that are not pushed to git hub.
-
-documentation: https://pypi.org/project/python-dotenv/
-
-To do this: 
-
-`pip install python-dotenv`
-
-Add:
-`...
-from dotenv import load_dotenv
-...
-load_dotenv()
-...
-database_url = os.environ.get('DATABASE_URL')
-if database_url and database_url.startswith('postgres://'):
-    database_url = database_url.replace('postgres://', 'postgresql://', 1)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = database_url
-
-Create `.env` file in root directory and the following line:
-`DATABASE_URL=postgresql://[username]:[postgres-password]@localhost/[databasename]`
-
-Note the change for `database_url`. This is due to a problem faced during the deployment on Heroku returning the following message:
-`sqlalchemy.exc.NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:postgres`
-
-This error is due to a change in Sqlalchemy library which has not been reflected with Heroku. The library now requires a reference to `postgresql` which Heroku still refers as `postgres`.
-
-As a result, in order for the library to work on heroku an if statement has been added to the code, which handles this situation.
-
-Another solution could have been to roll the library back to a version prior to <1.4.0 (1.3.23 is the last 1.3.x release).
-
-Credit for solution: https://stackoverflow.com/questions/66690321/flask-and-heroku-sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy
 
 
 **Heroku Setup**
