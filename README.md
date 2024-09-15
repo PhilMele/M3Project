@@ -242,9 +242,36 @@ To setup the database, the following steps need to be taken:
 * An initial migration will need to be made by running command : `$ flask db init`. (db refers to the database)
 * Everytime a change is made to the models run commands :`$ flask db migrate -m "migration description"` & `$ flask db upgrade`
 
+in app.py should look like this:
+
+    app = Flask(__name__)
+
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_dev_key')
+
+    # Database
+    load_dotenv()  # take environment variables from .env.
+
+    # Fix for heroku database noted as "postgres" intsead of "postgresql"
+    database_url = os.environ.get('DATABASE_URL')
+    if database_url and database_url.startswith('postgres://'):
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+
+    db = SQLAlchemy(app)
+    bcrypt = Bcrypt(app)
+
+    # Flask-Migrate
+    migrate = Migrate(app, db)
+
+Note: some of this code involves the use of Heroku for deployment, which is covered at the end of this Readme.
+
+
 **Problem encountered**: In `app.config['SQLALCHEMY_DATABASE_URI'] =`, I had to specify the full path as the local project was hosted on OneDrive and caused problems. If the project was hosted directly on local machine, the use of the relative path should work.
 
 **Setup - PostgreSQL**
+
+Instal postgres on local: https://www.postgresql.org/download/
 
 To set up of PostGres on Local run : `pip install psycopg2` (Documentation: https://medium.com/@shahrukhshl0/building-a-flask-crud-application-with-psycopg2-58de201e3c14)
 
@@ -1259,13 +1286,13 @@ There is however a flaws both in frontend and backend that could be improved.
 * Grantee view for granter: The grantee dashboard is available to the granter by simply changing the url from `granter-dashboard` to `dashbaord`. However, it would make sense to create a small toggle in the navbar for the granter to have access to the Grantee interface.
 
 ### 6.3 Logic & Backend Improvements <a name="logic-improvements"></a>
-* Add Admin Panel + superuser system:  
-* Authentication : retrieve or change password or edit user profile
-* Add extra security to make sure only authorised user can take specific actions
-* Add SSL Certificate : need to pay with Heroku, so opted out.
-* Add email system when applications are rejected or approved to let user know
-* Add grading system
-* Serve static file on external cloud platform
+* Add Admin Panel + superuser system: In order to make this a commercial product, the first focus will be to create an admin panel with a superuser system. It seems Flask has a few libraries for it, however Django would probably provide a quicker way to achieve it, together with an easier way to manage dependencies between models.
+* Authentication : the current code does not allow for the user to edit their password or change their credientials. It would be best practice to allow for such a system.
+* Additional security: The code contains a few checks that prevent a grantee to access a granter dashboard, or validate another grantee's application. However, there are still a number of loopholes in the code (for example a grantee can edit another grantees application by modifying the url): as a result, additional security and logical checks could be implemented to improve the integrity of the data entered by users.
+* SSL Certificate : Surprisingly, the deployed version is accessible in https, even though the SSL certificate on Heroku has not been activated. SSL certificate is a paying feature on Heroku. To make this a commercial grade product, an SSL certificate will need to be implemented. 
+* Add email system and notifications: When applications are rejected or approved, a system could be implemented for the user to recieve an email notification to let them know of their application status. This email system could also be used to send other transactional emails (account verification). Additionally, live notification could be pushed to the user during browsing either through http requests, or via a websocket system but will require to pay for Redis heroku extension.
+* Add grading system: some grant organisation have grading system, which could be implemented on the granter side.
+* Serve static file on external cloud platform: the only image currently used is a favicon. This favicon is hosted on an S3 Bucket, as building a document uploader felt like an overkill for a single static image. However, in future developments, in would make sense to integrate with webservice to serve media files, in particular if users were to be asked to upload their own documents like financial models or presentations.
 * Prevent user from deleting application but instead remove it from display:
 * Contact us for not logged in users:
 
