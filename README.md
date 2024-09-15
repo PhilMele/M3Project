@@ -2,38 +2,12 @@
 
 TODO:
 
-IN Login form CSRF token message in browser console : ask Gareth.
-remove uncommented stuff (grants-available)
-Say that in addgrant and other models where therei s interger, the value is capped to -2,147,483,648 to 2,147,483,647. Adding superior numbers would cause a `400` error. To avoid getting the error, I added some javascript at the bottom of the page that checks and disbale submit button if the value is higher than it should.
-add design for back button
-Explain why grants cant be deleted
-Explain that it would make sense the granter cannot deactivate a grant after activating it.
-if time (or explain in readme): correct repetition in css for `status-colour-...`
-Missing : retrieve password system
-add email system when application is rejected or approved or submitted
-add grantis closed to close applications when needed.
-Add search function + pagination for grants
-remove grant-management references if not used before submission
-Add check to make sure user wants to delete something before pressing button
-Add Django style admin panel
-Prevent user from deleting application once approved but rather create another status as "withdrawn"
-Talk about contact us feature
-Add additional security submitted application so that only if current_user is the application user can access
-Make single column container two columns instead from 992px
-ADD SSL Certificate
-Add search function to dashbaords + grants available
-Add delete appluctaion for granter if application not active
-The granter can technically access the grantee dashboard, so they can see their grant and what the grantee see. need a button to make this accessible without playing with URL
-Some function like delete grant, are innaccessible from front-end, but could be accessed with URL from another granter. Would require more work to make this more secure.
 Do not know how to test if the CSRF token actually works
 Automatic upload of static files to cloud solution.
 
 TO DO:
-Check CSRF token is correclty impelemented on all forms
-remove print statements
+
 add hover on navbar
-Add wireframes
-add deployment
 List bugs
 List imrpovements
 Add credits
@@ -80,7 +54,7 @@ View the live site: https://grant-management-mp3-709b64ecedb2.herokuapp.com/
 6. [Bugs](#bugs)
    - [Current bugs](#current-bugs)
    - [Design & User Experience improvements](#design-improvements)
-   - [Logic improvements](#logic-improvements)    
+   - [Logic improvements & Backend](#logic-improvements)    
 7. [Deployment](#deployment)
    - [Local Deployment](#local-deployment)
    - [Heroku Deployment](#heroku-deployment)
@@ -1272,13 +1246,28 @@ Click on this link to see manual testing steps: [Manual Testing Guide](MANUAL_TE
 
 After testing completion, there is currently no bug.
 
+Although the CSRF token is implemented, I am not sure how to test if it works correclty.
+
 There is however a flaws both in frontend and backend that could be improved.
 
 ### 6.2 Design & User Experience Improvements <a name="design-improvements"></a>
+* Back Button: the current design displays a line of text offering the user to go back to previous page. This could be improved with a button.
+* Code repetiton: There is a few repetition in the css file in particular .status-colour, as the attribute that changes is the color of each class.
+* Simplifying display : with a growing list of grant, it will become harder and harder for a user to find the grant they are looking for. Adding filters and a fuzzy search sysem could help improve this situation. Adding pagination, would also help reducing the requirement for performance by limiting the number of objects displayed. Finally The current design does not take advantage of wider screen: instead of having a single grant per row, a different display system could be implemented to show two grants per row in larger screens.
+* Add grant management & messaging system: As part of the wireframe, a grant management system was planned to be implemented. One of the biggest issue with public grant is that all communications are done by email making document control very difficult. The platform could integrate a messaging and document uploading system so everything can be found on a single platform.
+* Warning before deletion : There is currently no way to confirm the user intention to delete an object. Building an extra check to collect user confirmation before deletion would certainly be a must.
+* Grantee view for granter: The grantee dashboard is available to the granter by simply changing the url from `granter-dashboard` to `dashbaord`. However, it would make sense to create a small toggle in the navbar for the granter to have access to the Grantee interface.
 
-
-### 6.3 Logic Improvements <a name="logic-improvements"></a>
-
+### 6.3 Logic & Backend Improvements <a name="logic-improvements"></a>
+* Add Admin Panel + superuser system:  
+* Authentication : retrieve or change password or edit user profile
+* Add extra security to make sure only authorised user can take specific actions
+* Add SSL Certificate : need to pay with Heroku, so opted out.
+* Add email system when applications are rejected or approved to let user know
+* Add grading system
+* Serve static file on external cloud platform
+* Prevent user from deleting application but instead remove it from display:
+* Contact us for not logged in users:
 
 ## 7. Deployment <a name="deployment"></a>
 ### 7.1 Local Deployment <a name="local-deployment"></a>
@@ -1287,7 +1276,7 @@ There is however a flaws both in frontend and backend that could be improved.
 
 Once the folder is created, click on folder to start from sratch.
 
-**Local Deployment **: To copy this project, you can use git clone from your terminal.
+**Local Deployment**: To copy this project, you can use git clone from your terminal.
 
 Go to the terminal and input: git clone https://github.com/PhilMele/M3Project.git in the directory you wish to have the project folder in.
 
@@ -1329,6 +1318,7 @@ To set up the app as development or production, the following code has been impl
 **Development Variables**
 
 In `.env` previsouly created add the following variables: 
+
     FLASK_ENV=development 
     FLASK_DEBUG=1
 
@@ -1339,6 +1329,7 @@ These variables are for development only.
 To set up production on heroku, the following variables need to be added to Heroku variables.
 
 These variables can be defined in settings in the heroku dashboard. (Look for Config Vars section) then add the following: 
+
     FLASK_ENV = production 
     FLASK_DEBUG = 0
 
