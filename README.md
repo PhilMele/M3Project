@@ -30,16 +30,10 @@ Automatic upload of static files to cloud solution.
 
 TO DO:
 Check CSRF token is correclty impelemented on all forms
-Add favicon
 remove print statements
 add hover on navbar
-Make error message show when user already or email exists
-generate 500 error
-create command line to show application with user none
-add print statement to conifrm heroku is in produtcoon
 Add wireframes
 add deployment
-add user testing
 List bugs
 List imrpovements
 Add credits
@@ -180,6 +174,13 @@ Credits need to however be given to Fontawesome for their icons: https://fontawe
 ### 2.4 Wireframes <a name="wireframes"></a>
 
 **Sign Up**
+
+   <details>
+      <summary>Login</summary>
+      <p>
+         <img src="/documentation/screen-shots/wireframes/login-wireframe.png" alt="login page" />
+      </p>
+   </details>
 
 **Register**
 

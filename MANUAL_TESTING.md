@@ -75,7 +75,8 @@
 
 
 
-Database query for #42:
+**Database query for #42**:
+
 run `flask shell`
 
 In the shell write the following lines:
