@@ -250,6 +250,13 @@ Credits need to however be given to Fontawesome for their icons: https://fontawe
     </p>
 </details>
 
+<details>
+    <summary>Wireframe interactions</summary>
+    <p>
+        <img src="/documentation/screen-shots/wireframes/wireframes-interactions.png" alt="wireframes interactions wireframe page"  width="320px" />
+    </p>
+</details>
+
 
 ### 2.5 Databases <a name="databases"></a>
 
