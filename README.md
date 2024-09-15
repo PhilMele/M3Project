@@ -26,6 +26,7 @@ Add delete appluctaion for granter if application not active
 The granter can technically access the grantee dashboard, so they can see their grant and what the grantee see. need a button to make this accessible without playing with URL
 Some function like delete grant, are innaccessible from front-end, but could be accessed with URL from another granter. Would require more work to make this more secure.
 Do not know how to test if the CSRF token actually works
+Favicon andstatic hosting
 
 TO DO:
 Check CSRF token is correclty impelemented on all forms
@@ -162,7 +163,7 @@ This font can be found on: https://fonts.google.com/
 
 ### 2.3 Icons & Images <a name="icons-images"></a>
 
-No static images were used for this project.
+No static images were used for this project, with this exception of the favicon.
 
 Credits need to however be given to Fontawesome for their icons: https://fontawesome.com/
 
@@ -863,6 +864,7 @@ To improve the user experience in the unfortunate event of a internal server err
 * notion.so - Used to generate tables for Readme file.
 * Favicon.io - Used to generate favicon
 * Heroku for server and PostgreSQL database hosting
+* AWS S3 Bucket used to host single static file (favicon) 
 
 ## 5. Testing <a name="testing"></a>
 ### 5.1 Validator Testing <a name="val-testing"></a>
