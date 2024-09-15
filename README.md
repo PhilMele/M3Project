@@ -80,10 +80,10 @@ View the live site: https://grant-management-mp3-709b64ecedb2.herokuapp.com/
 6. [Bugs](#bugs)
    - [Current bugs](#current-bugs)
    - [Design & User Experience improvements](#design-improvements)
-   - [Logic improvements](#logic-improvements)
-     
+   - [Logic improvements](#logic-improvements)    
 7. [Deployment](#deployment)
-
+   - [Local Deployment](#local-deployment)
+   - [Heroku Deployment](#heroku-deployment)
 8. [Credits](#credits)
 
 
@@ -276,7 +276,7 @@ To set up of PostGres on Local run : `pip install psycopg2` (Documentation: http
 
 **Create environement variables & Setup PostgreSQL on local**
 
-To avoid password being leaked on github when the code is pushed, we use variables which are stored in files that are not pushed to git hub. (Documentation: https://pypi.org/project/python-dotenv/)
+To avoid passwords and secret keys being leaked on github when the code is pushed, we use variables stored in files that are not pushed to git hub. (Documentation: https://pypi.org/project/python-dotenv/)
 
 To do this run: `pip install python-dotenv`
 
@@ -1269,10 +1269,20 @@ Click on this link to see manual testing steps: [Manual Testing Guide](MANUAL_TE
 
 ## 6. Bugs <a name="bugs"></a>
 ### 6.1 Current bugs <a name="current-bugs"></a>
-### 6.2 Design & User Experience Improvements <a name="design-improvements"></a>
-### 6.3 Logic Improvements <a name="logic-improvements"></a>
-## 7. Deployment <a name="deployment"></a>
 
+After testing completion, there is currently no bug.
+
+There is however a flaws both in frontend and backend that could be improved.
+
+### 6.2 Design & User Experience Improvements <a name="design-improvements"></a>
+
+
+### 6.3 Logic Improvements <a name="logic-improvements"></a>
+
+
+## 7. Deployment <a name="deployment"></a>
+### 7.1 Local Deployment <a name="local-deployment"></a>
+### 7.2 Heroku Deployment <a name="heroku-deployment"></a>
 To setup Heroku: 
 * Install Heroku commandline (CLI) (Documentation: https://devcenter.heroku.com/articles/heroku-cli), run: `pip install gunicorn` 
 * Install PostGres: `pip install psycopg2` 
@@ -1290,6 +1300,7 @@ Credits: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
 Heroku Migration: a migration will be needed to migrate to heroku from your local repository. Run: `heroku run flask db upgrade`
 
 **Developement & Production Environements Documentation**
+
 To set up the app as development or production, the following code has been implemented in app.py: 
 
     import os 
@@ -1305,6 +1316,7 @@ To set up the app as development or production, the following code has been impl
         app.run(debug=app.config['DEBUG'])
 
 **Development Variables**
+
 In `.env` previsouly created add the following variables: 
     FLASK_ENV=development 
     FLASK_DEBUG=1
@@ -1312,6 +1324,7 @@ In `.env` previsouly created add the following variables:
 These variables are for development only.
 
 **Production Variables**
+
 To set up production on heroku, the following variables need to be added to Heroku variables.
 
 These variables can be defined in settings in the heroku dashboard. (Look for Config Vars section) then add the following: 
@@ -1319,6 +1332,7 @@ These variables can be defined in settings in the heroku dashboard. (Look for Co
     FLASK_DEBUG = 0
 
 **How to check if the variables work**
+
 To check if it works, when running the project on local (or development) the following messages will print on the console: 
     Running in development mode 
 
@@ -1421,9 +1435,9 @@ Create Procfile: `echo web: gunicorn app:app > Procfile`
 Login into Heroku: `heroku login`
 Create projet on heroku: `heroku create grant-management-mp3`
 
-Problem encountered: the Procfile generated with command line from documentation ``echo web: gunicorn app:app > Procfile` created an issue, which seems to be relating to encoding: which defaulted to UTF-16 instead of UTF-8.
+Problem encountered: the Procfile generated with command line from documentation `echo web: gunicorn app:app > Procfile` created an issue, which seems to be relating to encoding: which defaulted to UTF-16 instead of UTF-8.
 
-To solve my problem, I created a new Procfile through a Notepad, selected encoding UTF-8 and called it `Procfile.txt` in the same location as the actual Procfile. I then deleted the previous Procfile and renamed `Procfile.txt` to `Procfile`.
+To solve my problem, I created a new Procfile through a Notepad, selected encoding UTF-8 and called it `Procfile.txt` in the same location as the actual Procfile. Then, delete the previous Procfile and renamed `Procfile.txt` to `Procfile`.
 
 Credits: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
 
