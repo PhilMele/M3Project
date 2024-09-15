@@ -99,6 +99,10 @@ a {
     color: white; 
 }
 
+.nav-link:hover {
+    color: white;
+}
+
 .navbar.custom-navbar {
     display: flex;
     justify-content: center;
