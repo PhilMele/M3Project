@@ -232,7 +232,7 @@ To setup the database, the following steps need to be taken:
 * An initial migration will need to be made by running command : `$ flask db init`. (db refers to the database)
 * Everytime a change is made to the models run commands :`$ flask db migrate -m "migration description"` & `$ flask db upgrade`
 
-in app.py should look like this:
+**app.py** should look like this:
 
     app = Flask(__name__)
 
@@ -523,7 +523,7 @@ To access admin panel simply follow these steps:
 * Register an account
 * To the root url add `admin`. (for example: http://127.0.0.1:5500/admin)
 
-You will be prompted to the following page, where with, for each user, their current user type in the middle column and the possibility to switch to another user type in the right column.
+You will be prompted to the admin page where for each user, `current_user` can see their user type in the middle column and the possibility to switch to another user type in the right column.
 
 By clicking on the other user type in the right column, the related user account will change from one type to the other.
 
@@ -531,7 +531,7 @@ By clicking on the other user type in the right column, the related user account
 
 
 ### 3.3 Create Grant <a name="create-grant"></a>
-This functionnality is only available to Granter and is triggered `create_new_grant().
+This functionnality is only available to Granter and is triggered by `create_new_grant().
 
 The function starts by checking user type. If the user type is not Granter, it will redirect the user to the Grantee dashboard:
 
@@ -554,7 +554,7 @@ It allows granter to see the granter they have created and any number of questio
 
 <img src="documentation/screen-shots/website-screenshots/show-grant.png" alt="display specific grant management page to granter" width="320px">
 
-Note on problem encountered: the fund field of the Grant Model is an interger. As interger have a range limit of -2,147,483,648 to 2,147,483,647, all grant value exceeding this range would generate a error.
+**Note on problem encountered**: the fund field of the Grant Model is an interger. As interger have a range limit of -2,147,483,648 to 2,147,483,647, all grant value exceeding this range would generate a error.
 
 As a result, a validator was added to the form to check the validity of the value entered by the granter. This validator takes the form of a javascript, at the bottom of the template. Since it is sepcific to this template, it made more sense to have it at this page, rather than in a specific .js file.
 
@@ -564,9 +564,9 @@ This functionnality is only available to Granter and is also managed by `show_gr
 
     def show_grant(grant_id):
 
-This function also display the possibility for the granter to read the grant and the questions they attached to it.
+This function also displays the possibility for the granter to read the grant and the questions they attached to it.
 
-Questions are listed on the template through `list_question` variable, which returns all GrantQuestion in the database that match the filter of `grant_id` parameter.
+Questions are listed on the template through `list_question` variable, which returns all GrantQuestion objects in the database that match the filter of `grant_id` parameter.
 
     list_question = GrantQuestion.query.filter_by(grant_id=grant.id).order_by(GrantQuestion.id).all()
 
@@ -604,7 +604,7 @@ Finally, Granter can manage the grant lifecycle from this page.  They can see th
         </div>
     </div>
 
-Note: Once a grant is moved from inactive to active, the granter cannot de-activate it and can only close it.
+Note: Once a grant is moved from inactive to active, the granter cannot de-activate it and can only close it. Same apply for deletion: Granter can only delete applications as long as the application is inactive.
 
 Once closed, the grant can only be re-activated.
 
@@ -623,7 +623,7 @@ To do this, an additional variable was created `existing_applications`, which fi
 
     existing_applications = GrantApplication.query.filter_by(user_id=current_user.id).all()
 
-As advised by my mentor Gareth McGirr, using a Dictionnary Comprehension, I can create a dictionnary and append an existing application (if it exists) against a grant_id my by current_user.
+As advised by my mentor Gareth McGirr, using a Dictionnary Comprehension, I can create a dictionnary and append an existing application (if it exists) against a grant_id by current_user.
 
 The clearest definition I found is the following (form:https://www.datacamp.com/tutorial/python-dictionary-comprehension ):"Dictionary comprehension is a method for transforming one dictionary into another dictionary. During this transformation, items within the original dictionary can be conditionally included in the new dictionary, and each item can be transformed as needed."
 
@@ -651,7 +651,7 @@ In practice, by passing `existing_applications` and `grants` in the template, th
         {%endif%}
     {% endfor %}
 
-Once grants with an existing application and those without one are identified, can either :
+Once grants with an existing application and those without one are identified, `current_user` can either :
 * Create a new application through `activate_application()` which will create an new application model object and redirect the user to `apply_to_grant()` with the parameters of the current `grand_id` and the newly created `grant_application_id`.
 * Continue the existing application or read an a already submitted application. This part is covered in the next section.
 
@@ -663,18 +663,19 @@ This section distinguishes whether the application has been submitted by the use
 
 
 **Application Not Submitted**
+
 Application that are not submitted are managed by `apply_to_grant()` which allows the grantee to either:
 * Answer unanswered questions using `AnswerGrantQuestionForm()` through variable `grantanswerform`
-* Edit previously answered questions through the same ``AnswerGrantQuestionForm()` using form variable `editanswerform` which redirects the user to `edit_grant_answer()`
+* Edit previously answered questions through the same `AnswerGrantQuestionForm()` using form variable `editanswerform` which redirects the user to `edit_grant_answer()`
 * Delete answered questions or delete the application as a whole through redirecting user to `delete_grant_answer()`
 
-It returns:
+This function returns:
 * All GrantQuestion objects attached to the `grant_id` parameter and 
 * All GrantAnswer objects that have been created against the same `grant_id` parameter by `current_user`.
 
 Similarly to the previous section, it uses `Dictionnary Comprehension` to achieve the combination of these two points.
 
-Note for future improvements: the code could be simplified. At the time of creating `apply_to_grant()`, `grant_application_id` wasnt passed as a parameter of the function and was added later on. The code could make the Dictionnary Comprehension redundant by simply taking into account `grant_application_id` in the filter of the variable that returns the GrantAnswer objects.
+**Note for future improvements**: the code could be simplified. At the time of creating `apply_to_grant()`, `grant_application_id` wasnt passed as a parameter of the function and was added later on. The code could make the Dictionnary Comprehension redundant by simply taking into account `grant_application_id` in the filter of the variable that returns the GrantAnswer objects.
 
 Finally, some javascript at the bottom of template regulates whether the grantee can submit their application or not, by checking if all questions have been answered.
 
@@ -767,7 +768,7 @@ There is a case for the granting authority wanting to keep track of these applic
 
     applications = (GrantApplication.query.filter_by(grant_id=grant_id, is_submitted = True)).filter(GrantApplication.user_id.isnot(None)).all()
 
-Note for future improvements: in order to implement the KPI element mentioned above, it would make sense to keep the user ID assigned to the application, and not delete the user model object when the user decides to delete their account and simply remove personal information covered by GDPR. 
+**Note for future improvements**: in order to implement the KPI element mentioned above, it would make sense to keep the user ID assigned to the application, and not delete the user model object when the user decides to delete their account and simply remove personal information covered by GDPR. 
 
 When accessing the applications, the granter can click on each of them to review them and switch each application status to either "Approved" (`approve_user_grant_application_id()`)  or "Rejected" (`reject_user_grant_application_id()`)
 
@@ -808,9 +809,9 @@ In this project, the forms also include the use of CSRF token for increased secu
 Taking a short example with the UserLoginForm used for user authentication:
 
     class UserLoginForm(FlaskForm):
-    username = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
-    password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
-    submit = SubmitField("Login")
+        username = StringField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Username"})
+        password = PasswordField(validators=[DataRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Password"})
+        submit = SubmitField("Login")
 
 The form here checks the data entered in not missing (`DataRequired()`), constrain the length of each field (`Length(min=4, max=200)]`) and adds a placeholder (`render_kw={"placeholder": "Username"}`)
 
@@ -877,17 +878,12 @@ However, this produced the following warning the browser: `[DOM] Found 2 element
 
 Changing to `{{form.csrf_token()}}` solved this problem. This explains the `{{ form.csrf_token(id = "unique_id") }}` tag on index.html.
 
-Documentation:
-https://wtforms.readthedocs.io/en/3.1.x/
-https://flask.palletsprojects.com/en/3.0.x/patterns/wtforms/
-
-Documentation to set up CSRF Token : 
-https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
-
-#Additional Credits to set up CSRF Token : 
-https://stackoverflow.com/questions/34902378/where-do-i-get-secret-key-for-flask
-
-#Found 2 elements with non-unique id #csrf_token: https://www.reddit.com/r/flask/comments/gtjwbt/two_forms_csrf_token_nonunique_id_chrome_warning/
+Useful links:
+* Documentation: https://wtforms.readthedocs.io/en/3.1.x/
+* Documentation: https://flask.palletsprojects.com/en/3.0.x/patterns/wtforms/
+* Documentation to set up CSRF Token : https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
+* Additional Credits to set up CSRF Token : https://stackoverflow.com/questions/34902378/where-do-i-get-secret-key-for-flask
+* Found 2 elements with non-unique id #csrf_token: https://www.reddit.com/r/flask/comments/gtjwbt/two_forms_csrf_token_nonunique_id_chrome_warning/
 
 ### 3.11 Context Processor & Navbar <a name="context-processor"></a>
 
@@ -903,7 +899,8 @@ In order to make UserType available, a `context processor` had to be injected wh
 
 The logic `{% if current_user.user_type == UserType.GRANTEE %}` in the template now works.
 
-Documentation: https://flask.palletsprojects.com/en/2.3.x/templating/
+Useful Link:
+* Documentation: https://flask.palletsprojects.com/en/2.3.x/templating/
 
 ### 3.12 Template Filter & Currency Display <a name="currency-display"></a>
 To display currency with a Pound sign, a seperate function had to be implemented in app.py: 
@@ -919,9 +916,9 @@ Once implemented, the template filter can be called (in £, only)  by adding a `
 
     {{ grantapplication.grant.grant_fund | currency }}
 
-Doucmentation: https://flask.palletsprojects.com/en/1.1.x/templating/
-
-Additional help: https://stackoverflow.com/questions/12078571/jinja-templates-format-a-float-as-comma-separated-currency
+Useful Links:
+* Doucmentation: https://flask.palletsprojects.com/en/1.1.x/templating/
+* Additional help: https://stackoverflow.com/questions/12078571/jinja-templates-format-a-float-as-comma-separated-currency
 
 ### 3.13 Decorators <a name="decorators"></a>
 
@@ -1290,7 +1287,7 @@ There is however a flaws both in frontend and backend that could be improved.
 ## 7. Deployment <a name="deployment"></a>
 ### 7.1 Local Deployment <a name="local-deployment"></a>
 
-**Project Creation**: The project starts started by creating a folder from VS Code name M3Project.
+**Project Creation**: The project starts by creating a folder from VS Code name M3Project.
 
 Once the folder is created, click on folder to start from sratch.
 
@@ -1309,13 +1306,14 @@ To setup Heroku:
 * Login into Heroku: run `heroku login` (you will need to have an existing account)
 * Create projet on heroku: heroku create project-name
 
+Heroku Migration: a migration will be needed to migrate to heroku from your local repository. Run: `heroku run flask db upgrade`
+
 **Problem encountered**: the Procfile generated with command line from documentation `echo web: gunicorn app:app > Procfile` created an issue relating to encoding. The encoding defaulted to UTF-16 instead of UTF-8.
 
 To solve this problem: create a new Procfile through a Notepad, selected encoding UTF-8 and called it Procfile.txt in the same location as the actual Procfile. I then deleted the previous Procfile and renamed Procfile.txt to Procfile.
 
-Credits: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
-
-Heroku Migration: a migration will be needed to migrate to heroku from your local repository. Run: `heroku run flask db upgrade`
+Useful Link:
+* Credits: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
 
 **Developement & Production Environements Documentation**
 
@@ -1356,9 +1354,11 @@ These variables can be defined in settings in the heroku dashboard. (Look for Co
 **How to check if the variables work**
 
 To check if it works, when running the project on local (or development) the following messages will print on the console: 
+
     Running in development mode 
 
 In heroku the following line will be printed in the logs: 
+
     Running in production mode
 
 ## 8. Credits <a name="credits"></a>
