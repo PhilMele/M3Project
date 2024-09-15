@@ -1282,6 +1282,17 @@ There is however a flaws both in frontend and backend that could be improved.
 
 ## 7. Deployment <a name="deployment"></a>
 ### 7.1 Local Deployment <a name="local-deployment"></a>
+
+**Project Creation**: The project starts started by creating a folder from VS Code name M3Project.
+
+Once the folder is created, click on folder to start from sratch.
+
+**Local Deployment **: To copy this project, you can use git clone from your terminal.
+
+Go to the terminal and input: git clone https://github.com/PhilMele/M3Project.git in the directory you wish to have the project folder in.
+
+Using your code editor, such as VS Code, click on open folder and click on the newly created folder.
+
 ### 7.2 Heroku Deployment <a name="heroku-deployment"></a>
 To setup Heroku: 
 * Install Heroku commandline (CLI) (Documentation: https://devcenter.heroku.com/articles/heroku-cli), run: `pip install gunicorn` 
