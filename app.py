@@ -341,6 +341,14 @@ class AnswerGrantQuestionForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+# 500 error generating function
+@app.route('/generate-error')
+def generate_error():
+    # Deliberately cause a division by zero error
+    x = 1 / 0
+    return "death."
+
+
 # Functions
 @app.context_processor
 def inject_user_type():
