@@ -187,7 +187,7 @@ Credits need to however be given to Fontawesome for their icons: https://fontawe
    <details>
       <summary>Register</summary>
       <p>
-         <img src="/documentation/screen-shots/wireframes/register-wireframe.png" alt="register wireframe page"  width="320px" style="border: 2px solid black;" />
+         <img src="/documentation/screen-shots/wireframes/register-wireframe.png" alt="register wireframe page"  width="320px" style="border: 2px solid black;"  />
       </p>
    </details>
 
