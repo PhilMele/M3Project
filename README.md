@@ -173,48 +173,38 @@ Credits need to however be given to Fontawesome for their icons: https://fontawe
 
 ### 2.4 Wireframes <a name="wireframes"></a>
 
-**Login**
-
    <details>
       <summary>Login</summary>
       <p>
-         <img src="/documentation/screen-shots/wireframes/login-wireframe.png" alt="login wireframe page"  width="320px" style="border: 2px solid black;" />
+         <img src="/documentation/screen-shots/wireframes/login.png" alt="login wireframe page"  width="320px" />
       </p>
    </details>
-
-**Register**
 
    <details>
       <summary>Register</summary>
       <p>
-         <img src="/documentation/screen-shots/wireframes/register-wireframe.png" alt="register wireframe page"  width="320px" style="border: 2px solid black;"  />
+         <img src="/documentation/screen-shots/wireframes/register.png" alt="register wireframe page"  width="320px" />
       </p>
    </details>
-
-**Grantee Dashboard**
 
    <details>
       <summary>Grantee Dashboard</summary>
       <p>
-         <img src="/documentation/screen-shots/wireframes/grantee-dashboard.png" alt="grantee-dashboard wireframe page"  width="320px" style="border: 2px solid black;" />
+         <img src="/documentation/screen-shots/wireframes/grantee-dashboard.png" alt="grantee-dashboard wireframe page"  width="320px"/>
       </p>
    </details>
-
-**Grants Available**
 
    <details>
       <summary>Grants Available</summary>
       <p>
-         <img src="/documentation/screen-shots/wireframes/grants-available-wireframe.png" alt="grants-available wireframe page"  width="320px" style="border: 2px solid black;" />
+         <img src="/documentation/screen-shots/wireframes/grants-available.png" alt="grants-available wireframe page"  width="320px" />
       </p>
    </details>
-
-**Apply to Grant**
 
    <details>
       <summary>Apply to Grant</summary>
       <p>
-         <img src="/documentation/screen-shots/wireframes/apply-to-grant-wireframe.png" alt="apply-to-grant wireframe page"  width="320px" style="border: 2px solid black;" />
+         <img src="/documentation/screen-shots/wireframes/apply-to-grant.png" alt="apply-to-grant wireframe page"  width="320px" style="border: 2px solid black;" />
       </p>
    </details>
 
