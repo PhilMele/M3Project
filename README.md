@@ -633,7 +633,7 @@ To do this, an additional variable was created `existing_applications`, which fi
 
     existing_applications = GrantApplication.query.filter_by(user_id=current_user.id).all()
 
-As advised by my mentor Gareth McGirth, using a Dictionnary Comprehension, I can create a dictionnary and append an existing application (if it exists) against a grant_id my by current_user.
+As advised by my mentor Gareth McGirr, using a Dictionnary Comprehension, I can create a dictionnary and append an existing application (if it exists) against a grant_id my by current_user.
 
 The clearest definition I found is the following (form:https://www.datacamp.com/tutorial/python-dictionary-comprehension ):"Dictionary comprehension is a method for transforming one dictionary into another dictionary. During this transformation, items within the original dictionary can be conditionally included in the new dictionary, and each item can be transformed as needed."
 
@@ -968,9 +968,9 @@ To improve the user experience in the unfortunate event of a internal server err
 * Pixso - Used to design wireframes.
 * ui.dev - Used to generate first image in Readme file rendering site in different format.
 * notion.so - Used to generate tables for Readme file in markdown format.
-* Favicon.io - Used to generate favicon
 * Heroku for server and PostgreSQL database hosting
 * AWS S3 Bukect to host favicon
+* DB Beaver for ERD generator
 
 ## 5. Testing <a name="testing"></a>
 ### 5.1 Validator Testing <a name="val-testing"></a>
@@ -1295,6 +1295,7 @@ There is however a flaws both in frontend and backend that could be improved.
 * Serve static file on external cloud platform: the only image currently used is a favicon. This favicon is hosted on an S3 Bucket, as building a document uploader felt like an overkill for a single static image. However, in future developments, in would make sense to integrate with webservice to serve media files, in particular if users were to be asked to upload their own documents like financial models or presentations.
 * Prevent user from deleting application but instead remove it from display: I do not like the idea of removing data from database. My experience in grant is limited, however I could imagine local authorities wanting to keep as much data as possible, with exception of anything GDPR would ask to be deleted. As a result, it would be interesting to switch the delete from database functions to function that simply remove data from front end. 
 * Contact us for not logged in users: There is currently no communication system available for user wanting to contact the administrator if they are struggling to connect. This feature was initially built in the previous commits, but removed it as I could not finish it.
+* Migrations : I had to delete the database a few times when setting up relationships between tables, as struggled to fix the migrations from the migratons files. As a result, the migration files do not show the full story of the database developments.
 
 ## 7. Deployment <a name="deployment"></a>
 ### 7.1 Local Deployment <a name="local-deployment"></a>
@@ -1318,7 +1319,7 @@ To setup Heroku:
 * Login into Heroku: run `heroku login` (you will need to have an existing account)
 * Create projet on heroku: heroku create project-name
 
-**Problem encountered**: the Procfile generated with command line from documentation ``echo web: gunicorn app:app > Procfile` created an issue relating to encoding. The encoding defaulted to UTF-16 instead of UTF-8.
+**Problem encountered**: the Procfile generated with command line from documentation `echo web: gunicorn app:app > Procfile` created an issue relating to encoding. The encoding defaulted to UTF-16 instead of UTF-8.
 
 To solve this problem: create a new Procfile through a Notepad, selected encoding UTF-8 and called it Procfile.txt in the same location as the actual Procfile. I then deleted the previous Procfile and renamed Procfile.txt to Procfile.
 
@@ -1369,6 +1370,21 @@ In heroku the following line will be printed in the logs:
     Running in production mode
 
 ## 8. Credits <a name="credits"></a>
+
+* DB Beaver for ERD generator : https://dbeaver.com/docs/dbeaver/ER-Diagrams/
+* JS password validator : https://gist.github.com/frizbee/5318c77d2084fa75cd00ea131399581a
+* Flask WTForms Part 1 : https://wtforms.readthedocs.io/en/3.1.x/
+* Flask WTForms Part 2 : https://flask.palletsprojects.com/en/3.0.x/patterns/wtforms/
+* CSRF Token setup : https://flask-wtf.readthedocs.io/en/0.15.x/csrf/
+* Solution to `Found 2 elements with non-unique id #csrf_token`: https://www.reddit.com/r/flask/comments/gtjwbt/two_forms_csrf_token_nonunique_id_chrome_warning/
+* Procfile encoding solution: https://stackoverflow.com/questions/19846342/unable-to-parse-procfile
+* Postgres setup : https://medium.com/@shahrukhshl0/building-a-flask-crud-application-with-psycopg2-58de201e3c14
+* Postgres envnrionement variables: https://pypi.org/project/python-dotenv/
+* Solve Postgres and Flask compatbility: https://stackoverflow.com/questions/66690321/flask-and-heroku-sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy
+* Currency display : https://stackoverflow.com/questions/12078571/jinja-templates-format-a-float-as-comma-separated-currency
+* John Elder for his Flask Friday youtube videos
+* Gareth McGir (mentor) for the advice to look at Dictonnary Comprehension
+
 
 ////
 
@@ -1799,6 +1815,3 @@ Once the application has been submitted, the user can either delete or read the 
 
 **Credits**
 DB Beaver for ERD generator : https://dbeaver.com/docs/dbeaver/ER-Diagrams/
-
-**To improve**
-MIgrations : I made a few mistakes with the foreign keys, in particular when trying to establish relationships. I had to delete the migrations and restrat from strach on a few occasions, as I didnt know how to fix my problems from the migration files.
