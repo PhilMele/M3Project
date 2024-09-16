@@ -41,7 +41,6 @@ function toggleEditForm(questionId) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("Active");
 
     // Create New Grant Page
 
