@@ -416,7 +416,7 @@ def index():
             else:
                 flash("The password does not exist", "danger")
         else:
-            flash("The user does not exist", "danger")
+            flash("The user does not exist. The system is case sensitive.", "danger")
 
     return render_template('index.html', form=form)
 
