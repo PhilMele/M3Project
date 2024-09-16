@@ -1,10 +1,9 @@
-# M3Project
+# M3Project - Grant Management
 
 ![rendering](/documentation/screen-shots/front-page/front-page.png)
 
-Title - Grant Management
 
-View the live site: https://grant-management-mp3-709b64ecedb2.herokuapp.com/
+View the live site: <a href="https://grant-management-mp3-709b64ecedb2.herokuapp.com/" target="_blank">Click Here</a>
 
 # Table of Contents
 
