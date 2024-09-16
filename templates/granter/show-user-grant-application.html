@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 {%block content%}
 <div class="top-header">
-    <h1 class="left-text">GRant Title</h1>
+    <h1 class="left-text">{{grant.grant_title}}</h1>
 </div>
 
 <a href="{{ url_for('show_all_grant_application', grant_id=grant_id) }}">Return to Previous Page</a>

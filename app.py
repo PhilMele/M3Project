@@ -1020,6 +1020,9 @@ def show_user_grant_application_id(grant_id, grant_application_id):
         ).first()
     user_id = grant_application.user_id
 
+    # retrieve the grant linked to the application
+    grant = Grant.query.filter_by(id=grant_id).first()
+
     # logic to list all questions and related answers
     grant_question = GrantQuestion.query.filter(
         GrantQuestion.grant_id == grant_id
@@ -1040,7 +1043,8 @@ def show_user_grant_application_id(grant_id, grant_application_id):
         grant_question=grant_question,
         grant_id=grant_id,
         grant_application_id=grant_application_id,
-        user_id=user_id
+        user_id=user_id,
+        grant=grant
         )
 
 
