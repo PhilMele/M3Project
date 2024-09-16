@@ -562,7 +562,7 @@ It allows granter to see the granter they have created and any number of questio
 
 **Note on problem encountered**: the fund field of the Grant Model is an interger. As interger have a range limit of -2,147,483,648 to 2,147,483,647, all grant value exceeding this range would generate a error.
 
-As a result, a validator was added to the form to check the validity of the value entered by the granter. This validator takes the form of a javascript, at the bottom of the template. Since it is sepcific to this template, it made more sense to have it at this page, rather than in a specific .js file.
+As a result, a validator was added to the form to check the validity of the value entered by the granter. This validator takes the form of a javascript in `script.js` file.
 
 ### 3.5 Read, Edit & Delete Grant Questions <a name="read-edit-delete-grant-questions"></a>
 
@@ -1083,18 +1083,20 @@ To improve the user experience in the unfortunate event of a internal server err
         <img src="documentation/screen-shots/js-testing/js-testing.png" alt="javascript testing" />
     </p>
 
-    Note 1: the checker advises that the function is never used. This is because the checker was only provided the javascript.
+Note 1: the checker advises that the function is never used. This is because the checker was only provided the javascript.
 
-    The reference to the function can be found in the form:     
-        {{ form.password(class="form-control", id="password", onkeyup="validatePassword()") }}
+The reference to the function can be found in the form:   
 
-        {{ form.confirm_password(class="form-control", id="confirm_password", onkeyup="validatePassword()") }}
+    {{ form.password(class="form-control", id="password", onkeyup="validatePassword()") }}
 
-    Note 2 : the checker advises that the toggle is never used. This is because the checker was only provided the javascript.
+    {{ form.confirm_password(class="form-control", id="confirm_password", onkeyup="validatePassword()") }}
 
-    The reference to the toggle can be found in the button:     
+Note 2 : the checker advises that the toggle is never used. This is because the checker was only provided the javascript.
 
-        <button class="btn btn-primary btn-sm w-100" onclick="toggleEditForm('{{ grantquestion.id }}')">Save</button>
+The reference to the toggle can be found in the button:     
+
+    <button class="btn btn-primary btn-sm w-100" onclick="toggleEditForm('{{ grantquestion.id }}')">Save</button>
+
 </details>
 
 
@@ -1255,25 +1257,26 @@ Although the CSRF token is implemented, I am not sure how to test if it works co
 There is however a flaws both in frontend and backend that could be improved.
 
 ### 6.2 Design & User Experience Improvements <a name="design-improvements"></a>
-* Back Button: the current design displays a line of text offering the user to go back to previous page. This could be improved with a button.
+* **Back Button**: the current design displays a line of text offering the user to go back to previous page. This could be improved with a button.
 * Code repetiton: There is a few repetition in the css file in particular .status-colour, as the attribute that changes is the color of each class.
-* Simplifying display : with a growing list of grant, it will become harder and harder for a user to find the grant they are looking for. Adding filters and a fuzzy search sysem could help improve this situation. Adding pagination, would also help reducing the requirement for performance by limiting the number of objects displayed. Finally The current design does not take advantage of wider screen: instead of having a single grant per row, a different display system could be implemented to show two grants per row in larger screens.
-* Add grant management & messaging system: As part of the wireframe, a grant management system was planned to be implemented. One of the biggest issue with public grant is that all communications are done by email making document control very difficult. The platform could integrate a messaging and document uploading system so everything can be found on a single platform.
-* Warning before deletion : There is currently no way to confirm the user intention to delete an object. Building an extra check to collect user confirmation before deletion would certainly be a must.
-* Grantee view for granter: The grantee dashboard is available to the granter by simply changing the url from `granter-dashboard` to `dashbaord`. However, it would make sense to create a small toggle in the navbar for the granter to have access to the Grantee interface.
+* **Simplifying display** : with a growing list of grant, it will become harder and harder for a user to find the grant they are looking for. Adding filters and a fuzzy search sysem could help improve this situation. Adding pagination, would also help reducing the requirement for performance by limiting the number of objects displayed. Finally The current design does not take advantage of wider screen: instead of having a single grant per row, a different display system could be implemented to show two grants per row in larger screens.
+* **Add grant management & messaging system**: As part of the wireframe, a grant management system was planned to be implemented. One of the biggest issue with public grant is that all communications are done by email making document control very difficult. The platform could integrate a messaging and document uploading system so everything can be found on a single platform.
+* **Warning before deletion** : There is currently no way to confirm the user intention to delete an object. Building an extra check to collect user confirmation before deletion would certainly be a must.
+* **Grantee view for granter**: The grantee dashboard is available to the granter by simply changing the url from `granter-dashboard` to `dashbaord`. However, it would make sense to create a small toggle in the navbar for the granter to have access to the Grantee interface.
 
 ### 6.3 Logic & Backend Improvements <a name="logic-improvements"></a>
-* Add Admin Panel + superuser system: In order to make this a commercial product, the first focus will be to create an admin panel with a superuser system. It seems Flask has a few libraries for it, however Django would probably provide a quicker way to achieve it, together with an easier way to manage dependencies between models.
-* Authentication : the current code does not allow for the user to edit their password or change their credientials. It would be best practice to allow for such a system.
-* Additional security: The code contains a few checks that prevent a grantee to access a granter dashboard, or validate another grantee's application. However, there are still a number of loopholes in the code (for example a grantee can edit another grantees application by modifying the url): as a result, additional security and logical checks could be implemented to improve the integrity of the data entered by users.
-* SSL Certificate : Surprisingly, the deployed version is accessible in https, even though the SSL certificate on Heroku has not been activated. SSL certificate is a paying feature on Heroku. To make this a commercial grade product, an SSL certificate will need to be implemented. 
-* Add email system and notifications: When applications are rejected or approved, a system could be implemented for the user to recieve an email notification to let them know of their application status. This email system could also be used to send other transactional emails (account verification). Additionally, live notification could be pushed to the user during browsing either through http requests, or via a websocket system but will require to pay for Redis heroku extension.
-* Add grading system: some grant organisation have grading system, which could be implemented on the granter side.
-* Add date fields to grant model: some grant application require to be submitted within a specific timeframe. Future development could include this feature.
-* Serve static file on external cloud platform: the only image currently used is a favicon. This favicon is hosted on an S3 Bucket, as building a document uploader felt like an overkill for a single static image. However, in future developments, in would make sense to integrate with webservice to serve media files, in particular if users were to be asked to upload their own documents like financial models or presentations.
-* Prevent user from deleting application but instead remove it from display: I do not like the idea of removing data from database. My experience in grant is limited, however I could imagine local authorities wanting to keep as much data as possible, with exception of anything GDPR would ask to be deleted. As a result, it would be interesting to switch the delete from database functions to function that simply remove data from front end. 
-* Contact us for not logged in users: There is currently no communication system available for user wanting to contact the administrator if they are struggling to connect. This feature was initially built in the previous commits, but removed it as I could not finish it.
-* Migrations : I had to delete the database a few times when setting up relationships between tables, as struggled to fix the migrations from the migratons files. As a result, the migration files do not show the full story of the database developments.
+* **Add Admin Panel + superuser system**: In order to make this a commercial product, the first focus will be to create an admin panel with a superuser system. It seems Flask has a few libraries for it, however Django would probably provide a quicker way to achieve it, together with an easier way to manage dependencies between models.
+* **Answer submission system**: I do not like the user having to click "submit" to save their answers. In the future it would be better to implement an automatic save of inputs left by the user.
+* **Authentication** : the current code does not allow for the user to edit their password or change their credientials. It would be best practice to allow for such a system.
+* **Additional security**: The code contains a few checks that prevent a grantee to access a granter dashboard, or validate another grantee's application. However, there are still a number of loopholes in the code (for example a grantee can edit another grantees application by modifying the url): as a result, additional security and logical checks could be implemented to improve the integrity of the data entered by users.
+* **SSL Certificate** : Surprisingly, the deployed version is accessible in https, even though the SSL certificate on Heroku has not been activated. SSL certificate is a paying feature on Heroku. To make this a commercial grade product, an SSL certificate will need to be implemented. 
+* **Add email system and notifications**: When applications are rejected or approved, a system could be implemented for the user to recieve an email notification to let them know of their application status. This email system could also be used to send other transactional emails (account verification). Additionally, live notification could be pushed to the user during browsing either through http requests, or via a websocket system but will require to pay for Redis heroku extension.
+* **Add grading system**: some grant organisation have grading system, which could be implemented on the granter side.
+* **Add date fields to grant model**: some grant application require to be submitted within a specific timeframe. Future development could include this feature.
+* **Serve static file on external cloud platform**: the only image currently used is a favicon. This favicon is hosted on an S3 Bucket, as building a document uploader felt like an overkill for a single static image. However, in future developments, in would make sense to integrate with webservice to serve media files, in particular if users were to be asked to upload their own documents like financial models or presentations.
+* **Prevent user from deleting application but instead remove it from display**: I do not like the idea of removing data from database. My experience in grant is limited, however I could imagine local authorities wanting to keep as much data as possible, with exception of anything GDPR would ask to be deleted. As a result, it would be interesting to switch the delete from database functions to function that simply remove data from front end. 
+* **Contact us for not logged in users**: There is currently no communication system available for user wanting to contact the administrator if they are struggling to connect. This feature was initially built in the previous commits, but removed it as I could not finish it.
+* **Migrations** : I had to delete the database a few times when setting up relationships between tables, as struggled to fix the migrations from the migratons files. As a result, the migration files do not show the full story of the database developments.
 
 ## 7. Deployment <a name="deployment"></a>
 ### 7.1 Local Deployment <a name="local-deployment"></a>
@@ -1366,4 +1369,4 @@ In heroku the following line will be printed in the logs:
 * Solve Postgres and Flask compatbility: https://stackoverflow.com/questions/66690321/flask-and-heroku-sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy
 * Currency display : https://stackoverflow.com/questions/12078571/jinja-templates-format-a-float-as-comma-separated-currency
 * John Elder for his Flask Friday youtube videos
-* Gareth McGirr (mentor) for the advice to look at Dictonnary Comprehension
+* Gareth McGirr (mentor) for the advice to look at Dictonnary Comprehension and general advice on user experience improvements.
