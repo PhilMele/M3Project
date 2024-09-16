@@ -36,26 +36,5 @@
     </div>
 </div>
 
-<!-- Javascript that validates if grant fund is within integer range -->
-<script>
-    const grantFundInput = document.getElementById('{{ grantform.grant_fund.id }}');
-    const errorMessage = document.getElementById('error-message');
-    const submitBtn = document.getElementById('submitBtn');
-
-    const minInt = -2147483648;
-    const maxInt = 2147483647;
-
-    grantFundInput.addEventListener('input', function() {
-        const value = parseInt(grantFundInput.value, 10);
-
-        if (isNaN(value) || value < minInt || value > maxInt) {
-            errorMessage.style.display = 'inline';
-            submitBtn.disabled = true; 
-        } else {
-            errorMessage.style.display = 'none'; 
-            submitBtn.disabled = false;
-        }
-    });
-</script>
 
 {% endblock %}

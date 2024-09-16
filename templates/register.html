@@ -56,39 +56,4 @@
     </div>
 </div>
 
-<!-- JS for validators -->
-<script>
-    function validatePassword() {
-        const password = document.getElementById("password").value;
-        const confirm_password = document.getElementById("confirm_password").value;
-        const message = document.getElementById("message");
-        const confirmMessage = document.getElementById("confirm_message");
-
-        let strengthMessage = "";
-
-        if (password.length < 8) {
-            strengthMessage = "Password must be at least 8 characters long.";
-        } else if (!/[A-Z]/.test(password)) {
-            strengthMessage = "Password must contain at least one uppercase letter.";
-        } else if (!/[a-z]/.test(password)) {
-            strengthMessage = "Password must contain at least one lowercase letter.";
-        } else if (!/\d/.test(password)) {
-            strengthMessage = "Password must contain at least one number.";
-        } else {
-            strengthMessage = "Password is strong.";
-        }
-
-        message.textContent = strengthMessage;
-        message.style.color = strengthMessage === "Password is strong." ? "#2ecc71" : "#e74c3c";
-
-        if (password !== confirm_password) {
-            confirmMessage.textContent = "Passwords do not match.";
-            confirmMessage.style.color = "#e74c3c"; 
-        } else {
-            confirmMessage.textContent = "Passwords match.";
-            confirmMessage.style.color = "#2ecc71";
-        }
-    }
-</script>
-
 {% endblock %}

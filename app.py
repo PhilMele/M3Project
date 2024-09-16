@@ -688,14 +688,12 @@ def apply_to_grant(grant_id, grant_application_id, methods=['GET', 'POST']):
     # counts number of questions answered
     application_answer_total_count = len(answers)
     # compare both counts
+    # if count is equal : submit button is enabled
     if application_answer_total_count == application_question_total_count:
         submit_button = True
     # if count is lower : submit button disabled
     elif application_answer_total_count < application_question_total_count:
         pass
-    # if count is equal : submit button is enabled
-    else:
-        print("Something is wrong with count")
 
     return render_template(
         'grantee/apply-to-grant.html',
@@ -835,7 +833,7 @@ def show_grant(grant_id):
     list_question = GrantQuestion.query.filter_by(
         grant_id=grant.id
         ).order_by(GrantQuestion.id).all()
-    print(f'list_question = {list_question}')
+
     # checks if list_question is empty and assign variable
     list_question_empty = False
     if list_question == []:
@@ -1091,10 +1089,10 @@ def approve_user_grant_application_id(grant_id, grant_application_id):
 # Set FLASK_ENV as production or dev. environement
 if os.environ.get('FLASK_ENV') == 'development':
     app.config['DEBUG'] = True
-    print("Running in dev. mode")
+
 else:
     app.config['DEBUG'] = False
-    print("Running in production mode")
+
 
 if __name__ == "__main__":
     app.run(debug=app.config['DEBUG'])

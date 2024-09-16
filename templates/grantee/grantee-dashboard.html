@@ -28,32 +28,36 @@
 
     <!-- For loop to generate rows -->
     {% if applications %}
-    {% for grantapplication in applications %}
-    <div class="row table-content center-text border-bottom py-2">
-        <div class="grant-title-col col-12 d-flex">{{ grantapplication.grant.grant_title }}</div>
-        <div class="col-4 d-flex justify-content-center align-items-center">{{ grantapplication.grant.grant_fund | currency }}</div>
-        <div class="col-4 d-flex justify-content-center">
-            {% if grantapplication.is_approved %}
-            <span class="status-colour-green">Approved</span>
-            {% elif grantapplication.is_rejected %}
-            <span class="status-colour-black">Rejected</span>
-            {% elif grantapplication.is_submitted %}
-            <span class="status-colour-amber">Submitted</span>
-            {% else %}
-            <span class="status-colour-red">Not Submitted</span>
-            {% endif %}
-        </div>
-        <div class="col-4 d-flex justify-content-center">
-            {% if grantapplication.is_submitted %}
-            <!-- If submitted -->
-                <a href="{{ url_for('read_submitted_application', grant_id=grantapplication.grant_id, grant_application_id=grantapplication.id) }}" class="btn btn-primary btn-sm">Open</a>
-            {%else%}
-            <!-- If not submitted -->
-                <a href="{{ url_for('apply_to_grant', grant_id=grantapplication.grant_id, grant_application_id=grantapplication.id) }}" class="btn btn-primary btn-sm">Open</a>
-            {%endif%}    
-        </div>
-    </div>
-    {% endfor %}
+        {% for grantapplication in applications %}
+            <div class="row table-content center-text border-bottom py-2">
+                <div class="grant-title-col col-12 d-flex">
+                    {{ grantapplication.grant.grant_title }}
+                </div>
+                <div class="col-4 d-flex justify-content-center align-items-center">
+                    {{ grantapplication.grant.grant_fund | currency }}
+                </div>
+                <div class="col-4 d-flex justify-content-center">
+                    {% if grantapplication.is_approved %}
+                        <span class="status-colour-green">Approved</span>
+                    {% elif grantapplication.is_rejected %}
+                        <span class="status-colour-black">Rejected</span>
+                    {% elif grantapplication.is_submitted %}
+                        <span class="status-colour-amber">Submitted</span>
+                    {% else %}
+                        <span class="status-colour-red">Not Submitted</span>
+                    {% endif %}
+                </div>
+                <div class="col-4 d-flex justify-content-center">
+                    {% if grantapplication.is_submitted %}
+                    <!-- If submitted -->
+                        <a href="{{ url_for('read_submitted_application', grant_id=grantapplication.grant_id, grant_application_id=grantapplication.id) }}" class="btn btn-primary btn-sm">Open</a>
+                    {%else%}
+                    <!-- If not submitted -->
+                        <a href="{{ url_for('apply_to_grant', grant_id=grantapplication.grant_id, grant_application_id=grantapplication.id) }}" class="btn btn-primary btn-sm">Open</a>
+                    {%endif%}    
+                </div>
+            </div>
+        {% endfor %}
     {%endif%}
 </div>
 {%endblock%}

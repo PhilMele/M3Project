@@ -511,7 +511,9 @@ For the purpose of this project a basic admin panel with limited action was crea
 
 The pannel allows for user to change their status from grantee to granter, and granter to grantee.
 
-This panel was solely built for the purpose of the examination of the project to give examinator easy access to both user type.
+This panel was solely built for the purpose of the assessment of the project to give assor easy access to both user types.
+
+**Note**: An alternative to the admin panel could have been a superuser system, where the Granter role would be assigned through command-line commands. However, since the assessment will be conducted via Heroku, where the command line is not accessible to the assessor, this solution would not have been practical.
 
 As the project will be accessible on github, the admin panel does not allow for user account deletion, to avoid outside user deleting all users from the admin panel.
 
@@ -525,7 +527,7 @@ To access admin panel simply follow these steps:
 
 You will be prompted to the admin page where for each user, `current_user` can see their user type in the middle column and the possibility to switch to another user type in the right column.
 
-By clicking on the other user type in the right column, the related user account will change from one type to the other.
+By clicking on the other user type in the right column, the related user account will change from one type to the other. 
 
 <img src="documentation/screen-shots/website-screenshots/admin-panel.png" alt="change user type in admin panel" width="320px">
 
@@ -1076,37 +1078,25 @@ The javascript used in this project is front end related and specific to the pag
 As a result, it hasn't been compiled in a single js file, but instead put at the bottom of the pages it serves.
 
 <details>
-    <summary>register.html</summary>
+    <summary>script.js</summary>
     <p>
-        <img src="documentation/screen-shots/js-testing/register.png" alt="styles.css" />
+        <img src="documentation/screen-shots/js-testing/js-testing.png" alt="javascript testing" />
     </p>
 
-    Note: the checker advises that the function is never used. This is because the checker was only provided the javascript.
+    Note 1: the checker advises that the function is never used. This is because the checker was only provided the javascript.
 
     The reference to the function can be found in the form:     
         {{ form.password(class="form-control", id="password", onkeyup="validatePassword()") }}
 
         {{ form.confirm_password(class="form-control", id="confirm_password", onkeyup="validatePassword()") }}
-</details>
 
-<details>
-    <summary>create-new-grant.html</summary>
-    <p>
-        <img src="documentation/screen-shots/js-testing/create-new-grant.png" alt="styles.css" />
-    </p>
-</details>
-
-<details>
-    <summary>apply-to-grant.html</summary>
-    <p>
-        <img src="documentation/screen-shots/js-testing/apply-to-grant.png" alt="styles.css" />
-    </p>
-    Note: the checker advises that the toggle is never used. This is because the checker was only provided the javascript.
+    Note 2 : the checker advises that the toggle is never used. This is because the checker was only provided the javascript.
 
     The reference to the toggle can be found in the button:     
 
         <button class="btn btn-primary btn-sm w-100" onclick="toggleEditForm('{{ grantquestion.id }}')">Save</button>
 </details>
+
 
 #### 5.1.3 Python <a name="py"></a>
 

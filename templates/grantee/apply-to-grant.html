@@ -18,7 +18,7 @@
         <!-- If the user has answered the question -->
          <!-- Display answer -->
           
-         <strong>Y:</strong> {{ answers_from_user_id[grantquestion.id].answer }}</p>
+        <strong>Y:</strong> {{ answers_from_user_id[grantquestion.id].answer }}</p>
 
         <div class="row mb-2">
             <div class="col-6">
@@ -92,18 +92,6 @@
 
 <a href="{{ url_for('grant_available') }}">Return to Previous Page</a>
 
-
-<!-- Javascript - Manages drop down of edit input filed -->
-<script>
-    function toggleEditForm(questionId) {
-        var form = document.getElementById('edit-form-' + questionId);
-        if (form.style.display === 'none' || form.style.display === '') {
-            form.style.display = 'block';
-        } else {
-            form.style.display = 'none';
-        }
-    }
-</script>
 
 {%endblock%}
 
