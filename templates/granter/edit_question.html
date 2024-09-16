@@ -16,7 +16,8 @@
         {{ editquestionform.hidden_tag() }}
         <div class="container">
             <div class="row py-2">
-                {{ editquestionform.question }}
+                <label for="question" class="sr-only">Question</label>
+                {{ editquestionform.question(id=question) }}
             </div>
             <div class="row py-2">
                 <button type="submit" class="btn btn-success btn-sm w-100">Edit</button>

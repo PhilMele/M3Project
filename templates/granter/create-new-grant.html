@@ -17,14 +17,17 @@
             {{ grantform.hidden_tag() }}
             <div class="container">
                 <div class="row py-2">
-                    {{ grantform.grant_title }}
+                    <label for="grant_title" class="sr-only">Grant Title</label>
+                    {{ grantform.grant_title(id="grant_title") }}
                 </div>
                 <div class="row py-2">
-                    {{ grantform.grant_description }}
+                    <label for="grant_description" class="sr-only">Grant Description</label>
+                    {{ grantform.grant_description(id="grant_description") }}
                 </div>
                 
                 <div class="row py-2">
-                    {{ grantform.grant_fund }}
+                    <label for="grant_fund" class="sr-only">Grant Fund</label>
+                    {{ grantform.grant_fund(id="grant_fund") }}
                     <!-- error message hidden -->
                     <span id="error-message" class="error-message">Please enter a value between -2,147,483,648 and 2,147,483,647.</span>
                 </div>

@@ -43,7 +43,8 @@
                 {{ editanswerform.hidden_tag() }}
                 <div class="container">
                     <div class="row py-2">
-                        {{ editanswerform.answer() }}
+                        <label for="edit_answer" class="sr-only">Edit Answer</label>
+                        {{ editanswerform.answer(id="edit_answer") }}
                     </div>
                     <div class="row py-2">
                         <button type="submit" class="btn btn-success btn-sm large-screen-width">Save</button>
@@ -63,7 +64,8 @@
              {{grantanswerform.hidden_tag()}}
              <div class="container">
                 <div class="row py-2">
-                    {{grantanswerform.answer}}
+                    <label for="answer" class="sr-only">Answer</label>
+                    {{ grantanswerform.answer(id="answer") }}
                 </div>
                 <div class="row py-2">
                     <button type="submit" class="btn btn-success btn-sm w-100">Submit Answer</button>

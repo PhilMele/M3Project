@@ -16,13 +16,15 @@
 
         <div class="row mb-3">
             <div class="col">
-                {{ form.username(class="form-control") }}
+                <label for="username" class="sr-only">Enter Username</label>
+                {{ form.username(id="username",class="form-control") }}
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col">
-                {{ form.password(class="form-control") }}
+                <label for="password" class="sr-only">Enter Password</label>
+                {{ form.password(id="password", class="form-control") }}
             </div>
         </div>
 

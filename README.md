@@ -1077,10 +1077,6 @@ To improve the user experience in the unfortunate event of a internal server err
 
 #### 5.1.3 Javascript <a name="js"></a>
 
-The javascript used in this project is front end related and specific to the pages it applies. It was considered trivial as it does perform any form of backend validation and only serves the user experience.
-
-As a result, it hasn't been compiled in a single js file, but instead put at the bottom of the pages it serves.
-
 <details>
     <summary>script.js</summary>
     <p>
@@ -1273,6 +1269,7 @@ There is however a flaws both in frontend and backend that could be improved.
 * SSL Certificate : Surprisingly, the deployed version is accessible in https, even though the SSL certificate on Heroku has not been activated. SSL certificate is a paying feature on Heroku. To make this a commercial grade product, an SSL certificate will need to be implemented. 
 * Add email system and notifications: When applications are rejected or approved, a system could be implemented for the user to recieve an email notification to let them know of their application status. This email system could also be used to send other transactional emails (account verification). Additionally, live notification could be pushed to the user during browsing either through http requests, or via a websocket system but will require to pay for Redis heroku extension.
 * Add grading system: some grant organisation have grading system, which could be implemented on the granter side.
+* Add date fields to grant model: some grant application require to be submitted within a specific timeframe. Future development could include this feature.
 * Serve static file on external cloud platform: the only image currently used is a favicon. This favicon is hosted on an S3 Bucket, as building a document uploader felt like an overkill for a single static image. However, in future developments, in would make sense to integrate with webservice to serve media files, in particular if users were to be asked to upload their own documents like financial models or presentations.
 * Prevent user from deleting application but instead remove it from display: I do not like the idea of removing data from database. My experience in grant is limited, however I could imagine local authorities wanting to keep as much data as possible, with exception of anything GDPR would ask to be deleted. As a result, it would be interesting to switch the delete from database functions to function that simply remove data from front end. 
 * Contact us for not logged in users: There is currently no communication system available for user wanting to contact the administrator if they are struggling to connect. This feature was initially built in the previous commits, but removed it as I could not finish it.
@@ -1369,4 +1366,4 @@ In heroku the following line will be printed in the logs:
 * Solve Postgres and Flask compatbility: https://stackoverflow.com/questions/66690321/flask-and-heroku-sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy
 * Currency display : https://stackoverflow.com/questions/12078571/jinja-templates-format-a-float-as-comma-separated-currency
 * John Elder for his Flask Friday youtube videos
-* Gareth McGir (mentor) for the advice to look at Dictonnary Comprehension
+* Gareth McGirr (mentor) for the advice to look at Dictonnary Comprehension
