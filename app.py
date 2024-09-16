@@ -642,9 +642,6 @@ def read_submitted_application(grant_id, grant_application_id):
     methods=['GET', 'POST'])
 @login_required
 def apply_to_grant(grant_id, grant_application_id, methods=['GET', 'POST']):
-    # TO DO: add logic to prvent user getting
-    # back to this page if grant is submitted
-    # if appliction is submitted = redirect user to grants available page.
     grant = Grant.query.get_or_404(grant_id)
     grant_application_id = grant_application_id
     grant_application = GrantApplication.query.get_or_404(grant_application_id)
